@@ -8,7 +8,7 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "https://raw.githubusercontent.com/your-username/your-repo-name/main/icon.png",
+      "src": "https://icon.png/your-username/your-repo-name/main/icon.png",
       "sizes": "512x512",
       "type": "image/png"
     }
