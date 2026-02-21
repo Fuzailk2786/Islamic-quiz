@@ -139,6 +139,14 @@ function updateProgress(current, total) {
     const percentage = (current / total) * 100;
     document.getElementById('progress-bar').style.width = percentage + "%";
 }
+    if (curLvl === 3 && !localStorage.getItem('rated')) {
+    setTimeout(() => {
+        if(confirm("Enjoying the Quest? Would you like to suggest a topic for Level 11?")) {
+            document.getElementById('feedback-section').scrollIntoView();
+            localStorage.setItem('rated', 'true');
+        }
+    }, 1000);
+}
     </style>
 </head>
 <body data-theme="light">
@@ -418,6 +426,7 @@ function updateProgress(current, total) {
     </script>
 </body>
 </html>
+
 
 
 
