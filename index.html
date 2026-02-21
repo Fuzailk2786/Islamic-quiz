@@ -99,6 +99,46 @@
     from { opacity: 0; transform: translateX(50px); }
     to { opacity: 1; transform: translateX(0); }
 }
+        // --- 1. Haptic Feedback ---
+function triggerHaptic(type) {
+    if ("vibrate" in navigator) {
+        if (type === 'correct') {
+            navigator.vibrate(50); // Short pulse
+        } else {
+            navigator.vibrate([100, 50, 100]); // Double shake
+        }
+    }
+}
+
+// --- 2. Daily Streaks ---
+function updateStreak() {
+    const today = new Date().toDateString();
+    const lastDate = localStorage.getItem('lastPlayDate');
+    let streak = parseInt(localStorage.getItem('streak') || 0);
+
+    if (lastDate !== today) {
+        if (lastDate === new Date(Date.now() - 86400000).toDateString()) {
+            streak++;
+        } else {
+            streak = 1;
+        }
+        localStorage.setItem('streak', streak);
+        localStorage.setItem('lastPlayDate', today);
+    }
+    return streak;
+}
+
+// --- 3. WhatsApp Scorecard ---
+function shareScore(level, score) {
+    const text = `🌙 I just mastered Level ${level} of *Islamic Quest*! \n🎯 My Score: ${score}% \nCan you beat me? Play here: ${window.location.href}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+// --- 4. Progress Visualization Update ---
+function updateProgress(current, total) {
+    const percentage = (current / total) * 100;
+    document.getElementById('progress-bar').style.width = percentage + "%";
+}
     </style>
 </head>
 <body data-theme="light">
@@ -368,6 +408,7 @@
     </script>
 </body>
 </html>
+
 
 
 
