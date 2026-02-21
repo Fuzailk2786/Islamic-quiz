@@ -147,12 +147,23 @@ function updateProgress(current, total) {
         }
     }, 1000);
 }
+    <meta property="og:type" content="website">
+<meta property="og:url" content="https://islamic-quest.netlify.app/">
+<meta property="og:title" content="Islamic Quest - Level Mastered!">
+<meta property="og:description" content="I just completed a level on Islamic Quest! Can you beat my score?">
+<meta property="og:image" content="https://islamic-quest.netlify.app/scorecard-template.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://islamic-quest.netlify.app/scorecard-template.png">
     </style>
 </head>
 <body data-theme="light">
 
     <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
-
+<div id="share-card" style="text-align: center; margin-top: 20px; display: none;">
+    <img src="scorecard-template.png" alt="Level Mastered" style="width: 100%; max-width: 400px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+    <p style="color: #fbbf24; font-weight: bold; margin-top: 10px;">Screenshot this to share your victory!</p>
+</div>
     <div id="quiz-card">
         <div id="screen-levels">
             <h1>Islamic Quest</h1>
@@ -336,6 +347,7 @@ function updateProgress(current, total) {
                 grid.appendChild(btn);
             }
         }
+        document.getElementById('share-card').style.display = 'block';
 
         function startLvl(l) {
             curLvl = l; qIdx = 0; score = 0;
@@ -426,6 +438,7 @@ function updateProgress(current, total) {
     </script>
 </body>
 </html>
+
 
 
 
