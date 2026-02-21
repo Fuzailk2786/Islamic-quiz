@@ -177,7 +177,17 @@ function updateProgress(current, total) {
             <p id="m-text"></p>
             <button class="btn-action" id="m-btn" onclick="nextQ()">Next</button>
         </div>
-        
+        <div id="feedback-section" style="margin-top: 30px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 10px;">
+    <h4 style="color: #fbbf24;">Suggest an Improvement</h4>
+    <form name="feedback" method="POST" data-netlify="true">
+        <select name="type" style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px;">
+            <option value="suggestion">Suggest a Question</option>
+            <option value="report">Report an Error</option>
+        </select>
+        <textarea name="message" placeholder="Your message here..." style="width: 100%; height: 60px; border-radius: 5px; margin-bottom: 10px;"></textarea>
+        <button type="submit" style="background: #fbbf24; color: #064e3b; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold;">Send Feedback</button>
+    </form>
+</div>
     </div>
 
     <script>
@@ -408,6 +418,7 @@ function updateProgress(current, total) {
     </script>
 </body>
 </html>
+
 
 
 
