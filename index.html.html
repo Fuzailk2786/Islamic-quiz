@@ -3,400 +3,336 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Islamic Quiz Pro - 10 Levels</title>
+    <title>Islamic Quiz - 100 Challenges</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --deep-emerald: #022c22;
-            --emerald: #064e3b;
-            --gold: #d4af37;
-            --soft-gold: #f3e5ab;
-            --white: #ffffff;
-            --light-bg: #f9fbf9;
-            --locked-gray: #9ca3af;
+            --bg-color: #f0f4f0; --card-bg: #ffffff; --text-main: #064e3b;
+            --emerald: #065f46; --gold: #b45309; --soft-gold: #fef3c7;
+            --border: #d1d5db; --shadow: rgba(0,0,0,0.1); --danger: #dc2626;
+        }
+        [data-theme="dark"] {
+            --bg-color: #020617; --card-bg: #1e293b; --text-main: #f1f5f9;
+            --emerald: #10b981; --gold: #fbbf24; --soft-gold: #334155;
+            --border: #475569; --shadow: rgba(0,0,0,0.5);
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--light-bg);
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            color: var(--deep-emerald);
+            font-family: 'Poppins', sans-serif; background-color: var(--bg-color);
+            margin: 0; display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; color: var(--text-main); transition: 0.3s;
         }
 
         #quiz-card {
-            background: var(--white);
-            width: 95%;
-            max-width: 450px;
-            padding: 2rem;
-            border-radius: 30px;
-            box-shadow: 0 20px 50px rgba(2, 44, 34, 0.15);
-            border: 2px solid var(--soft-gold);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+            background: var(--card-bg); width: 92%; max-width: 450px; padding: 2rem;
+            border-radius: 24px; box-shadow: 0 20px 40px var(--shadow);
+            border: 1px solid var(--border); position: relative; text-align: center;
         }
 
-        h1 { font-family: 'Cinzel', serif; color: var(--emerald); font-size: 1.5rem; margin-bottom: 0.5rem; }
-
-        /* Progress Bar */
-        .progress-container {
-            width: 100%;
-            height: 8px;
-            background: #e5e7eb;
-            border-radius: 10px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-        #progress-bar {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, var(--emerald), var(--gold));
-            transition: width 0.4s ease;
+        .theme-toggle {
+            position: absolute; top: 15px; right: 15px; background: none;
+            border: 1px solid var(--emerald); border-radius: 50%; cursor: pointer;
+            width: 35px; height: 35px; color: var(--emerald); font-size: 1.2rem;
         }
 
-        /* Level Grid */
-        .level-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-        }
+        h1 { font-family: 'Cinzel', serif; font-size: 1.5rem; margin-top: 0; }
 
+        .level-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
         .level-btn {
-            background: var(--white);
-            border: 2px solid var(--emerald);
-            padding: 20px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--emerald);
-            transition: 0.3s;
-            position: relative;
+            padding: 18px; border-radius: 12px; border: 2px solid var(--emerald);
+            background: none; color: var(--text-main); font-weight: 600; cursor: pointer;
+            transition: 0.2s; position: relative;
         }
+        .level-btn.locked { opacity: 0.4; cursor: not-allowed; border-color: var(--border); }
+        .level-btn:not(.locked):hover { background: var(--emerald); color: white; }
 
-        .level-btn.locked {
-            border-color: #d1d5db;
-            color: #9ca3af;
-            cursor: not-allowed;
-            background: #f3f4f6;
-        }
+        #timer-box { font-weight: 700; font-size: 1.2rem; color: var(--gold); margin-bottom: 10px; display: none; }
+        .low-time { color: var(--danger) !important; animation: pulse 0.8s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
-        .level-btn.locked::after {
-            content: "🔒";
-            font-size: 0.8rem;
-            display: block;
-        }
-
-        .level-btn:not(.locked):hover {
-            background: var(--emerald);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
-        /* Option Buttons */
         .option-btn {
-            background: var(--white);
-            border: 2px solid #e5e7eb;
-            padding: 15px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 1rem;
-            margin-bottom: 10px;
-            width: 100%;
-            transition: 0.2s;
-            color: var(--deep-emerald);
+            width: 100%; padding: 14px; margin: 8px 0; border-radius: 10px;
+            border: 1px solid var(--border); background: var(--card-bg);
+            color: var(--text-main); cursor: pointer; font-size: 1rem; transition: 0.2s;
         }
+        .option-btn:hover { border-color: var(--gold); background: var(--soft-gold); }
 
-        .option-btn:hover {
-            border-color: var(--gold);
-            background: #fffcf0;
-        }
-
-        /* Modals */
         .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(2, 44, 34, 0.85);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+            justify-content: center; align-items: center; z-index: 100;
         }
-
         .modal {
-            background: var(--white);
-            padding: 2.5rem;
-            border-radius: 25px;
-            text-align: center;
-            max-width: 320px;
-            border-top: 10px solid var(--gold);
+            background: var(--card-bg); padding: 2rem; border-radius: 20px;
+            max-width: 300px; width: 80%; border-top: 5px solid var(--gold);
         }
-
-        .btn-gold {
-            background: var(--gold);
-            color: var(--deep-emerald);
-            border: none;
-            padding: 12px 25px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-            margin-top: 10px;
+        .btn-action {
+            background: var(--emerald); color: white; border: none; padding: 12px;
+            width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px;
         }
-
-        .share-btn {
-            background: #25D366; /* WhatsApp Green */
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 12px;
-            width: 100%;
-            margin-top: 10px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
+        .btn-share { background: #25d366; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; margin-top: 10px; cursor: pointer; font-weight: 600; }
         .hidden { display: none; }
     </style>
 </head>
-<body>
+<body data-theme="light">
+
+    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
 
     <div id="quiz-card">
-        <div id="level-screen">
-            <h1>Islamic Quiz</h1>
-            <p>Master your knowledge across 10 levels</p>
-            <div class="level-grid" id="level-buttons"></div>
+        <div id="screen-levels">
+            <h1>Islamic Quest</h1>
+            <p>Unlock all 10 levels</p>
+            <div class="level-grid" id="level-btns"></div>
         </div>
 
-        <div id="quiz-screen" class="hidden">
-            <div id="level-label" style="font-weight: bold; color: var(--gold);">Level 1</div>
-            <div class="progress-container"><div id="progress-bar"></div></div>
-            <h2 id="question-text">Question goes here?</h2>
-            <div id="options"></div>
+        <div id="screen-quiz" class="hidden">
+            <div id="timer-box">Time: <span id="time-left">15</span>s</div>
+            <p id="q-count" style="font-size: 0.8rem; opacity: 0.8;"></p>
+            <h2 id="q-text" style="font-size: 1.1rem;"></h2>
+            <div id="opt-container"></div>
         </div>
 
-        <div id="result-screen" class="hidden">
-            <h2 id="result-title">Level Complete!</h2>
-            <div style="font-size: 3rem; margin: 15px 0;" id="final-score">0/10</div>
-            <p id="feedback-text"></p>
-            <button class="btn-gold" onclick="showLevelScreen()">Continue to Levels</button>
-            <button class="share-btn" onclick="shareProgress()">Share on WhatsApp 📱</button>
+        <div id="screen-result" class="hidden">
+            <h2 id="res-title">Finished!</h2>
+            <div style="font-size: 3rem; font-weight: 700; color: var(--gold);" id="res-score">0/10</div>
+            <p id="res-msg"></p>
+            <button class="btn-action" onclick="showMenu()">Back to Levels</button>
+            <button class="btn-share" onclick="shareMe()">Share Score on WhatsApp</button>
         </div>
     </div>
 
-    <div id="feedback-modal" class="modal-overlay">
+    <div id="modal-feedback" class="modal-overlay">
         <div class="modal">
-            <h2 id="modal-status">Correct!</h2>
-            <p id="modal-msg"></p>
-            <button class="btn-gold" onclick="nextQuestion()">Next Question</button>
+            <h2 id="m-status"></h2>
+            <p id="m-text"></p>
+            <button class="btn-action" id="m-btn" onclick="nextQ()">Next</button>
         </div>
     </div>
 
     <script>
-        // ... (Paste the 100 questions here - I am using a placeholder for brevity)
-        const allQuestions = [
-            // Level 1 (0-9)
-            { question: "Which Prophet is known for his patience (Sabr) during long illness?", options: ["Prophet Musa", "Prophet Ayub", "Prophet Isa", "Prophet Yunus"], answer: "Prophet Ayub" },
-            { question: "In which month was the Holy Quran first revealed?", options: ["Rajab", "Dhul-Hijjah", "Ramadan", "Muharram"], answer: "Ramadan" },
-            { question: "What is the name of the angel who brought revelations to the Prophet (PBUH)?", options: ["Angel Mikaeel", "Angel Jibreel", "Angel Israfeel", "Angel Izraeel"], answer: "Angel Jibreel" },
-            { question: "How many Sijdas (prostrations) are there in the Quran?", options: ["10", "12", "14", "15"], answer: "14" },
-            { question: "Which Surah is known as the 'Heart of the Quran'?", options: ["Surah Al-Fatihah", "Surah Al-Baqarah", "Surah Yaseen", "Surah Al-Ikhlas"], answer: "Surah Yaseen" },
-            { question: "How many chapters (Surahs) are there in the Holy Quran?", options: ["110", "114", "124", "116"], answer: "114" },
-            { question: "What is the name of the Prophet's (PBUH) mother?", options: ["Khadija", "Halima", "Aminah", "Aisha"], answer: "Aminah" },
-            { question: "Which Pillar of Islam refers to the annual pilgrimage to Makkah?", options: ["Zakat", "Sawm", "Hajj", "Shahada"], answer: "Hajj" },
-            { question: "What is the first month of the Islamic (Hijri) calendar?", options: ["Ramadan", "Muharram", "Shawwal", "Safar"], answer: "Muharram" },
-            { question: "Which Prophet built the Ark to save believers?", options: ["Prophet Ibrahim", "Prophet Nuh", "Prophet Hud", "Prophet Salih"], answer: "Prophet Nuh" },
-            { question: "How many times a day are Muslims required to perform Fard Salah?", options: ["3", "4", "5", "6"], answer: "5" },
-            { question: "Which direction do Muslims face during prayer?", options: ["Madinah", "Jerusalem", "The Qibla", "The East"], answer: "The Qibla" },
-            { question: "What is the Arabic word for the Oneness of Allah?", options: ["Tafsir", "Tawheed", "Sunnah", "Hadith"], answer: "Tawheed" },
-            { question: "Which Surah is the shortest in the Quran?", options: ["Surah Al-Ikhlas", "Surah Al-Nas", "Surah Al-Kawthar", "Surah Al-Falaq"], answer: "Surah Al-Kawthar" },
-            { question: "Who was the first Caliph of Islam?", options: ["Umar ibn al-Khattab", "Uthman ibn Affan", "Ali ibn Abi Talib", "Abu Bakr as-Siddiq"], answer: "Abu Bakr as-Siddiq" },
-            { question: "What is the name of the night the Quran was first revealed?", options: ["Laylatul Qadr", "Laylatul Mi'raj", "Laylatul Bara'ah", "Eidul Fitr"], answer: "Laylatul Qadr" },
-            { question: "Which Prophet could speak to animals and jinns?", options: ["Prophet Dawood", "Prophet Sulaiman", "Prophet Yusuf", "Prophet Adam"], answer: "Prophet Sulaiman" },
-            { question: "What is the name of the well for Hajar and Ismail (AS)?", options: ["Zamzam", "Kauthar", "Salsabil", "Tasneem"], answer: "Zamzam" },
-            { question: "How many Juz are there in the Quran?", options: ["20", "25", "30", "40"], answer: "30" },
-            { question: "Which Prophet was swallowed by a large fish?", options: ["Prophet Yunus", "Prophet Yahya", "Prophet Zakariyya", "Prophet Lot"], answer: "Prophet Yunus" },
-            { question: "What is the meal eaten before dawn during Ramadan?", options: ["Iftar", "Suhoor", "Walima", "Aqiqah"], answer: "Suhoor" },
-            { question: "Which battle was the first major battle in Islamic history?", options: ["Battle of Uhud", "Battle of Khandaq", "Battle of Badr", "Battle of Khaibar"], answer: "Battle of Badr" },
-            { question: "Who is the 'Khalilullah' (Friend of Allah)?", options: ["Prophet Muhammad", "Prophet Ibrahim", "Prophet Musa", "Prophet Isa"], answer: "Prophet Ibrahim" },
-            { question: "What are the sayings and actions of the Prophet (PBUH) called?", options: ["Quran", "Hadith", "Fiqh", "Sharia"], answer: "Hadith" },
-            { question: "In which city was Prophet Muhammad (PBUH) born?", options: ["Madinah", "Jerusalem", "Makkah", "Taif"], answer: "Makkah" },
-            { question: "Which Prophet was given the Injeel?", options: ["Prophet Musa", "Prophet Isa", "Prophet Dawood", "Prophet Muhammad"], answer: "Prophet Isa" },
-            { question: "What is the meaning of the word 'Islam'?", options: ["Strength", "Submission/Peace", "History", "Prayer"], answer: "Submission/Peace" },
-            { question: "How many daughters did the Prophet (PBUH) have?", options: ["1", "2", "3", "4"], answer: "4" },
-            { question: "Which metal mentioned in the Quran has 'great strength'?", options: ["Gold", "Silver", "Iron", "Copper"], answer: "Iron" },
-            { question: "What is the first word of the Quran revealed?", options: ["Allah", "Islam", "Iqra", "Bismillah"], answer: "Iqra" },
-            { question: "Which story is called 'Best of Stories' in the Quran?", options: ["Prophet Adam", "Prophet Yusuf", "Prophet Nuh", "Prophet Idris"], answer: "Prophet Yusuf" },
-            { question: "Gate of Paradise for those who fast?", options: ["Ar-Rayyan", "Al-Baab", "Al-Firdous", "An-Noor"], answer: "Ar-Rayyan" },
-            { question: "Which companion was 'Al-Faruq'?", options: ["Abu Bakr", "Umar ibn al-Khattab", "Uthman ibn Affan", "Ali ibn Abi Talib"], answer: "Umar ibn al-Khattab" },
-            { question: "Takbirs in the first Rakat of Eid prayer?", options: ["3", "5", "7", "9"], answer: "7" },
-            { question: "Name of the Prophet’s (PBUH) camel?", options: ["Al-Qaswa", "Al-Buraq", "Ababil", "Zulfiqar"], answer: "Al-Qaswa" },
-            { question: "Which Prophet was given the Zabur?", options: ["Prophet Musa", "Prophet Ibrahim", "Prophet Dawood", "Prophet Isa"], answer: "Prophet Dawood" },
-            { question: "What is the name of the Prophet's (PBUH) father?", options: ["Abdullah", "Abu Talib", "Abdul Muttalib", "Hamza"], answer: "Abdullah" },
-            { question: "Which Prophet was born without a father?", options: ["Prophet Yahya", "Prophet Isa", "Prophet Adam", "Prophet Idrees"], answer: "Prophet Isa" },
-            { question: "Literal meaning of 'Al-Fatihah'?", options: ["The Prayer", "The Opening", "The Guidance", "The Light"], answer: "The Opening" },
-            { question: "Which Surah does not start with Bismillah?", options: ["Surah At-Tawbah", "Surah Al-Kahf", "Surah Yaseen", "Surah Naml"], answer: "Surah At-Tawbah" },
-            { question: "How many times is Muhammad (PBUH) named in Quran?", options: ["4", "10", "25", "70"], answer: "4" },
-            { question: "Who was 'Dhun-Nurayn'?", options: ["Abu Bakr", "Uthman ibn Affan", "Ali ibn Abi Talib", "Zaid ibn Harithah"], answer: "Uthman ibn Affan" },
-            { question: "What was the first Qibla?", options: ["Makkah", "Madinah", "Jerusalem", "Egypt"], answer: "Jerusalem" },
-            { question: "Who was the first woman to embrace Islam?", options: ["Aisha", "Fatimah", "Khadija", "Sawdah"], answer: "Khadija" },
-            { question: "Winged animal for Al-Isra?", options: ["Al-Qaswa", "Al-Buraq", "Al-Ababil", "Zulfiqar"], answer: "Al-Buraq" },
-            { question: "Son of Prophet Zakariyya (AS)?", options: ["Prophet Yahya", "Prophet Ishaq", "Prophet Ismail", "Prophet Yusuf"], answer: "Prophet Yahya" },
-            { question: "Prophets named in Quran?", options: ["10", "25", "99", "124,000"], answer: "25" },
-            { question: "Who was 'The Lion of Allah'?", options: ["Abu Talib", "Abbas", "Hamza", "Abu Lahab"], answer: "Hamza" },
-            { question: "Bridge to cross on Judgment Day?", options: ["As-Sirat", "Al-Kawthar", "Ar-Rayyan", "Al-Mizan"], answer: "As-Sirat" },
-            { question: "Recited every Friday for protection?", options: ["Surah Al-Baqarah", "Surah Al-Kahf", "Surah Al-Mulk", "Surah Al-Waqi'ah"], answer: "Surah Al-Kahf" },
-            { question: "Who was the first Muezzin?", options: ["Abu Bakr", "Bilal ibn Rabah", "Umar", "Ali"], answer: "Bilal ibn Rabah" },
-            { question: "Prophet sent to the people of Thamud?", options: ["Prophet Hud", "Prophet Salih", "Prophet Shuaib", "Prophet Lot"], answer: "Prophet Salih" },
-            { question: "Mountain of the first revelation?", options: ["Mount Uhud", "Mount Hira", "Mount Safa", "Mount Marwa"], answer: "Mount Hira" },
-            { question: "Daily prayers performed in a week?", options: ["25", "30", "35", "40"], answer: "35" },
-            { question: "Prophet’s (PBUH) youngest daughter?", options: ["Zaynab", "Ruqayyah", "Umm Kulthum", "Fatimah"], answer: "Fatimah" },
-            { question: "Wife transformed into pillar of salt?", options: ["Prophet Nuh", "Prophet Lot", "Prophet Musa", "Prophet Ibrahim"], answer: "Prophet Lot" },
-            { question: "Arabic term for migration to Madinah?", options: ["Hajj", "Hijrah", "Umrah", "Jihad"], answer: "Hijrah" },
-            { question: "Surah equal to 1/3 of Quran?", options: ["Surah Al-Fatihah", "Surah Al-Ikhlas", "Surah Al-Falaq", "Surah Al-Nas"], answer: "Surah Al-Ikhlas" },
-            { question: "Prophet's grandfather?", options: ["Abdul Muttalib", "Abu Talib", "Abu Jahl", "Abbas"], answer: "Abdul Muttalib" },
-            { question: "Father-in-law of Prophet Musa (AS)?", options: ["Prophet Shuaib", "Prophet Hud", "Prophet Salih", "Prophet Ibrahim"], answer: "Prophet Shuaib" },
-            { question: "Leader of all days?", options: ["Monday", "Friday", "Saturday", "Sunday"], answer: "Friday" },
-            { question: "Sajdahs in Surah Al-Hajj?", options: ["0", "1", "2", "3"], answer: "2" },
-            { question: "Scale to weigh deeds?", options: ["Mizan", "Qadar", "Sirat", "Barzakh"], answer: "Mizan" },
-            { question: "Location of the 'Green Dome'?", options: ["Makkah", "Madinah", "Jerusalem", "Cairo"], answer: "Madinah" },
-            { question: "Prophet with a beautiful voice?", options: ["Prophet Dawood", "Prophet Sulaiman", "Prophet Yusuf", "Prophet Isa"], answer: "Prophet Dawood" },
-            { question: "Prophet's (PBUH) first wife?", options: ["Aisha", "Khadija", "Hafsa", "Zaynab"], answer: "Khadija" },
-            { question: "Surah named after a spider?", options: ["Surah Al-Ankabut", "Surah Al-Naml", "Surah Al-Nahl", "Surah Al-Baqarah"], answer: "Surah Al-Ankabut" },
-            { question: "Maximum people allowed for Hajj?", options: ["1 Million", "2 Million", "Unlimited", "Varies/Quota based"], answer: "Varies/Quota based" },
-            { question: "Youngest Prophet mentioned?", options: ["Prophet Yahya", "Prophet Isa", "Prophet Yusuf", "Prophet Ismail"], answer: "Prophet Isa" },
-            { question: "Arabic word for Almsgiving?", options: ["Salah", "Zakat", "Sawm", "Hajj"], answer: "Zakat" },
-            { question: "Prophet who survived the fire?", options: ["Prophet Musa", "Prophet Ibrahim", "Prophet Isa", "Prophet Nuh"], answer: "Prophet Ibrahim" },
-            { question: "Prophet’s pond in Paradise?", options: ["Al-Kawthar", "Zamzam", "Salsabil", "Tasneem"], answer: "Al-Kawthar" },
-            { question: "Wings of Angel Jibreel?", options: ["2", "10", "600", "1000"], answer: "600" },
-            { question: "Month after Ramadan?", options: ["Muharram", "Shawwal", "Safar", "Rajab"], answer: "Shawwal" },
-            { question: "Who was 'Sword of Allah'?", options: ["Khalid ibn al-Walid", "Ali", "Umar", "Zaid"], answer: "Khalid ibn al-Walid" },
-            { question: "Prophet who controlled wind?", options: ["Prophet Sulaiman", "Prophet Dawood", "Prophet Musa", "Prophet Ibrahim"], answer: "Prophet Sulaiman" },
-            { question: "Reward for an accepted Hajj?", options: ["Wealth", "Health", "Paradise", "Long life"], answer: "Paradise" },
-            { question: "Prophet sent to Pharaoh?", options: ["Prophet Ibrahim", "Prophet Musa", "Prophet Isa", "Prophet Nuh"], answer: "Prophet Musa" },
-            { question: "Gate to the Kaaba?", options: ["Bab al-Salam", "Bab-e-Tauba", "Bab al-Fatah", "Bab al-Rahman"], answer: "Bab al-Salam" },
-            { question: "Prophet named most in Quran?", options: ["Prophet Muhammad", "Prophet Musa", "Prophet Ibrahim", "Prophet Isa"], answer: "Prophet Musa" },
-            { question: "How many times did Prophet (PBUH) do Hajj?", options: ["1", "2", "3", "4"], answer: "1" },
-            { question: "Year of Sorrow death of?", options: ["Khadija and Abu Talib", "Badr", "Hijrah", "Uhud"], answer: "Khadija and Abu Talib" },
-            { question: "Language of the Quran?", options: ["Hebrew", "Urdu", "Arabic", "Persian"], answer: "Arabic" },
-            { question: "Bride of the Quran?", options: ["Surah Al-Waqi'ah", "Surah Ar-Rahman", "Surah Al-Mulk", "Surah Yaseen"], answer: "Surah Ar-Rahman" },
-            { question: "Distance between Safa and Marwa?", options: ["200m", "450m", "1km", "2km"], answer: "450m" },
-            { question: "First martyr of Islam?", options: ["Sumayyah bint Khayyat", "Yasir", "Hamza", "Bilal"], answer: "Sumayyah bint Khayyat" },
-            { question: "Gates of Hell?", options: ["1", "4", "7", "8"], answer: "7" },
-            { question: "Gates of Paradise?", options: ["1", "4", "7", "8"], answer: "8" },
-            { question: "City of the Prophet?", options: ["Makkah", "Madinah", "Jerusalem", "Baghdad"], answer: "Madinah" },
-            { question: "Meaning of 'SubhanAllah'?", options: ["God is Great", "Praise be to God", "Glory be to God", "God is Mercy"], answer: "Glory be to God" },
-            { question: "Who blows the Trumpet?", options: ["Angel Jibreel", "Angel Mikaeel", "Angel Israfeel", "Angel Izraeel"], answer: "Angel Israfeel" },
-            { question: "Surah named after Bees?", options: ["Surah Al-Naml", "Surah Al-Nahl", "Surah Al-Feel", "Surah Al-Ankabut"], answer: "Surah Al-Nahl" },
-            { question: "Arabic word for Fasting?", options: ["Zakat", "Salah", "Sawm", "Hajj"], answer: "Sawm" },
-            { question: "First human created?", options: ["Prophet Adam", "Prophet Nuh", "Prophet Ibrahim", "Prophet Muhammad"], answer: "Prophet Adam" },
-            { question: "Years for Quran revelation?", options: ["10 years", "13 years", "23 years", "40 years"], answer: "23 years" },
-            { question: "Angel for rain?", options: ["Angel Jibreel", "Angel Mikaeel", "Angel Izraeel", "Angel Israfeel"], answer: "Angel Mikaeel" },
-            { question: "Surah named after Elephant?", options: ["Surah Al-Feel", "Surah Al-Baqarah", "Surah Al-Naml", "Surah Al-Nahl"], answer: "Surah Al-Feel" },
-            { question: "Name of the Prophet's tribe?", options: ["Quraysh", "Banu Hashim", "Ansar", "Muhajirun"], answer: "Quraysh" },
-            { question: "Prophet's staff turned snake?", options: ["Prophet Musa", "Prophet Isa", "Prophet Nuh", "Prophet Hud"], answer: "Prophet Musa" },
-            { question: "Tax by non-Muslims in Islamic state?", options: ["Zakat", "Jizya", "Kharaj", "Ushr"], answer: "Jizya" }
-                ];
+        // DATA: ALL 100 QUESTIONS
+        const questions = [
+            // Level 1: Basics
+            { q: "Who was the first Prophet of Allah?", o: ["Prophet Isa", "Prophet Adam", "Prophet Nuh", "Prophet Musa"], a: "Prophet Adam" },
+            { q: "In which month is the Quran revealed?", o: ["Rajab", "Ramadan", "Safar", "Muharram"], a: "Ramadan" },
+            { q: "How many times do Muslims pray daily?", o: ["3", "4", "5", "6"], a: "5" },
+            { q: "What is the first month of the Islamic calendar?", o: ["Muharram", "Ramadan", "Shawwal", "Dhul-Hijjah"], a: "Muharram" },
+            { q: "Which Prophet built the Ark?", o: ["Prophet Musa", "Prophet Nuh", "Prophet Ibrahim", "Prophet Salih"], a: "Prophet Nuh" },
+            { q: "What is the holy book of Islam?", o: ["Injeel", "Torah", "Zabur", "Quran"], a: "Quran" },
+            { q: "What is the name of the house of Allah in Makkah?", o: ["Aqsa", "Kaaba", "Nabawi", "Quba"], a: "Kaaba" },
+            { q: "Who was the last Prophet?", o: ["Prophet Muhammad (PBUH)", "Prophet Isa", "Prophet Musa", "Prophet Yusuf"], a: "Prophet Muhammad (PBUH)" },
+            { q: "What is the Arabic word for Fasting?", o: ["Zakat", "Salah", "Sawm", "Hajj"], a: "Sawm" },
+            { q: "How many Pillars are there in Islam?", o: ["3", "4", "5", "7"], a: "5" },
+            // Level 2: Prophets & Stories
+            { q: "Which Prophet could speak to animals?", o: ["Sulaiman", "Dawood", "Isa", "Adam"], a: "Sulaiman" },
+            { q: "Which Prophet was swallowed by a whale?", o: ["Yunus", "Yahya", "Yusuf", "Hud"], a: "Yunus" },
+            { q: "Who is known as 'Khalilullah' (Friend of Allah)?", o: ["Ibrahim", "Musa", "Isa", "Muhammad"], a: "Ibrahim" },
+            { q: "Which Prophet was given the Zabur?", o: ["Musa", "Dawood", "Isa", "Ibrahim"], a: "Dawood" },
+            { q: "Prophet Musa was sent to which ruler?", o: ["Nimrod", "Pharaoh", "Abu Lahab", "Negus"], a: "Pharaoh" },
+            { q: "Which Prophet was known for his beauty?", o: ["Yusuf", "Idrees", "Yahya", "Harun"], a: "Yusuf" },
+            { q: "Which Prophet was born without a father?", o: ["Isa", "Yahya", "Zakariyya", "Adam"], a: "Isa" },
+            { q: "Which Prophet is known for Sabr (Patience)?", o: ["Ayub", "Yunus", "Lot", "Ishaq"], a: "Ayub" },
+            { q: "Which Prophet did Allah speak to directly?", o: ["Musa", "Ibrahim", "Isa", "Muhammad"], a: "Musa" },
+            { q: "Who was the father of Prophet Ismail?", o: ["Ibrahim", "Ishaq", "Yaqub", "Nuh"], a: "Ibrahim" },
+            // Level 3: The Quran
+            { q: "How many Surahs are in the Quran?", o: ["110", "114", "120", "144"], a: "114" },
+            { q: "Which Surah is the 'Heart of Quran'?", o: ["Fatihah", "Yaseen", "Baqarah", "Ikhlas"], a: "Yaseen" },
+            { q: "Shortest Surah in the Quran?", o: ["Ikhlas", "Kawthar", "Nas", "Falaq"], a: "Kawthar" },
+            { q: "Longest Surah in the Quran?", o: ["Al-Imran", "Al-Baqarah", "Nisa", "Maidah"], a: "Al-Baqarah" },
+            { q: "How many Juz (Parts) are in the Quran?", o: ["20", "25", "30", "40"], a: "30" },
+            { q: "First word of the Quran revealed?", o: ["Allah", "Iqra", "Bismillah", "Islam"], a: "Iqra" },
+            { q: "Which Surah doesn't start with Bismillah?", o: ["At-Tawbah", "Al-Kahf", "Ar-Rahman", "An-Nas"], a: "At-Tawbah" },
+            { q: "Surah named after a Spider?", o: ["An-Nahl", "Al-Ankabut", "Al-Fil", "Al-Baqarah"], a: "Al-Ankabut" },
+            { q: "Surah that protects from Dajjal if read on Fridays?", o: ["Al-Kahf", "Al-Mulk", "Al-Waqi'ah", "Yaseen"], a: "Al-Kahf" },
+            { q: "How many Sijdas are in the Quran?", o: ["10", "14", "15", "12"], a: "14" },
+            // Level 4: Seerah (Life of Prophet)
+            { q: "Where was Prophet Muhammad (PBUH) born?", o: ["Madinah", "Makkah", "Taif", "Jerusalem"], a: "Makkah" },
+            { q: "Name of the Prophet's father?", o: ["Abu Talib", "Abdullah", "Abdul Muttalib", "Abbas"], a: "Abdullah" },
+            { q: "Name of the Prophet's mother?", o: ["Khadija", "Aminah", "Fatimah", "Aisha"], a: "Aminah" },
+            { q: "Age when he received first revelation?", o: ["25", "33", "40", "45"], a: "40" },
+            { q: "Who was his first wife?", o: ["Aisha", "Khadija", "Hafsa", "Sawdah"], a: "Khadija" },
+            { q: "City he migrated to (Hijrah)?", o: ["Abyssinia", "Madinah", "Taif", "Sana'a"], a: "Madinah" },
+            { q: "The Prophet's grandfather who raised him?", o: ["Abu Talib", "Abdul Muttalib", "Abbas", "Abu Sufyan"], a: "Abdul Muttalib" },
+            { q: "Name of the Prophet's tribe?", o: ["Quraysh", "Banu Hashim", "Ansar", "Muhajirun"], a: "Quraysh" },
+            { q: "Which angel brought the Quran?", o: ["Mikaeel", "Jibreel", "Israfeel", "Izraeel"], a: "Jibreel" },
+            { q: "Year of the Prophet's death?", o: ["630 CE", "632 CE", "610 CE", "622 CE"], a: "632 CE" },
+            // Level 5: Sahaba (Companions)
+            { q: "First Caliph of Islam?", o: ["Umar", "Ali", "Abu Bakr", "Uthman"], a: "Abu Bakr" },
+            { q: "Who was known as 'Al-Faruq'?", o: ["Abu Bakr", "Umar", "Uthman", "Ali"], a: "Umar" },
+            { q: "Who was 'Dhun-Nurayn'?", o: ["Ali", "Uthman", "Zaid", "Hamza"], a: "Uthman" },
+            { q: "Who was the first Muezzin?", o: ["Bilal ibn Rabah", "Abu Hurairah", "Zaid", "Khalid"], a: "Bilal ibn Rabah" },
+            { q: "Who was known as 'Sword of Allah'?", o: ["Ali", "Khalid ibn Walid", "Hamza", "Umar"], a: "Khalid ibn Walid" },
+            { q: "The Prophet's cousin and son-in-law?", o: ["Abu Bakr", "Ali", "Umar", "Talha"], a: "Ali" },
+            { q: "First woman to embrace Islam?", o: ["Fatimah", "Khadija", "Aisha", "Sumayyah"], a: "Khadija" },
+            { q: "Sahabi who narrated most Hadiths?", o: ["Abu Bakr", "Abu Hurairah", "Umar", "Ibn Abbas"], a: "Abu Hurairah" },
+            { q: "Lion of Allah (Prophet's Uncle)?", o: ["Abbas", "Hamza", "Abu Talib", "Jafar"], a: "Hamza" },
+            { q: "First martyr of Islam?", o: ["Sumayyah", "Yasir", "Hamza", "Bilal"], a: "Sumayyah" },
+            // Level 6: Battles & History
+            { q: "First major battle in Islam?", o: ["Uhud", "Khandaq", "Badr", "Khaibar"], a: "Badr" },
+            { q: "In which battle was the Prophet's tooth broken?", o: ["Badr", "Uhud", "Hunayn", "Tabuk"], a: "Uhud" },
+            { q: "Which battle involved digging a trench?", o: ["Khandaq", "Badr", "Muta", "Yarmouk"], a: "Khandaq" },
+            { q: "Number of Muslims at Badr?", o: ["313", "1000", "10,000", "70"], a: "313" },
+            { q: "City where the Prophet is buried?", o: ["Makkah", "Madinah", "Jerusalem", "Baghdad"], a: "Madinah" },
+            { q: "Who wrote the Treaty of Hudaibiyah?", o: ["Abu Bakr", "Ali", "Umar", "Uthman"], a: "Ali" },
+            { q: "Year of the Conquest of Makkah?", o: ["6 AH", "8 AH", "10 AH", "2 AH"], a: "8 AH" },
+            { q: "How many Sahaba were at the Last Sermon?", o: ["10,000", "50,000", "100,000+", "1000"], a: "100,000+" },
+            { q: "First Qibla of Muslims?", o: ["Kaaba", "Al-Aqsa", "Quba", "Nabawi"], a: "Al-Aqsa" },
+            { q: "Who killed Hamza in Uhud?", o: ["Abu Jahl", "Wahshi", "Abu Sufyan", "Ikrima"], a: "Wahshi" },
+            // Level 7: Pillars & Fiqh
+            { q: "Nisab for Zakat on Gold?", o: ["7.5 Tola", "10 Tola", "5 Tola", "40 Tola"], a: "7.5 Tola" },
+            { q: "Which prayer has no Ruku or Sujud?", o: ["Janazah", "Tahajjud", "Eid", "Witr"], a: "Janazah" },
+            { q: "Direction faced during prayer?", o: ["North", "Qibla", "East", "Medina"], a: "Qibla" },
+            { q: "Gate of Paradise for those who fast?", o: ["Ar-Rayyan", "Al-Baab", "Al-Kawthar", "Al-Firdous"], a: "Ar-Rayyan" },
+            { q: "How many Fard acts in Wudu?", o: ["3", "4", "6", "10"], a: "4" },
+            { q: "What is the meal before fasting starts?", o: ["Iftar", "Suhoor", "Walima", "Aqiqah"], a: "Suhoor" },
+            { q: "Which tax is paid by non-Muslims for protection?", o: ["Zakat", "Jizya", "Kharaj", "Ushr"], a: "Jizya" },
+            { q: "Pilgrimage performed outside Hajj season?", o: ["Hajj-e-Badal", "Umrah", "Ziyarat", "Tawaf"], a: "Umrah" },
+            { q: "Number of Takbirs in 1st Rakat of Eid?", o: ["3", "7", "5", "12"], a: "7" },
+            { q: "Ablution without water?", o: ["Ghusl", "Tayammum", "Miswak", "Istinja"], a: "Tayammum" },
+            // Level 8: Angels & Hereafter
+            { q: "Angel in charge of rain?", o: ["Jibreel", "Mikaeel", "Israfeel", "Izraeel"], a: "Mikaeel" },
+            { q: "Angel who blows the Trumpet?", o: ["Israfeel", "Izraeel", "Mikaeel", "Malik"], a: "Israfeel" },
+            { q: "Guardian of Hellfire?", o: ["Ridwan", "Malik", "Munkar", "Nakir"], a: "Malik" },
+            { q: "Angels who question in the grave?", o: ["Munkar & Nakir", "Kiraman Katibin", "Harut & Marut", "Mikaeel"], a: "Munkar & Nakir" },
+            { q: "Bridge over Hell to Paradise?", o: ["Sirat", "Mizan", "Barzakh", "Kawthar"], a: "Sirat" },
+            { q: "Weighting scale of deeds?", o: ["Sirat", "Mizan", "Qadar", "Sidratul-Muntaha"], a: "Mizan" },
+            { q: "Highest level of Paradise?", o: ["Adn", "Ma'wa", "Jannatul Firdous", "Naim"], a: "Jannatul Firdous" },
+            { q: "Pond of the Prophet in Hereafter?", o: ["Zamzam", "Al-Kawthar", "Salsabil", "Tasnim"], a: "Al-Kawthar" },
+            { q: "Life between death and Resurrection?", o: ["Akhirah", "Barzakh", "Dunya", "Qiyamah"], a: "Barzakh" },
+            { q: "Angel of Death?", o: ["Mikaeel", "Izraeel", "Israfeel", "Jibreel"], a: "Izraeel" },
+            // Level 9: General Knowledge
+            { q: "Which animal is the 'King of months'?", o: ["Ramadan", "Rajab", "Muharram", "Dhul-Hijjah"], a: "Ramadan" },
+            { q: "How many times is 'Muhammad' named in Quran?", o: ["4", "10", "25", "70"], a: "4" },
+            { q: "Which metal has a Surah named after it?", o: ["Gold", "Iron (Hadid)", "Silver", "Copper"], a: "Iron (Hadid)" },
+            { q: "Language of the Quran?", o: ["Persian", "Urdu", "Arabic", "Hebrew"], a: "Arabic" },
+            { q: "Number of Daughters the Prophet had?", o: ["1", "2", "3", "4"], a: "4" },
+            { q: "Which city is Al-Aqsa in?", o: ["Makkah", "Jerusalem", "Cairo", "Damascus"], a: "Jerusalem" },
+            { q: "How many years did the Quran take to reveal?", o: ["10", "13", "23", "40"], a: "23" },
+            { q: "Which month is Hajj performed?", o: ["Ramadan", "Dhul-Hijjah", "Muharram", "Shawwal"], a: "Dhul-Hijjah" },
+            { q: "Who is the 'Khalilullah'?", o: ["Ibrahim", "Musa", "Isa", "Muhammad"], a: "Ibrahim" },
+            { q: "Total number of Prophets in Islam (approx)?", o: ["313", "1000", "124,000", "99"], a: "124,000" },
+            // Level 10: THE FINAL CHALLENGE (TIMED)
+            { q: "Who was the mother of Prophet Ishaq?", o: ["Hajar", "Sarah", "Asiya", "Maryam"], a: "Sarah" },
+            { q: "In which year of Hijri was alcohol forbidden?", o: ["2 AH", "4 AH", "8 AH", "10 AH"], a: "4 AH" },
+            { q: "Who was the King of Abyssinia during Hijrah?", o: ["Negus (Najashi)", "Heraclius", "Khusrau", "Muqawqis"], a: "Negus (Najashi)" },
+            { q: "Which Sahabi is mentioned by name in Quran?", o: ["Abu Bakr", "Zaid ibn Harithah", "Ali", "Umar"], a: "Zaid ibn Harithah" },
+            { q: "How many Sahaba are 'Ashara Mubashara'?", o: ["5", "10", "12", "70"], a: "10" },
+            { q: "Wife of Prophet who was daughter of Abu Bakr?", o: ["Khadija", "Aisha", "Hafsa", "Zaynab"], a: "Aisha" },
+            { q: "The Prophet's camel name?", o: ["Al-Qaswa", "Al-Buraq", "Ababil", "Duldul"], a: "Al-Qaswa" },
+            { q: "Who was the 'Interpreter of the Quran'?", o: ["Ibn Abbas", "Ibn Masud", "Abu Hurairah", "Ali"], a: "Ibn Abbas" },
+            { q: "How many wings does Angel Jibreel have?", o: ["2", "10", "600", "1000"], a: "600" },
+            { q: "Year of Sorrow (Aam al-Huzn) - who died?", o: ["Father & Mother", "Khadija & Abu Talib", "Hamza & Jafar", "Ali & Fatimah"], a: "Khadija & Abu Talib" }
+        ];
 
-        let currentLevel = 1;
-        let qIndex = 0;
-        let score = 0;
-        let unlockedLevel = localStorage.getItem('islamicQuizProgress') || 1;
+        let curLvl = 1, qIdx = 0, score = 0, timer, timeLeft = 15;
+        let unlocked = localStorage.getItem('islProg') || 1;
 
-        function createLevelButtons() {
-            const grid = document.getElementById('level-buttons');
+        function toggleTheme() {
+            const b = document.body;
+            const t = b.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            b.setAttribute('data-theme', t);
+            document.querySelector('.theme-toggle').innerText = t === 'light' ? '🌙' : '☀️';
+        }
+
+        function showMenu() {
+            document.querySelectorAll('#quiz-card > div').forEach(d => d.classList.add('hidden'));
+            document.getElementById('screen-levels').classList.remove('hidden');
+            const grid = document.getElementById('level-btns');
             grid.innerHTML = '';
-            for (let i = 1; i <= 10; i++) {
+            for(let i=1; i<=10; i++) {
                 const btn = document.createElement('button');
-                btn.className = `level-btn ${i > unlockedLevel ? 'locked' : ''}`;
-                btn.innerHTML = `Level ${i}`;
-                if (i <= unlockedLevel) btn.onclick = () => startLevel(i);
+                btn.className = `level-btn ${i > unlocked ? 'locked' : ''}`;
+                btn.innerHTML = i == 10 ? `🔥 Level ${i}` : `Level ${i}`;
+                if(i <= unlocked) btn.onclick = () => startLvl(i);
                 grid.appendChild(btn);
             }
         }
 
-        function startLevel(lvl) {
-            currentLevel = lvl;
-            qIndex = 0;
-            score = 0;
-            document.getElementById('level-screen').classList.add('hidden');
-            document.getElementById('quiz-screen').classList.remove('hidden');
-            loadQuestion();
+        function startLvl(l) {
+            curLvl = l; qIdx = 0; score = 0;
+            document.getElementById('screen-levels').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.remove('hidden');
+            loadQ();
         }
 
-        function loadQuestion() {
-            const start = (currentLevel - 1) * 10;
-            const q = allQuestions[start + qIndex];
-            document.getElementById('level-label').innerText = `LEVEL ${currentLevel}`;
-            document.getElementById('question-text').innerText = q.question;
-            document.getElementById('progress-bar').style.width = `${(qIndex + 1) * 10}%`;
+        function loadQ() {
+            clearInterval(timer);
+            const qData = questions[((curLvl-1)*10) + qIdx];
+            document.getElementById('q-count').innerText = `Level ${curLvl} - Question ${qIdx+1}/10`;
+            document.getElementById('q-text').innerText = qData.q;
             
-            const optContainer = document.getElementById('options');
-            optContainer.innerHTML = '';
-            q.options.forEach(opt => {
+            const tBox = document.getElementById('timer-box');
+            if(curLvl == 10) { tBox.style.display = 'block'; startTimer(); }
+            else tBox.style.display = 'none';
+
+            const opts = document.getElementById('opt-container');
+            opts.innerHTML = '';
+            qData.o.forEach(o => {
                 const b = document.createElement('button');
                 b.className = 'option-btn';
-                b.innerText = opt;
-                b.onclick = () => check(opt, q.answer);
-                optContainer.appendChild(b);
+                b.innerText = o;
+                b.onclick = () => check(o, qData.a);
+                opts.appendChild(b);
             });
         }
 
-        function check(choice, correct) {
-            const modal = document.getElementById('feedback-modal');
-            const status = document.getElementById('modal-status');
-            const msg = document.getElementById('modal-msg');
+        function startTimer() {
+            timeLeft = 15;
+            const disp = document.getElementById('time-left');
+            const box = document.getElementById('timer-box');
+            disp.innerText = timeLeft;
+            box.classList.remove('low-time');
+            timer = setInterval(() => {
+                timeLeft--;
+                disp.innerText = timeLeft;
+                if(timeLeft <= 5) box.classList.add('low-time');
+                if(timeLeft <= 0) { clearInterval(timer); timeOut(); }
+            }, 1000);
+        }
 
-            if (choice === correct) {
-                score++;
-                status.innerText = "✨ Excellent!";
-                msg.innerText = "That is correct. Mashallah!";
+        function timeOut() {
+            popModal("⏰ Time's Up!", "Speed is key in Level 10. Try again!", true);
+        }
+
+        function check(sel, cor) {
+            clearInterval(timer);
+            if(sel === cor) { score++; popModal("✨ Mashallah!", "Correct answer!", false); }
+            else popModal("❌ Incorrect", `Correct: ${cor}`, false);
+        }
+
+        function popModal(stat, txt, isFail) {
+            document.getElementById('m-status').innerText = stat;
+            document.getElementById('m-text').innerText = txt;
+            const btn = document.getElementById('m-btn');
+            if(isFail) { btn.innerText = "Back to Menu"; btn.onclick = showMenu; }
+            else { btn.innerText = "Next Question"; btn.onclick = nextQ; }
+            document.getElementById('modal-feedback').style.display = 'flex';
+        }
+
+        function nextQ() {
+            document.getElementById('modal-feedback').style.display = 'none';
+            qIdx++;
+            if(qIdx < 10) loadQ();
+            else finishLvl();
+        }
+
+        function finishLvl() {
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-result').classList.remove('hidden');
+            document.getElementById('res-score').innerText = `${score}/10`;
+            if(score >= 7) {
+                document.getElementById('res-msg').innerText = "Level Passed! Next level unlocked.";
+                if(curLvl == unlocked && unlocked < 10) { unlocked++; localStorage.setItem('islProg', unlocked); }
             } else {
-                status.innerText = "❌ Not Quite";
-                msg.innerText = `The correct answer was: ${correct}`;
-            }
-            modal.style.display = 'flex';
-        }
-
-        function nextQuestion() {
-            document.getElementById('feedback-modal').style.display = 'none';
-            qIndex++;
-            if (qIndex < 10) loadQuestion();
-            else showResult();
-        }
-
-        function showResult() {
-            document.getElementById('quiz-screen').classList.add('hidden');
-            document.getElementById('result-screen').classList.remove('hidden');
-            document.getElementById('final-score').innerText = `${score}/10`;
-            
-            if (score >= 7) {
-                document.getElementById('feedback-text').innerText = "Level Passed! You've unlocked the next level.";
-                if (currentLevel == unlockedLevel && unlockedLevel < 10) {
-                    unlockedLevel++;
-                    localStorage.setItem('islamicQuizProgress', unlockedLevel);
-                }
-            } else {
-                document.getElementById('feedback-text').innerText = "You need 7/10 to pass. Try again!";
+                document.getElementById('res-msg').innerText = "You need 7/10 to pass. Try again!";
             }
         }
 
-        function showLevelScreen() {
-            document.getElementById('result-screen').classList.add('hidden');
-            document.getElementById('level-screen').classList.remove('hidden');
-            createLevelButtons();
+        function shareMe() {
+            const t = `I scored ${score}/10 on Level ${curLvl} of Islamic Quest! 🌙 Can you beat me?`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(t)}`);
         }
 
-        function shareProgress() {
-            const text = `I just scored ${score}/10 on Level ${currentLevel} of the Islamic Quiz! 🌙 Can you beat my score? Check it out here!`;
-            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
-        }
-
-        createLevelButtons();
+        showMenu();
     </script>
 </body>
 </html>
