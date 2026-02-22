@@ -353,35 +353,10 @@ if ('serviceWorker' in navigator) {
 }
     </script>
 
-// 1. Register Service Worker for PWA
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-            .then(reg => console.log('PWA: Service Worker Registered'))
-            .catch(err => console.log('PWA: Service Worker Failed', err));
-    });
-}
-
-// 2. Handle PWA Installation
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    const installBtn = document.getElementById('installBtn');
-    if (installBtn) installBtn.style.display = 'block';
-});
-
-document.getElementById('installBtn')?.addEventListener('click', async () => {
-    if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        console.log(`User response to install: ${outcome}`);
-        deferredPrompt = null;
-    }
-});
-
 window.onload = showMenu;
 </script>
 </body>
 </html>
+
 
 
