@@ -1,16 +1,23 @@
 {
   "name": "Islamic Quest Quiz",
   "short_name": "IslamicQuest",
-  "start_url": "index.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#064e3b",
   "theme_color": "#064e3b",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "https://icon.png/your-username/your-repo-name/main/icon.png",
+      "src": "https://placehold.jp/192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://placehold.jp/512x512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
-}  
+}
