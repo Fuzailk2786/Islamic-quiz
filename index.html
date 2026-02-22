@@ -26,10 +26,11 @@
             align-items: center; z-index: 10000; transition: opacity 1s ease;
         }
         
+        /* Start Button to bypass browser audio restrictions */
         #start-trigger {
             padding: 15px 30px; font-size: 1.2rem; background: #fbbf24;
             color: #064e3b; border: none; border-radius: 50px;
-            font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            font-weight: 700; cursor: pointer; transition: 0.3s;
         }
 
         .bismillah-text {
@@ -45,52 +46,40 @@
             100% { opacity: 0; transform: scale(1.1); }
         }
 
+        /* --- Main UI --- */
         body { font-family: 'Poppins', sans-serif; background: var(--bg-color); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        
-        #quiz-card { 
-            background: var(--card-bg); width: 90%; max-width: 500px; padding: 2rem; 
-            border-radius: 24px; box-shadow: 0 20px 40px var(--shadow); 
-            text-align: center; border: 1px solid var(--border); position: relative;
-        }
-
+        #quiz-card { background: var(--card-bg); width: 100%; max-width: 500px; padding: 2rem; border-radius: 24px; box-shadow: 0 20px 40px var(--shadow); text-align: center; border: 1px solid var(--border); }
         .level-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 20px; }
         .level-btn { padding: 12px; border-radius: 10px; border: 2px solid var(--emerald); background: none; color: var(--text-main); font-weight: 600; cursor: pointer; }
-        .level-btn.locked { opacity: 0.3; cursor: not-allowed; border-color: #ccc; }
-        
-        .option-btn { width: 100%; padding: 14px; margin: 8px 0; border-radius: 10px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-main); cursor: pointer; font-weight: 500; }
-        .option-btn:hover { background: var(--soft-gold); border-color: var(--gold); }
-
+        .level-btn.locked { opacity: 0.3; cursor: not-allowed; }
+        .option-btn { width: 100%; padding: 14px; margin: 8px 0; border-radius: 10px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-main); cursor: pointer; }
         .btn-action { background: var(--emerald); color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; }
         .hidden { display: none; }
-
-        .theme-toggle { position: absolute; top: 15px; right: 15px; background: none; border: 1px solid var(--emerald); border-radius: 50%; width: 35px; height: 35px; cursor: pointer; color: var(--emerald); }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 100; padding: 20px; }
+        .modal { background: var(--card-bg); padding: 2rem; border-radius: 20px; text-align: center; }
     </style>
 </head>
 <body data-theme="light">
 
     <div id="bismillah-overlay">
-        <button id="start-trigger">Tap to Begin</button>
+        <button id="start-trigger">Tap to Start</button>
         <div class="bismillah-text" id="b-text">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
     </div>
-
-    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
 
     <div id="quiz-card">
         <div id="screen-levels">
             <h1 style="font-family: 'Cinzel', serif;">Islamic Quest</h1>
-            <p>Select a Level</p>
             <div class="level-grid" id="level-btns"></div>
         </div>
 
         <div id="screen-quiz" class="hidden">
-            <h2 id="q-text" style="font-size: 1.2rem; margin-bottom: 20px;"></h2>
+            <h2 id="q-text"></h2>
             <div id="opt-container"></div>
         </div>
 
         <div id="screen-result" class="hidden">
-            <h2 id="res-msg"></h2>
-            <div style="font-size: 3rem; color: var(--gold); margin: 20px 0;" id="res-score"></div>
-            <button class="btn-action" onclick="showMenu()">Back to Menu</button>
+            <h2 id="res-score"></h2>
+            <button class="btn-action" onclick="location.reload()">Back to Menu</button>
         </div>
     </div>
 
@@ -99,15 +88,19 @@
     </audio>
 
     <script>
-        const chime = document.getElementById('chime-sound');
+        const startBtn = document.getElementById('start-trigger');
+        const bText = document.getElementById('b-text');
         const overlay = document.getElementById('bismillah-overlay');
+        const chime = document.getElementById('chime-sound');
 
-        // Logic for Bismillah Intro
-        document.getElementById('start-trigger').addEventListener('click', function() {
-            this.style.display = 'none';
-            document.getElementById('b-text').style.display = 'block';
-            chime.volume = 0.4;
-            chime.play().catch(e => console.log("Audio play blocked"));
+        // Intro Logic
+        startBtn.addEventListener('click', () => {
+            startBtn.style.display = 'none';
+            bText.style.display = 'block';
+            
+            // Play Sound
+            chime.volume = 0.5;
+            chime.play();
 
             setTimeout(() => {
                 overlay.style.opacity = '0';
@@ -115,23 +108,13 @@
             }, 3500);
         });
 
-        // Question Database (Expanded)
+        // Basic Quiz Data & Logic
         const questions = [
             { q: "Who was the first Prophet?", o: ["Isa", "Adam", "Nuh", "Musa"], a: "Adam" },
-            { q: "How many daily prayers are mandatory?", o: ["3", "4", "5", "6"], a: "5" },
-            { q: "Which month is for fasting?", o: ["Safar", "Ramadan", "Rajab", "Shawwal"], a: "Ramadan" },
-            { q: "What is the first month of Hijri calendar?", o: ["Muharram", "Ramadan", "Safar", "Hajj"], a: "Muharram" },
-            { q: "Which Prophet built the Ark?", o: ["Musa", "Nuh", "Ibrahim", "Isa"], a: "Nuh" }
+            { q: "How many daily prayers are mandatory?", o: ["3", "4", "5", "6"], a: "5" }
         ];
 
         let unlocked = parseInt(localStorage.getItem('islProg')) || 1;
-
-        function showMenu() {
-            document.getElementById('screen-quiz').classList.add('hidden');
-            document.getElementById('screen-result').classList.add('hidden');
-            document.getElementById('screen-levels').classList.remove('hidden');
-            renderLevels();
-        }
 
         function renderLevels() {
             const grid = document.getElementById('level-btns');
@@ -140,38 +123,12 @@
                 const btn = document.createElement('button');
                 btn.className = `level-btn ${i > unlocked ? 'locked' : ''}`;
                 btn.innerText = i;
-                if(i <= unlocked) btn.onclick = () => startLvl(i);
+                if(i <= unlocked) btn.onclick = () => alert('Level ' + i + ' Starting...');
                 grid.appendChild(btn);
             }
         }
 
-        function startLvl(lvl) {
-            document.getElementById('screen-levels').classList.add('hidden');
-            document.getElementById('screen-quiz').classList.remove('hidden');
-            // Simplified loading for demo
-            document.getElementById('q-text').innerText = questions[0].q;
-            const container = document.getElementById('opt-container');
-            container.innerHTML = '';
-            questions[0].o.forEach(opt => {
-                const b = document.createElement('button');
-                b.className = 'option-btn';
-                b.innerText = opt;
-                b.onclick = () => {
-                    document.getElementById('screen-quiz').classList.add('hidden');
-                    document.getElementById('screen-result').classList.remove('hidden');
-                    document.getElementById('res-score').innerText = "1/1";
-                    document.getElementById('res-msg').innerText = "Alhamdulillah!";
-                };
-                container.appendChild(b);
-            });
-        }
-
-        function toggleTheme() {
-            const body = document.body;
-            body.setAttribute('data-theme', body.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
-        }
-
-        window.onload = showMenu;
+        renderLevels();
     </script>
 </body>
 </html>
