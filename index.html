@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Islamic Quiz - Test Build</title>
+    
+    <meta property="og:title" content="Islamic Quest - 100 Challenges">
+    <meta property="og:description" content="I'm testing my Islamic knowledge! Can you beat my score?">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourusername.github.io/Islamic-quiz/">
+    
     <link rel="manifest" href="/Islamic-quiz/manifest.json">
     <meta name="theme-color" content="#064e3b">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -120,21 +126,17 @@
     </div>
 
     <script>
-        // --- 15 QUESTIONS (5 per Level) ---
         const questions = [
-            // Level 1
             { q: "Who was the first Prophet?", o: ["Isa", "Adam", "Nuh", "Musa"], a: "Adam" },
             { q: "How many daily prayers?", o: ["3", "4", "5", "6"], a: "5" },
             { q: "Month of fasting?", o: ["Safar", "Ramadan", "Rajab", "Shawwal"], a: "Ramadan" },
             { q: "First month of Hijri calendar?", o: ["Muharram", "Ramadan", "Safar", "Hajj"], a: "Muharram" },
             { q: "Prophet who built the Ark?", o: ["Musa", "Nuh", "Ibrahim", "Isa"], a: "Nuh" },
-            // Level 2
             { q: "The Holy Book of Islam?", o: ["Torah", "Zabur", "Injeel", "Quran"], a: "Quran" },
             { q: "House of Allah in Makkah?", o: ["Aqsa", "Kaaba", "Nabawi", "Quba"], a: "Kaaba" },
             { q: "Who was the last Prophet?", o: ["Muhammad (PBUH)", "Isa", "Musa", "Yusuf"], a: "Muhammad (PBUH)" },
             { q: "Arabic word for fasting?", o: ["Zakat", "Salah", "Sawm", "Hajj"], a: "Sawm" },
             { q: "Number of Pillars in Islam?", o: ["3", "4", "5", "6"], a: "5" },
-            // Level 3 (Timer Level)
             { q: "Which Prophet split the sea?", o: ["Ibrahim", "Musa", "Isa", "Adam"], a: "Musa" },
             { q: "City where Prophet was born?", o: ["Madinah", "Makkah", "Taif", "Riyadh"], a: "Makkah" },
             { q: "Angel of Revelation?", o: ["Mikaeel", "Jibreel", "Israfeel", "Izraeel"], a: "Jibreel" },
@@ -158,11 +160,9 @@
             document.getElementById('screen-result').classList.add('hidden');
             document.getElementById('screen-levels').classList.remove('hidden');
             document.getElementById('user-welcome').innerText = (currentUser.isGuest ? "Guest: " : "") + currentUser.name;
-            
             const grid = document.getElementById('level-btns');
             grid.innerHTML = '';
-            
-            for(let i=1; i<=3; i++) { // Restricted to 3 levels for testing
+            for(let i=1; i<=3; i++) {
                 const btn = document.createElement('button');
                 btn.className = `level-btn ${i > unlocked ? 'locked' : ''}`;
                 btn.innerHTML = i == 3 ? `🔥 Level ${i}` : `Level ${i}`;
@@ -183,24 +183,19 @@
             clearInterval(timer);
             const absoluteIdx = ((curLvl - 1) * 5) + qIdx;
             const qData = questions[absoluteIdx];
-            
             document.getElementById('q-count').innerText = `Level ${curLvl} - Question ${qIdx+1}/5`;
             const qText = document.getElementById('q-text');
             qText.innerText = qData.q;
-            
             qText.classList.remove('slide-in');
             void qText.offsetWidth; 
             qText.classList.add('slide-in');
-
             document.getElementById('progress-bar').style.width = ((qIdx / 5) * 100) + "%";
-
             if(curLvl == 3) { 
                 document.getElementById('timer-box').style.display = 'block'; 
                 startTimer(); 
             } else { 
                 document.getElementById('timer-box').style.display = 'none'; 
             }
-
             const opts = document.getElementById('opt-container');
             opts.innerHTML = '';
             qData.o.forEach(o => {
@@ -226,12 +221,8 @@
 
         function check(sel, cor) {
             clearInterval(timer);
-            if(sel === cor) { 
-                score++; 
-                popModal("✨ Mashallah!", "Correct answer!", false); 
-            } else { 
-                popModal("❌ Incorrect", `Correct: ${cor}`, false); 
-            }
+            if(sel === cor) { score++; popModal("✨ Mashallah!", "Correct answer!", false); }
+            else { popModal("❌ Incorrect", `Correct: ${cor}`, false); }
         }
 
         function popModal(stat, txt, isFail) {
@@ -242,65 +233,4 @@
                 btn.innerText = "Back to Menu"; 
                 btn.onclick = () => { document.getElementById('modal-feedback').style.display = 'none'; showMenu(); };
             } else { 
-                btn.innerText = "Next Question"; 
-                btn.onclick = nextQ; 
-            }
-            document.getElementById('modal-feedback').style.display = 'flex';
-        }
-
-        function nextQ() {
-            document.getElementById('modal-feedback').style.display = 'none';
-            qIdx++;
-            if(qIdx < 5) loadQ();
-            else finishLvl();
-        }
-
-        function finishLvl() {
-            document.getElementById('screen-quiz').classList.add('hidden');
-            document.getElementById('screen-result').classList.remove('hidden');
-            document.getElementById('res-score').innerText = `${score}/5`;
-            
-            if(score >= 4) { // Passing score 4 out of 5
-                document.getElementById('res-msg').innerText = "Level Passed!";
-                if(curLvl == unlocked && unlocked < 3) { 
-                    unlocked++; 
-                    localStorage.setItem('islProg', unlocked); 
-                }
-                if(curLvl === 1 && currentUser.isGuest) {
-                    setTimeout(() => { document.getElementById('login-popup').style.display = 'flex'; renderGoogleButton(); }, 1000);
-                }
-            } else {
-                document.getElementById('res-msg').innerText = "Need 4/5 to pass!";
-            }
-        }
-
-        function renderGoogleButton() {
-            if (typeof google !== 'undefined') {
-                google.accounts.id.initialize({
-                    client_id: "597954711501-cpeqh0hfthr0399boj6fp86vt89k2gma.apps.googleusercontent.com",
-                    callback: (r) => {
-                        const p = JSON.parse(atob(r.credential.split('.')[1]));
-                        currentUser = { name: p.name, email: p.email, isGuest: false };
-                        localStorage.setItem('user_profile', JSON.stringify(currentUser));
-                        document.getElementById('login-popup').style.display = 'none';
-                        showMenu();
-                    }
-                });
-                google.accounts.id.renderButton(document.getElementById("buttonDiv"), { theme: "outline", size: "large" });
-            }
-        }
-
-        function continueAsGuest() { document.getElementById('login-popup').style.display = 'none'; showMenu(); }
-        function toggleTheme() {
-            const t = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-            document.body.setAttribute('data-theme', t);
-        }
-        function shareMe() {
-            const t = `🌙 I scored ${score}/5 on Level ${curLvl} of Islamic Quest!`;
-            window.open(`https://wa.me/?text=${encodeURIComponent(t)}`);
-        }
-
-        window.onload = showMenu;
-    </script>
-</body>
-</html>
+                btn.innerText = "Next Question";
