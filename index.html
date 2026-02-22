@@ -3,37 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Islamic Quiz - 100 Challenges</title>
+    <title>Islamic Quiz - Test Build</title>
     <link rel="manifest" href="/Islamic-quiz/manifest.json">
     <meta name="theme-color" content="#064e3b">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <style>
         :root {
             --bg-color: #f0f4f0; --card-bg: #ffffff; --text-main: #064e3b;
             --emerald: #065f46; --gold: #b45309; --soft-gold: #fef3c7;
-            --border: #d1d5db; --shadow: rgba(0,0,0,0.1); --danger: #dc2626;
+            --border: #d1d5db; --shadow: rgba(0,0,0,0.1);
         }
         [data-theme="dark"] {
             --bg-color: #020617; --card-bg: #1e293b; --text-main: #f1f5f9;
             --emerald: #10b981; --gold: #fbbf24; --soft-gold: #334155;
             --border: #475569; --shadow: rgba(0,0,0,0.5);
         }
-
         body {
             font-family: 'Poppins', sans-serif; background-color: var(--bg-color);
             margin: 0; display: flex; justify-content: center; align-items: center;
             min-height: 100vh; color: var(--text-main); transition: 0.3s;
         }
-
         #quiz-card {
             background: var(--card-bg); width: 92%; max-width: 450px; padding: 2rem;
             border-radius: 24px; box-shadow: 0 20px 40px var(--shadow);
             border: 1px solid var(--border); position: relative; text-align: center;
         }
-
         .progress-container {
             width: 100%; height: 8px; background: rgba(0, 0, 0, 0.1);
             border-radius: 10px; margin-bottom: 20px; overflow: hidden;
@@ -42,43 +38,35 @@
             width: 0%; height: 100%; background: linear-gradient(90deg, #fbbf24, #f59e0b);
             transition: width 0.4s ease;
         }
-
         .theme-toggle {
             position: absolute; top: 15px; right: 15px; background: none;
             border: 1px solid var(--emerald); border-radius: 50%; cursor: pointer;
             width: 35px; height: 35px; color: var(--emerald); font-size: 1.2rem;
         }
-
         h1 { font-family: 'Cinzel', serif; font-size: 1.5rem; margin-top: 0; }
         .level-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
         .level-btn {
             padding: 18px; border-radius: 12px; border: 2px solid var(--emerald);
             background: none; color: var(--text-main); font-weight: 600; cursor: pointer;
-            transition: 0.2s; position: relative;
+            transition: 0.2s;
         }
         .level-btn.locked { opacity: 0.4; cursor: not-allowed; border-color: var(--border); }
         .level-btn:not(.locked):hover { background: var(--emerald); color: white; }
-
         #timer-box { font-weight: 700; font-size: 1.2rem; color: var(--gold); margin-bottom: 10px; display: none; }
         .option-btn {
             width: 100%; padding: 14px; margin: 8px 0; border-radius: 10px;
             border: 1px solid var(--border); background: var(--card-bg);
-            color: var(--text-main); cursor: pointer; font-size: 1rem; transition: 0.2s;
+            color: var(--text-main); cursor: pointer; transition: 0.2s;
         }
         .option-btn:hover { border-color: var(--gold); background: var(--soft-gold); }
-
         .modal-overlay {
             display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8);
             justify-content: center; align-items: center; z-index: 100;
         }
-        .modal {
-            background: var(--card-bg); padding: 2rem; border-radius: 20px;
-            max-width: 300px; width: 80%; border-top: 5px solid var(--gold);
-        }
+        .modal { background: var(--card-bg); padding: 2rem; border-radius: 20px; max-width: 300px; width: 80%; border-top: 5px solid var(--gold); }
         .btn-action { background: var(--emerald); color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; }
         .btn-share { background: #25d366; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; margin-top: 10px; cursor: pointer; font-weight: 600; }
         .hidden { display: none; }
-        
         .slide-in { animation: slideIn 0.5s forwards; }
         @keyframes slideIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
     </style>
@@ -107,19 +95,19 @@
 
         <div id="screen-result" class="hidden">
             <h2 id="res-title">Finished!</h2>
-            <div style="font-size: 3rem; font-weight: 700; color: var(--gold);" id="res-score">0/10</div>
+            <div style="font-size: 3rem; font-weight: 700; color: var(--gold);" id="res-score">0/5</div>
             <p id="res-msg"></p>
             <button class="btn-action" onclick="showMenu()">Back to Levels</button>
-            <button class="btn-share" onclick="shareMe()">Share Score on WhatsApp</button>
+            <button class="btn-share" onclick="shareMe()">Share on WhatsApp</button>
         </div>
     </div>
 
-    <div id="login-popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:2000; justify-content:center; align-items:center;">
+    <div id="login-popup" class="modal-overlay" style="z-index: 2000;">
         <div style="background:#064e3b; padding:30px; border-radius:15px; text-align:center; border:2px solid #fbbf24; max-width:300px;">
             <h3 style="color:#fbbf24;">Save Your Progress?</h3>
             <p style="color:white;">Sign in with Google to secure your levels.</p>
             <div id="buttonDiv" style="margin:20px 0; display: flex; justify-content: center;"></div>
-            <button onclick="continueAsGuest()" style="background:transparent; color:#fbbf24; border:none; cursor:pointer; text-decoration:underline;">Maybe Later (Play as Guest)</button>
+            <button onclick="continueAsGuest()" style="background:transparent; color:#fbbf24; border:none; cursor:pointer; text-decoration:underline;">Play as Guest</button>
         </div>
     </div>
 
@@ -132,87 +120,58 @@
     </div>
 
     <script>
-        // --- DATA ---
+        // --- 15 QUESTIONS (5 per Level) ---
         const questions = [
-            { q: "Who was the first Prophet of Allah?", o: ["Prophet Isa", "Prophet Adam", "Prophet Nuh", "Prophet Musa"], a: "Prophet Adam" },
-            { q: "In which month is the Quran revealed?", o: ["Rajab", "Ramadan", "Safar", "Muharram"], a: "Ramadan" },
-            { q: "How many times do Muslims pray daily?", o: ["3", "4", "5", "6"], a: "5" },
-            { q: "What is the first month of the Islamic calendar?", o: ["Muharram", "Ramadan", "Shawwal", "Dhul-Hijjah"], a: "Muharram" },
-            { q: "Which Prophet built the Ark?", o: ["Prophet Musa", "Prophet Nuh", "Prophet Ibrahim", "Prophet Salih"], a: "Prophet Nuh" },
-            { q: "What is the holy book of Islam?", o: ["Injeel", "Torah", "Zabur", "Quran"], a: "Quran" },
-            { q: "What is the name of the house of Allah in Makkah?", o: ["Aqsa", "Kaaba", "Nabawi", "Quba"], a: "Kaaba" },
-            { q: "Who was the last Prophet?", o: ["Prophet Muhammad (PBUH)", "Prophet Isa", "Prophet Musa", "Prophet Yusuf"], a: "Prophet Muhammad (PBUH)" },
-            { q: "What is the Arabic word for Fasting?", o: ["Zakat", "Salah", "Sawm", "Hajj"], a: "Sawm" },
-            { q: "How many Pillars are there in Islam?", o: ["3", "4", "5", "7"], a: "5" }
+            // Level 1
+            { q: "Who was the first Prophet?", o: ["Isa", "Adam", "Nuh", "Musa"], a: "Adam" },
+            { q: "How many daily prayers?", o: ["3", "4", "5", "6"], a: "5" },
+            { q: "Month of fasting?", o: ["Safar", "Ramadan", "Rajab", "Shawwal"], a: "Ramadan" },
+            { q: "First month of Hijri calendar?", o: ["Muharram", "Ramadan", "Safar", "Hajj"], a: "Muharram" },
+            { q: "Prophet who built the Ark?", o: ["Musa", "Nuh", "Ibrahim", "Isa"], a: "Nuh" },
+            // Level 2
+            { q: "The Holy Book of Islam?", o: ["Torah", "Zabur", "Injeel", "Quran"], a: "Quran" },
+            { q: "House of Allah in Makkah?", o: ["Aqsa", "Kaaba", "Nabawi", "Quba"], a: "Kaaba" },
+            { q: "Who was the last Prophet?", o: ["Muhammad (PBUH)", "Isa", "Musa", "Yusuf"], a: "Muhammad (PBUH)" },
+            { q: "Arabic word for fasting?", o: ["Zakat", "Salah", "Sawm", "Hajj"], a: "Sawm" },
+            { q: "Number of Pillars in Islam?", o: ["3", "4", "5", "6"], a: "5" },
+            // Level 3 (Timer Level)
+            { q: "Which Prophet split the sea?", o: ["Ibrahim", "Musa", "Isa", "Adam"], a: "Musa" },
+            { q: "City where Prophet was born?", o: ["Madinah", "Makkah", "Taif", "Riyadh"], a: "Makkah" },
+            { q: "Angel of Revelation?", o: ["Mikaeel", "Jibreel", "Israfeel", "Izraeel"], a: "Jibreel" },
+            { q: "Prophet who spoke to animals?", o: ["Sulaiman", "Dawud", "Yusuf", "Musa"], a: "Sulaiman" },
+            { q: "Well that sprang for Hajar?", o: ["Zamzam", "Kauthar", "Tasnim", "Salsabil"], a: "Zamzam" }
         ];
 
         let curLvl = 1, qIdx = 0, score = 0, timer, timeLeft = 15;
         let unlocked = parseInt(localStorage.getItem('islProg')) || 1;
 
-        // --- USER LOGIC ---
         function generateGuestName() {
-            const t = ["Brave", "Wise", "Noble", "Seeker"];
-            const n = ["Sultan", "Scholar", "Traveler", "Knight"];
-            return t[Math.floor(Math.random()*4)] + "_" + n[Math.floor(Math.random()*4)] + "_" + Math.floor(1000 + Math.random()*9000);
+            const t = ["Brave", "Wise", "Seeker"];
+            const n = ["Sultan", "Scholar", "Knight"];
+            return t[Math.floor(Math.random()*3)] + "_" + n[Math.floor(Math.random()*3)] + "_" + Math.floor(1000 + Math.random()*9000);
         }
 
-        let currentUser = JSON.parse(localStorage.getItem('user_profile')) || {
-            name: generateGuestName(),
-            isGuest: true
-        };
+        let currentUser = JSON.parse(localStorage.getItem('user_profile')) || { name: generateGuestName(), isGuest: true };
 
-        // --- GOOGLE AUTH ---
-        function renderGoogleButton() {
-            if (typeof google !== 'undefined') {
-                google.accounts.id.initialize({
-                    client_id: "597954711501-cpeqh0hfthr0399boj6fp86vt89k2gma.apps.googleusercontent.com",
-                    callback: handleCredentialResponse
-                });
-                google.accounts.id.renderButton(document.getElementById("buttonDiv"), { theme: "outline", size: "large" });
-            }
-        }
-
-        function handleCredentialResponse(response) {
-            const payload = JSON.parse(atob(response.credential.split('.')[1]));
-            currentUser = { name: payload.name, email: payload.email, isGuest: false };
-            localStorage.setItem('user_profile', JSON.stringify(currentUser));
-            document.getElementById('login-popup').style.display = 'none';
-            showMenu();
-        }
-
-        function continueAsGuest() {
-            document.getElementById('login-popup').style.display = 'none';
-            localStorage.setItem('user_profile', JSON.stringify(currentUser));
-            showMenu();
-        }
-
-        // --- NAVIGATION ---
         function showMenu() {
-            // Hide all screens
             document.getElementById('screen-quiz').classList.add('hidden');
             document.getElementById('screen-result').classList.add('hidden');
-            
-            // Show levels screen
             document.getElementById('screen-levels').classList.remove('hidden');
             document.getElementById('user-welcome').innerText = (currentUser.isGuest ? "Guest: " : "") + currentUser.name;
             
             const grid = document.getElementById('level-btns');
             grid.innerHTML = '';
             
-            // Generate Buttons for 10 levels
-            for(let i=1; i<=10; i++) {
+            for(let i=1; i<=3; i++) { // Restricted to 3 levels for testing
                 const btn = document.createElement('button');
                 btn.className = `level-btn ${i > unlocked ? 'locked' : ''}`;
-                btn.innerHTML = i == 10 ? `🔥 Level ${i}` : `Level ${i}`;
-                if(i <= unlocked) {
-                    btn.onclick = () => startLvl(i);
-                }
+                btn.innerHTML = i == 3 ? `🔥 Level ${i}` : `Level ${i}`;
+                if(i <= unlocked) btn.onclick = () => startLvl(i);
                 grid.appendChild(btn);
             }
             document.getElementById('progress-bar').style.width = "0%";
         }
 
-        // --- GAMEPLAY ---
         function startLvl(l) {
             curLvl = l; qIdx = 0; score = 0;
             document.getElementById('screen-levels').classList.add('hidden');
@@ -222,23 +181,20 @@
 
         function loadQ() {
             clearInterval(timer);
-            // We only have 10 questions in the array for now. 
-            // This logic repeats the same 10 for every level.
-            const qData = questions[qIdx]; 
+            const absoluteIdx = ((curLvl - 1) * 5) + qIdx;
+            const qData = questions[absoluteIdx];
             
-            document.getElementById('q-count').innerText = `Level ${curLvl} - Question ${qIdx+1}/10`;
+            document.getElementById('q-count').innerText = `Level ${curLvl} - Question ${qIdx+1}/5`;
             const qText = document.getElementById('q-text');
             qText.innerText = qData.q;
             
-            // Animation reset
             qText.classList.remove('slide-in');
             void qText.offsetWidth; 
             qText.classList.add('slide-in');
 
-            document.getElementById('progress-bar').style.width = ((qIdx / 10) * 100) + "%";
+            document.getElementById('progress-bar').style.width = ((qIdx / 5) * 100) + "%";
 
-            // Level 10 Timer Challenge
-            if(curLvl == 10) { 
+            if(curLvl == 3) { 
                 document.getElementById('timer-box').style.display = 'block'; 
                 startTimer(); 
             } else { 
@@ -272,10 +228,8 @@
             clearInterval(timer);
             if(sel === cor) { 
                 score++; 
-                if ("vibrate" in navigator) navigator.vibrate(50);
                 popModal("✨ Mashallah!", "Correct answer!", false); 
             } else { 
-                if ("vibrate" in navigator) navigator.vibrate([100, 50, 100]);
                 popModal("❌ Incorrect", `Correct: ${cor}`, false); 
             }
         }
@@ -286,10 +240,7 @@
             const btn = document.getElementById('m-btn');
             if(isFail) { 
                 btn.innerText = "Back to Menu"; 
-                btn.onclick = () => {
-                    document.getElementById('modal-feedback').style.display = 'none';
-                    showMenu();
-                };
+                btn.onclick = () => { document.getElementById('modal-feedback').style.display = 'none'; showMenu(); };
             } else { 
                 btn.innerText = "Next Question"; 
                 btn.onclick = nextQ; 
@@ -300,51 +251,56 @@
         function nextQ() {
             document.getElementById('modal-feedback').style.display = 'none';
             qIdx++;
-            if(qIdx < 10) loadQ();
+            if(qIdx < 5) loadQ();
             else finishLvl();
         }
 
         function finishLvl() {
             document.getElementById('screen-quiz').classList.add('hidden');
             document.getElementById('screen-result').classList.remove('hidden');
-            document.getElementById('res-score').innerText = `${score}/10`;
+            document.getElementById('res-score').innerText = `${score}/5`;
             
-            if(score >= 7) {
+            if(score >= 4) { // Passing score 4 out of 5
                 document.getElementById('res-msg').innerText = "Level Passed!";
-                if(curLvl == unlocked && unlocked < 10) { 
+                if(curLvl == unlocked && unlocked < 3) { 
                     unlocked++; 
                     localStorage.setItem('islProg', unlocked); 
                 }
-                // Show Login prompt after Level 1 to save progress
                 if(curLvl === 1 && currentUser.isGuest) {
-                    setTimeout(() => {
-                        document.getElementById('login-popup').style.display = 'flex';
-                        renderGoogleButton();
-                    }, 1500);
+                    setTimeout(() => { document.getElementById('login-popup').style.display = 'flex'; renderGoogleButton(); }, 1000);
                 }
             } else {
-                document.getElementById('res-msg').innerText = "Try again for 7/10!";
+                document.getElementById('res-msg').innerText = "Need 4/5 to pass!";
             }
         }
 
-        function toggleTheme() {
-            const b = document.body;
-            const t = b.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-            b.setAttribute('data-theme', t);
-            document.querySelector('.theme-toggle').innerText = t === 'light' ? '🌙' : '☀️';
+        function renderGoogleButton() {
+            if (typeof google !== 'undefined') {
+                google.accounts.id.initialize({
+                    client_id: "597954711501-cpeqh0hfthr0399boj6fp86vt89k2gma.apps.googleusercontent.com",
+                    callback: (r) => {
+                        const p = JSON.parse(atob(r.credential.split('.')[1]));
+                        currentUser = { name: p.name, email: p.email, isGuest: false };
+                        localStorage.setItem('user_profile', JSON.stringify(currentUser));
+                        document.getElementById('login-popup').style.display = 'none';
+                        showMenu();
+                    }
+                });
+                google.accounts.id.renderButton(document.getElementById("buttonDiv"), { theme: "outline", size: "large" });
+            }
         }
 
+        function continueAsGuest() { document.getElementById('login-popup').style.display = 'none'; showMenu(); }
+        function toggleTheme() {
+            const t = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            document.body.setAttribute('data-theme', t);
+        }
         function shareMe() {
-            const t = `🌙 I scored ${score}/10 on Level ${curLvl} of Islamic Quest! Can you beat me?`;
+            const t = `🌙 I scored ${score}/5 on Level ${curLvl} of Islamic Quest!`;
             window.open(`https://wa.me/?text=${encodeURIComponent(t)}`);
         }
 
-        // --- INIT ---
-        window.onload = () => {
-            showMenu();
-            // Pre-init google if possible
-            setTimeout(renderGoogleButton, 2000);
-        };
+        window.onload = showMenu;
     </script>
 </body>
 </html>
