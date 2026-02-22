@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ramadan Quest 2026</title>
+    <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -52,6 +53,11 @@
         
         .option-btn { width: 100%; padding: 14px; margin: 8px 0; border-radius: 10px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-main); cursor: pointer; }
         .btn-action { background: var(--emerald); color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 15px; }
+        
+        /* New Install Button Style */
+        #install-container { margin-bottom: 20px; }
+        .btn-install { background: #1e293b; color: #fbbf24; border: 1px solid #fbbf24; padding: 10px 20px; border-radius: 50px; font-weight: 600; cursor: pointer; font-size: 0.8rem; display: none; }
+
         .hidden { display: none; }
         
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 100; }
@@ -66,6 +72,10 @@
     </div>
 
     <div id="quiz-card">
+        <div id="install-container">
+            <button id="install-btn" class="btn-install">📲 Install App for Daily Fast</button>
+        </div>
+
         <div id="screen-levels">
             <h1 style="font-family: 'Cinzel', serif; margin-bottom: 5px;">Ramadan Quest</h1>
             <div id="fast-counter" class="ramadan-status">Loading day...</div>
@@ -100,15 +110,13 @@
 
     <script>
         const chime = document.getElementById('chime-sound');
-        
-        // 1. DATE LOGIC: Ramadan 1, 2026 is approx Feb 18
         const RAMADAN_START = new Date('2026-02-18T00:00:00'); 
         
         function getCurrentFastDay() {
             const today = new Date();
             const diffTime = today - RAMADAN_START;
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            return diffDays > 0 ? diffDays : 0; // Return 0 if Ramadan hasn't started
+            return diffDays > 0 ? diffDays : 0;
         }
 
         const currentFast = getCurrentFastDay();
@@ -123,13 +131,13 @@
             }, 3000);
         });
 
+        // Placeholder questions - expand this array to 150 for 30 levels
         const questions = [
             { q: "Who was the first Prophet?", o: ["Isa", "Adam", "Nuh", "Musa"], a: "Adam" },
             { q: "How many daily prayers are mandatory?", o: ["3", "4", "5", "6"], a: "5" },
             { q: "Which month is for fasting?", o: ["Safar", "Ramadan", "Rajab", "Shawwal"], a: "Ramadan" },
             { q: "What is the first month of Hijri calendar?", o: ["Muharram", "Ramadan", "Safar", "Hajj"], a: "Muharram" },
             { q: "Which Prophet built the Ark?", o: ["Musa", "Nuh", "Ibrahim", "Isa"], a: "Nuh" }
-            // Add more questions here...
         ];
 
         let curLvl = 1, qIdx = 0, score = 0;
@@ -139,22 +147,17 @@
             document.getElementById('screen-quiz').classList.add('hidden');
             document.getElementById('screen-result').classList.add('hidden');
             document.getElementById('screen-levels').classList.remove('hidden');
-            
             document.getElementById('fast-counter').innerText = `Today is the ${currentFast} Fast of Ramadan 2026`;
             
             const grid = document.getElementById('level-btns');
             grid.innerHTML = '';
-            
             for(let i=1; i<=30; i++) {
                 const btn = document.createElement('button');
                 btn.className = 'level-btn';
                 btn.innerText = i;
-                
-                // GATING LOGIC
                 if (i > currentFast) {
                     btn.classList.add('future');
-                    btn.title = "Comes out on Fast " + i;
-                    btn.onclick = () => alert("Patience! This level unlocks on Day " + i);
+                    btn.onclick = () => alert("Patience! Level " + i + " unlocks on the " + i + " Fast.");
                 } else if (i > userProgress) {
                     btn.classList.add('locked');
                     btn.onclick = () => alert("Complete Level " + (i-1) + " first!");
@@ -173,7 +176,7 @@
         }
 
         function loadQ() {
-            const qData = questions[qIdx]; // Example pulls from level 1 questions
+            const qData = questions[qIdx]; 
             document.getElementById('q-count').innerText = `Day ${curLvl} - Question ${qIdx+1}/5`;
             document.getElementById('q-text').innerText = qData.q;
             const container = document.getElementById('opt-container');
@@ -202,11 +205,41 @@
                     localStorage.setItem('ramadanProg', userProgress);
                 }
             } else {
-                document.getElementById('res-msg').innerText = "Don't give up! Try again to progress.";
+                document.getElementById('res-msg').innerText = "Try again to progress!";
             }
         }
 
         window.onload = showMenu;
+
+        // --- 2 & 3. SERVICE WORKER REGISTRATION ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                .then(reg => console.log('SW Registered'))
+                .catch(err => console.log('SW Failed', err));
+            });
+        }
+
+        // --- 4. UPGRADED INSTALL LOGIC ---
+        let deferredPrompt;
+        const installBtn = document.getElementById('install-btn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'inline-block'; // Only show if installable
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') installBtn.style.display = 'none';
+                deferredPrompt = null;
+            } else {
+                alert("To install: Use your browser menu and select 'Add to Home Screen'.");
+            }
+        });
     </script>
 </body>
 </html>
