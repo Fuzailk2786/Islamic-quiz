@@ -18,127 +18,162 @@
             --border: #475569; --shadow: rgba(0,0,0,0.5);
         }
 
+        /* 1. Updated Bismillah Animation & Overlay */
         #bismillah-overlay {
             position: fixed; inset: 0; background: #064e3b;
             display: flex; flex-direction: column; justify-content: center;
-            align-items: center; z-index: 10000; transition: opacity 1s ease;
+            align-items: center; z-index: 10000; transition: opacity 1.5s ease;
         }
         
         #start-trigger {
-            padding: 15px 30px; background: #fbbf24; color: #064e3b;
+            padding: 18px 40px; background: #fbbf24; color: #064e3b;
             border: none; border-radius: 50px; font-weight: 700; cursor: pointer;
+            font-size: 1.2rem; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
         }
+        #start-trigger:active { transform: scale(0.95); }
 
         .bismillah-text {
-            font-size: 2.2rem; color: #fbbf24; text-align: center;
+            font-family: 'Cinzel', serif;
+            font-size: 3rem; color: #fbbf24; text-align: center;
             direction: rtl; opacity: 0; display: none;
-            animation: bismillahFade 3s ease-in-out forwards;
+            text-shadow: 0 0 25px rgba(251, 191, 36, 0.6);
+            animation: bismillahFade 4s ease-in-out forwards;
         }
 
         @keyframes bismillahFade {
-            0% { opacity: 0; transform: scale(0.8); }
-            30% { opacity: 1; transform: scale(1); }
+            0% { opacity: 0; transform: scale(0.8) translateY(20px); }
+            40% { opacity: 1; transform: scale(1) translateY(0); }
             100% { opacity: 0; transform: scale(1.1); }
         }
 
         body { font-family: 'Poppins', sans-serif; background: var(--bg-color); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         #quiz-card { background: var(--card-bg); width: 90%; max-width: 500px; padding: 2rem; border-radius: 24px; box-shadow: 0 20px 40px var(--shadow); text-align: center; position: relative; }
         
-        .ramadan-status { background: var(--soft-gold); color: var(--gold); padding: 10px; border-radius: 12px; font-weight: 600; margin-bottom: 15px; font-size: 0.9rem; }
+        .ramadan-status { background: var(--soft-gold); color: var(--gold); padding: 10px; border-radius: 12px; font-weight: 600; margin-bottom: 15px; font-size: 0.9rem; border: 1px solid var(--gold); }
         
         .level-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 10px; }
-        .level-btn { padding: 12px 5px; border-radius: 10px; border: 2px solid var(--emerald); background: none; color: var(--text-main); font-weight: 600; cursor: pointer; }
-        .level-btn.locked { opacity: 0.3; cursor: not-allowed; grayscale: 1; }
+        .level-btn { padding: 12px 5px; border-radius: 10px; border: 2px solid var(--emerald); background: none; color: var(--text-main); font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .level-btn.locked { opacity: 0.3; cursor: not-allowed; filter: grayscale(1); }
         .level-btn.future { border-style: dashed; color: #999; }
+        .level-btn.completed { background: var(--emerald); color: white; }
         
-        .option-btn { width: 100%; padding: 14px; margin: 8px 0; border-radius: 10px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-main); cursor: pointer; }
+        .option-btn { width: 100%; padding: 14px; margin: 8px 0; border-radius: 12px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-main); cursor: pointer; font-weight: 500; transition: 0.2s; }
+        .option-btn:hover { background: var(--soft-gold); border-color: var(--gold); }
         .btn-action { background: var(--emerald); color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 15px; }
         
-        /* New Install Button Style */
         #install-container { margin-bottom: 20px; }
         .btn-install { background: #1e293b; color: #fbbf24; border: 1px solid #fbbf24; padding: 10px 20px; border-radius: 50px; font-weight: 600; cursor: pointer; font-size: 0.8rem; display: none; }
 
         .hidden { display: none; }
         
-        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 100; }
-        .modal { background: var(--card-bg); padding: 2rem; border-radius: 20px; max-width: 400px; width: 90%; text-align: center; }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 100; }
+        .modal { background: var(--card-bg); padding: 2rem; border-radius: 20px; max-width: 400px; width: 90%; text-align: center; border-top: 5px solid var(--gold); }
     </style>
 </head>
 <body data-theme="light">
 
     <div id="bismillah-overlay">
-        <button id="start-trigger">Enter Quest</button>
+        <button id="start-trigger">Begin Ramadan Quest</button>
         <div class="bismillah-text" id="b-text">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
     </div>
 
     <div id="quiz-card">
         <div id="install-container">
-            <button id="install-btn" class="btn-install">📲 Install App for Daily Fast</button>
+            <button id="install-btn" class="btn-install">📲 Install Quest App</button>
         </div>
 
         <div id="screen-levels">
             <h1 style="font-family: 'Cinzel', serif; margin-bottom: 5px;">Ramadan Quest</h1>
-            <div id="fast-counter" class="ramadan-status">Loading day...</div>
-            <p style="font-size: 0.8rem;">One new level revealed every dawn.</p>
+            <div id="fast-counter" class="ramadan-status">Loading journey...</div>
             <div class="level-grid" id="level-btns"></div>
         </div>
 
         <div id="screen-quiz" class="hidden">
-            <p id="q-count"></p>
-            <h2 id="q-text"></h2>
+            <p id="q-count" style="color: var(--gold); font-weight: 600;"></p>
+            <h2 id="q-text" style="font-size: 1.2rem; min-height: 3em;"></h2>
             <div id="opt-container"></div>
         </div>
 
         <div id="screen-result" class="hidden">
-            <h2 id="res-score"></h2>
-            <p id="res-msg"></p>
-            <button class="btn-action" onclick="showMenu()">Back to Journey</button>
+            <div style="font-size: 3rem; margin-bottom: 10px;">🌙</div>
+            <h2 id="res-score" style="font-size: 2.5rem; margin: 0;"></h2>
+            <p id="res-msg" style="font-weight: 600;"></p>
+            <button class="btn-action" onclick="showMenu()">Continue Journey</button>
         </div>
     </div>
 
     <div id="modal-feedback" class="modal-overlay">
         <div class="modal">
             <h2 id="m-status"></h2>
-            <p id="m-text"></p>
+            <p id="m-text" style="font-size: 1.1rem; margin: 15px 0;"></p>
             <button class="btn-action" id="m-btn">Next</button>
         </div>
     </div>
 
-    <audio id="chime-sound" preload="auto">
-        <source src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" type="audio/mpeg">
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-17.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        const chime = document.getElementById('chime-sound');
+        const bgMusic = document.getElementById('bg-music');
         const RAMADAN_START = new Date('2026-02-18T00:00:00'); 
         
         function getCurrentFastDay() {
             const today = new Date();
             const diffTime = today - RAMADAN_START;
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            return diffDays > 0 ? diffDays : 0;
+            // For testing: Feb 23 = Day 6
+            return diffDays > 0 ? (diffDays > 30 ? 30 : diffDays) : 0;
         }
 
         const currentFast = getCurrentFastDay();
 
+        // 2. Updated Begin Logic (Music + Animation)
         document.getElementById('start-trigger').addEventListener('click', function() {
             this.style.display = 'none';
-            document.getElementById('b-text').style.display = 'block';
-            chime.play();
+            const bText = document.getElementById('b-text');
+            bText.style.display = 'block';
+            
+            bgMusic.volume = 0.4;
+            bgMusic.play().catch(() => console.log("Audio blocked by browser"));
+
             setTimeout(() => {
                 document.getElementById('bismillah-overlay').style.opacity = '0';
-                setTimeout(() => document.getElementById('bismillah-overlay').style.display = 'none', 1000);
-            }, 3000);
+                setTimeout(() => document.getElementById('bismillah-overlay').style.display = 'none', 1500);
+            }, 4000);
         });
 
-        // Placeholder questions - expand this array to 150 for 30 levels
+        // 3. Full 150 Question Database (Structure)
         const questions = [
+            // Level 1: Basics
             { q: "Who was the first Prophet?", o: ["Isa", "Adam", "Nuh", "Musa"], a: "Adam" },
             { q: "How many daily prayers are mandatory?", o: ["3", "4", "5", "6"], a: "5" },
             { q: "Which month is for fasting?", o: ["Safar", "Ramadan", "Rajab", "Shawwal"], a: "Ramadan" },
             { q: "What is the first month of Hijri calendar?", o: ["Muharram", "Ramadan", "Safar", "Hajj"], a: "Muharram" },
-            { q: "Which Prophet built the Ark?", o: ["Musa", "Nuh", "Ibrahim", "Isa"], a: "Nuh" }
+            { q: "Which Prophet built the Ark?", o: ["Musa", "Nuh", "Ibrahim", "Isa"], a: "Nuh" },
+            // Level 2: Quran
+            { q: "How many Surahs are in the Quran?", o: ["114", "110", "120", "116"], a: "114" },
+            { q: "Which Surah is called the 'Heart of Quran'?", o: ["Fatiha", "Baqarah", "Yaseen", "Ikhlas"], a: "Yaseen" },
+            { q: "What was the first word revealed?", o: ["Allah", "Islam", "Iqra", "Salam"], a: "Iqra" },
+            { q: "Which is the longest Surah?", o: ["Baqarah", "Nisa", "Araf", "Imran"], a: "Baqarah" },
+            { q: "In which month was Quran revealed?", o: ["Shawwal", "Ramadan", "Rajab", "Safar"], a: "Ramadan" },
+            // Level 3: Prophets
+            { q: "Which Prophet split the sea?", o: ["Musa", "Isa", "Adam", "Yusuf"], a: "Musa" },
+            { q: "Prophet swallowed by a whale?", o: ["Yunus", "Lut", "Nuh", "Salih"], a: "Yunus" },
+            { q: "Prophet who spoke to animals?", o: ["Dawud", "Sulaiman", "Yahya", "Musa"], a: "Sulaiman" },
+            { q: "Prophet known for his patience?", o: ["Ayyub", "Isa", "Adam", "Harun"], a: "Ayyub" },
+            { q: "Prophet who was born without a father?", o: ["Isa", "Musa", "Yahya", "Idris"], a: "Isa" }
         ];
+
+        // Filling the database to 150 questions for logic testing
+        while(questions.length < 150) {
+            questions.push({
+                q: `Quest Question #${questions.length + 1}: General Islamic knowledge challenge.`,
+                o: ["Sunnah", "Fard", "Mustahab", "Makruh"],
+                a: "Sunnah"
+            });
+        }
 
         let curLvl = 1, qIdx = 0, score = 0;
         let userProgress = parseInt(localStorage.getItem('ramadanProg')) || 1;
@@ -147,7 +182,7 @@
             document.getElementById('screen-quiz').classList.add('hidden');
             document.getElementById('screen-result').classList.add('hidden');
             document.getElementById('screen-levels').classList.remove('hidden');
-            document.getElementById('fast-counter').innerText = `Today is the ${currentFast} Fast of Ramadan 2026`;
+            document.getElementById('fast-counter').innerText = `Today: Fast ${currentFast} of Ramadan 2026`;
             
             const grid = document.getElementById('level-btns');
             grid.innerHTML = '';
@@ -157,11 +192,12 @@
                 btn.innerText = i;
                 if (i > currentFast) {
                     btn.classList.add('future');
-                    btn.onclick = () => alert("Patience! Level " + i + " unlocks on the " + i + " Fast.");
+                    btn.onclick = () => alert("Unlocks on Day " + i);
                 } else if (i > userProgress) {
                     btn.classList.add('locked');
-                    btn.onclick = () => alert("Complete Level " + (i-1) + " first!");
+                    btn.onclick = () => alert("Complete previous level!");
                 } else {
+                    if (i < userProgress) btn.classList.add('completed');
                     btn.onclick = () => startLvl(i);
                 }
                 grid.appendChild(btn);
@@ -176,8 +212,9 @@
         }
 
         function loadQ() {
-            const qData = questions[qIdx]; 
-            document.getElementById('q-count').innerText = `Day ${curLvl} - Question ${qIdx+1}/5`;
+            const globalIndex = ((curLvl - 1) * 5) + qIdx;
+            const qData = questions[globalIndex]; 
+            document.getElementById('q-count').innerText = `Fast ${curLvl} - Q${qIdx+1}/5`;
             document.getElementById('q-text').innerText = qData.q;
             const container = document.getElementById('opt-container');
             container.innerHTML = '';
@@ -186,12 +223,26 @@
                 b.className = 'option-btn';
                 b.innerText = o;
                 b.onclick = () => {
-                    if(o === qData.a) score++;
-                    qIdx++;
-                    if(qIdx < 5) loadQ(); else finish();
+                    if(o === qData.a) {
+                        score++;
+                        showFeedback("✨ Mashallah!", "Correct answer.");
+                    } else {
+                        showFeedback("📚 Keep Learning", "The answer was: " + qData.a);
+                    }
                 };
                 container.appendChild(b);
             });
+        }
+
+        function showFeedback(status, text) {
+            document.getElementById('m-status').innerText = status;
+            document.getElementById('m-text').innerText = text;
+            document.getElementById('m-btn').onclick = () => {
+                document.getElementById('modal-feedback').style.display = 'none';
+                qIdx++;
+                if(qIdx < 5) loadQ(); else finish();
+            };
+            document.getElementById('modal-feedback').style.display = 'flex';
         }
 
         function finish() {
@@ -199,35 +250,31 @@
             document.getElementById('screen-result').classList.remove('hidden');
             document.getElementById('res-score').innerText = `${score}/5`;
             if(score >= 4) {
-                document.getElementById('res-msg').innerText = "Mubarak! Level " + curLvl + " complete.";
+                document.getElementById('res-msg').innerText = "Mubarak! Fast " + curLvl + " complete.";
                 if(curLvl === userProgress) {
                     userProgress++;
                     localStorage.setItem('ramadanProg', userProgress);
                 }
             } else {
-                document.getElementById('res-msg').innerText = "Try again to progress!";
+                document.getElementById('res-msg').innerText = "Score 4/5 to unlock the next day.";
             }
         }
 
         window.onload = showMenu;
 
-        // --- 2 & 3. SERVICE WORKER REGISTRATION ---
+        // PWA & Install Logic
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                .then(reg => console.log('SW Registered'))
-                .catch(err => console.log('SW Failed', err));
+                navigator.worker = navigator.serviceWorker.register('./sw.js');
             });
         }
 
-        // --- 4. UPGRADED INSTALL LOGIC ---
         let deferredPrompt;
         const installBtn = document.getElementById('install-btn');
-
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            installBtn.style.display = 'inline-block'; // Only show if installable
+            installBtn.style.display = 'inline-block';
         });
 
         installBtn.addEventListener('click', async () => {
@@ -236,8 +283,6 @@
                 const { outcome } = await deferredPrompt.userChoice;
                 if (outcome === 'accepted') installBtn.style.display = 'none';
                 deferredPrompt = null;
-            } else {
-                alert("To install: Use your browser menu and select 'Add to Home Screen'.");
             }
         });
     </script>
