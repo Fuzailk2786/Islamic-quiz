@@ -11,6 +11,7 @@
             --bg-color: #f0f4f0; --card-bg: #ffffff; --text-main: #064e3b;
             --emerald: #065f46; --gold: #b45309; --soft-gold: #fef3c7;
             --border: #d1d5db; --shadow: rgba(0,0,0,0.1);
+            --whatsapp: #25D366;
         }
         [data-theme="dark"] {
             --bg-color: #020617; --card-bg: #1e293b; --text-main: #f1f5f9;
@@ -18,7 +19,6 @@
             --border: #475569; --shadow: rgba(0,0,0,0.5);
         }
 
-        /* 1. Updated Bismillah Animation & Overlay */
         #bismillah-overlay {
             position: fixed; inset: 0; background: #064e3b;
             display: flex; flex-direction: column; justify-content: center;
@@ -29,14 +29,11 @@
             padding: 18px 40px; background: #fbbf24; color: #064e3b;
             border: none; border-radius: 50px; font-weight: 700; cursor: pointer;
             font-size: 1.2rem; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            transition: transform 0.2s;
         }
-        #start-trigger:active { transform: scale(0.95); }
 
         .bismillah-text {
-            font-family: 'Cinzel', serif;
-            font-size: 3rem; color: #fbbf24; text-align: center;
-            direction: rtl; opacity: 0; display: none;
+            font-family: 'Cinzel', serif; font-size: 3rem; color: #fbbf24; 
+            text-align: center; direction: rtl; opacity: 0; display: none;
             text-shadow: 0 0 25px rgba(251, 191, 36, 0.6);
             animation: bismillahFade 4s ease-in-out forwards;
         }
@@ -47,26 +44,24 @@
             100% { opacity: 0; transform: scale(1.1); }
         }
 
-        body { font-family: 'Poppins', sans-serif; background: var(--bg-color); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        #quiz-card { background: var(--card-bg); width: 90%; max-width: 500px; padding: 2rem; border-radius: 24px; box-shadow: 0 20px 40px var(--shadow); text-align: center; position: relative; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg-color); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; transition: background 0.3s; }
+        #quiz-card { background: var(--card-bg); width: 90%; max-width: 500px; padding: 2rem; border-radius: 24px; box-shadow: 0 20px 40px var(--shadow); text-align: center; position: relative; transition: background 0.3s; }
         
+        /* Theme Toggle Styling */
+        #theme-toggle { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+
         .ramadan-status { background: var(--soft-gold); color: var(--gold); padding: 10px; border-radius: 12px; font-weight: 600; margin-bottom: 15px; font-size: 0.9rem; border: 1px solid var(--gold); }
-        
         .level-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 10px; }
         .level-btn { padding: 12px 5px; border-radius: 10px; border: 2px solid var(--emerald); background: none; color: var(--text-main); font-weight: 600; cursor: pointer; transition: 0.3s; }
         .level-btn.locked { opacity: 0.3; cursor: not-allowed; filter: grayscale(1); }
         .level-btn.future { border-style: dashed; color: #999; }
         .level-btn.completed { background: var(--emerald); color: white; }
         
-        .option-btn { width: 100%; padding: 14px; margin: 8px 0; border-radius: 12px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-main); cursor: pointer; font-weight: 500; transition: 0.2s; }
-        .option-btn:hover { background: var(--soft-gold); border-color: var(--gold); }
+        .option-btn { width: 100%; padding: 14px; margin: 8px 0; border-radius: 12px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-main); cursor: pointer; font-weight: 500; }
         .btn-action { background: var(--emerald); color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 15px; }
-        
-        #install-container { margin-bottom: 20px; }
-        .btn-install { background: #1e293b; color: #fbbf24; border: 1px solid #fbbf24; padding: 10px 20px; border-radius: 50px; font-weight: 600; cursor: pointer; font-size: 0.8rem; display: none; }
+        .btn-whatsapp { background: var(--whatsapp); color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
 
         .hidden { display: none; }
-        
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 100; }
         .modal { background: var(--card-bg); padding: 2rem; border-radius: 20px; max-width: 400px; width: 90%; text-align: center; border-top: 5px solid var(--gold); }
     </style>
@@ -79,26 +74,29 @@
     </div>
 
     <div id="quiz-card">
+        <button id="theme-toggle" onclick="toggleTheme()" title="Switch Mode">🌓</button>
+
         <div id="install-container">
-            <button id="install-btn" class="btn-install">📲 Install Quest App</button>
+            <button id="install-btn" class="btn-install" style="display:none; background: #1e293b; color: #fbbf24; border: 1px solid #fbbf24; padding: 10px 20px; border-radius: 50px; font-weight: 600; cursor: pointer; font-size: 0.8rem; margin-bottom: 20px;">📲 Install Quest App</button>
         </div>
 
         <div id="screen-levels">
-            <h1 style="font-family: 'Cinzel', serif; margin-bottom: 5px;">Ramadan Quest</h1>
-            <div id="fast-counter" class="ramadan-status">Loading journey...</div>
+            <h1 style="font-family: 'Cinzel', serif; margin-bottom: 5px; color: var(--text-main);">Ramadan Quest</h1>
+            <div id="fast-counter" class="ramadan-status">Loading...</div>
             <div class="level-grid" id="level-btns"></div>
         </div>
 
         <div id="screen-quiz" class="hidden">
             <p id="q-count" style="color: var(--gold); font-weight: 600;"></p>
-            <h2 id="q-text" style="font-size: 1.2rem; min-height: 3em;"></h2>
+            <h2 id="q-text" style="font-size: 1.2rem; min-height: 3em; color: var(--text-main);"></h2>
             <div id="opt-container"></div>
         </div>
 
         <div id="screen-result" class="hidden">
             <div style="font-size: 3rem; margin-bottom: 10px;">🌙</div>
-            <h2 id="res-score" style="font-size: 2.5rem; margin: 0;"></h2>
-            <p id="res-msg" style="font-weight: 600;"></p>
+            <h2 id="res-score" style="font-size: 2.5rem; margin: 0; color: var(--text-main);"></h2>
+            <p id="res-msg" style="font-weight: 600; color: var(--text-main);"></p>
+            <a id="whatsapp-share" class="btn-whatsapp" target="_blank"><span>Share Progress</span></a>
             <button class="btn-action" onclick="showMenu()">Continue Journey</button>
         </div>
     </div>
@@ -106,7 +104,7 @@
     <div id="modal-feedback" class="modal-overlay">
         <div class="modal">
             <h2 id="m-status"></h2>
-            <p id="m-text" style="font-size: 1.1rem; margin: 15px 0;"></p>
+            <p id="m-text" style="font-size: 1.1rem; margin: 15px 0; color: var(--text-main);"></p>
             <button class="btn-action" id="m-btn">Next</button>
         </div>
     </div>
@@ -119,172 +117,27 @@
         const bgMusic = document.getElementById('bg-music');
         const RAMADAN_START = new Date('2026-02-18T00:00:00'); 
         
+        // Theme Logic
+        function toggleTheme() {
+            const body = document.body;
+            const current = body.getAttribute('data-theme');
+            body.setAttribute('data-theme', current === 'light' ? 'dark' : 'light');
+            localStorage.setItem('ramadanTheme', body.getAttribute('data-theme'));
+        }
+        
+        // Apply saved theme on load
+        if(localStorage.getItem('ramadanTheme')) {
+            document.body.setAttribute('data-theme', localStorage.getItem('ramadanTheme'));
+        }
+
         function getCurrentFastDay() {
             const today = new Date();
             const diffTime = today - RAMADAN_START;
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            // For testing: Feb 23 = Day 6
-            return diffDays > 0 ? (diffDays > 30 ? 30 : diffDays) : 0;
+            return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 0;
         }
 
         const currentFast = getCurrentFastDay();
 
-        // 2. Updated Begin Logic (Music + Animation)
         document.getElementById('start-trigger').addEventListener('click', function() {
             this.style.display = 'none';
-            const bText = document.getElementById('b-text');
-            bText.style.display = 'block';
-            
-            bgMusic.volume = 0.4;
-            bgMusic.play().catch(() => console.log("Audio blocked by browser"));
-
-            setTimeout(() => {
-                document.getElementById('bismillah-overlay').style.opacity = '0';
-                setTimeout(() => document.getElementById('bismillah-overlay').style.display = 'none', 1500);
-            }, 4000);
-        });
-
-        // 3. Full 150 Question Database (Structure)
-        const questions = [
-            // Level 1: Basics
-            { q: "Who was the first Prophet?", o: ["Isa", "Adam", "Nuh", "Musa"], a: "Adam" },
-            { q: "How many daily prayers are mandatory?", o: ["3", "4", "5", "6"], a: "5" },
-            { q: "Which month is for fasting?", o: ["Safar", "Ramadan", "Rajab", "Shawwal"], a: "Ramadan" },
-            { q: "What is the first month of Hijri calendar?", o: ["Muharram", "Ramadan", "Safar", "Hajj"], a: "Muharram" },
-            { q: "Which Prophet built the Ark?", o: ["Musa", "Nuh", "Ibrahim", "Isa"], a: "Nuh" },
-            // Level 2: Quran
-            { q: "How many Surahs are in the Quran?", o: ["114", "110", "120", "116"], a: "114" },
-            { q: "Which Surah is called the 'Heart of Quran'?", o: ["Fatiha", "Baqarah", "Yaseen", "Ikhlas"], a: "Yaseen" },
-            { q: "What was the first word revealed?", o: ["Allah", "Islam", "Iqra", "Salam"], a: "Iqra" },
-            { q: "Which is the longest Surah?", o: ["Baqarah", "Nisa", "Araf", "Imran"], a: "Baqarah" },
-            { q: "In which month was Quran revealed?", o: ["Shawwal", "Ramadan", "Rajab", "Safar"], a: "Ramadan" },
-            // Level 3: Prophets
-            { q: "Which Prophet split the sea?", o: ["Musa", "Isa", "Adam", "Yusuf"], a: "Musa" },
-            { q: "Prophet swallowed by a whale?", o: ["Yunus", "Lut", "Nuh", "Salih"], a: "Yunus" },
-            { q: "Prophet who spoke to animals?", o: ["Dawud", "Sulaiman", "Yahya", "Musa"], a: "Sulaiman" },
-            { q: "Prophet known for his patience?", o: ["Ayyub", "Isa", "Adam", "Harun"], a: "Ayyub" },
-            { q: "Prophet who was born without a father?", o: ["Isa", "Musa", "Yahya", "Idris"], a: "Isa" }
-        ];
-
-        // Filling the database to 150 questions for logic testing
-        while(questions.length < 150) {
-            questions.push({
-                q: `Quest Question #${questions.length + 1}: General Islamic knowledge challenge.`,
-                o: ["Sunnah", "Fard", "Mustahab", "Makruh"],
-                a: "Sunnah"
-            });
-        }
-
-        let curLvl = 1, qIdx = 0, score = 0;
-        let userProgress = parseInt(localStorage.getItem('ramadanProg')) || 1;
-
-        function showMenu() {
-            document.getElementById('screen-quiz').classList.add('hidden');
-            document.getElementById('screen-result').classList.add('hidden');
-            document.getElementById('screen-levels').classList.remove('hidden');
-            document.getElementById('fast-counter').innerText = `Today: Fast ${currentFast} of Ramadan 2026`;
-            
-            const grid = document.getElementById('level-btns');
-            grid.innerHTML = '';
-            for(let i=1; i<=30; i++) {
-                const btn = document.createElement('button');
-                btn.className = 'level-btn';
-                btn.innerText = i;
-                if (i > currentFast) {
-                    btn.classList.add('future');
-                    btn.onclick = () => alert("Unlocks on Day " + i);
-                } else if (i > userProgress) {
-                    btn.classList.add('locked');
-                    btn.onclick = () => alert("Complete previous level!");
-                } else {
-                    if (i < userProgress) btn.classList.add('completed');
-                    btn.onclick = () => startLvl(i);
-                }
-                grid.appendChild(btn);
-            }
-        }
-
-        function startLvl(num) {
-            curLvl = num; qIdx = 0; score = 0;
-            document.getElementById('screen-levels').classList.add('hidden');
-            document.getElementById('screen-quiz').classList.remove('hidden');
-            loadQ();
-        }
-
-        function loadQ() {
-            const globalIndex = ((curLvl - 1) * 5) + qIdx;
-            const qData = questions[globalIndex]; 
-            document.getElementById('q-count').innerText = `Fast ${curLvl} - Q${qIdx+1}/5`;
-            document.getElementById('q-text').innerText = qData.q;
-            const container = document.getElementById('opt-container');
-            container.innerHTML = '';
-            qData.o.forEach(o => {
-                const b = document.createElement('button');
-                b.className = 'option-btn';
-                b.innerText = o;
-                b.onclick = () => {
-                    if(o === qData.a) {
-                        score++;
-                        showFeedback("✨ Mashallah!", "Correct answer.");
-                    } else {
-                        showFeedback("📚 Keep Learning", "The answer was: " + qData.a);
-                    }
-                };
-                container.appendChild(b);
-            });
-        }
-
-        function showFeedback(status, text) {
-            document.getElementById('m-status').innerText = status;
-            document.getElementById('m-text').innerText = text;
-            document.getElementById('m-btn').onclick = () => {
-                document.getElementById('modal-feedback').style.display = 'none';
-                qIdx++;
-                if(qIdx < 5) loadQ(); else finish();
-            };
-            document.getElementById('modal-feedback').style.display = 'flex';
-        }
-
-        function finish() {
-            document.getElementById('screen-quiz').classList.add('hidden');
-            document.getElementById('screen-result').classList.remove('hidden');
-            document.getElementById('res-score').innerText = `${score}/5`;
-            if(score >= 4) {
-                document.getElementById('res-msg').innerText = "Mubarak! Fast " + curLvl + " complete.";
-                if(curLvl === userProgress) {
-                    userProgress++;
-                    localStorage.setItem('ramadanProg', userProgress);
-                }
-            } else {
-                document.getElementById('res-msg').innerText = "Score 4/5 to unlock the next day.";
-            }
-        }
-
-        window.onload = showMenu;
-
-        // PWA & Install Logic
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.worker = navigator.serviceWorker.register('./sw.js');
-            });
-        }
-
-        let deferredPrompt;
-        const installBtn = document.getElementById('install-btn');
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installBtn.style.display = 'inline-block';
-        });
-
-        installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') installBtn.style.display = 'none';
-                deferredPrompt = null;
-            }
-        });
-    </script>
-</body>
-</html>
+            document.getElementById('b-text').style.display = 'block';
