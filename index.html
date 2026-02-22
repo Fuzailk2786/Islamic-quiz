@@ -26,16 +26,39 @@
             --emerald: #10b981; --gold: #fbbf24; --soft-gold: #334155;
             --border: #475569; --shadow: rgba(0,0,0,0.5);
         }
+
         body {
             font-family: 'Poppins', sans-serif; background-color: var(--bg-color);
             margin: 0; display: flex; justify-content: center; align-items: center;
             min-height: 100vh; color: var(--text-main); transition: 0.3s;
+            padding: 20px; box-sizing: border-box;
         }
+
+        /* Responsive Card Design */
         #quiz-card {
-            background: var(--card-bg); width: 92%; max-width: 450px; padding: 2rem;
-            border-radius: 24px; box-shadow: 0 20px 40px var(--shadow);
-            border: 1px solid var(--border); position: relative; text-align: center;
+            background: var(--card-bg); 
+            width: 100%; 
+            max-width: 500px; /* Desktop width */
+            padding: 2rem;
+            border-radius: 24px; 
+            box-shadow: 0 20px 40px var(--shadow);
+            border: 1px solid var(--border); 
+            position: relative; 
+            text-align: center;
         }
+
+        /* Tablet Adjustments */
+        @media (min-width: 768px) {
+            #quiz-card { max-width: 600px; padding: 3rem; }
+            h1 { font-size: 2rem !important; }
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 480px) {
+            #quiz-card { padding: 1.5rem; border-radius: 15px; }
+            .level-grid { grid-template-columns: 1fr; } /* Stack buttons on small phones */
+        }
+
         .progress-container {
             width: 100%; height: 8px; background: rgba(0, 0, 0, 0.1);
             border-radius: 10px; margin-bottom: 20px; overflow: hidden;
@@ -54,24 +77,29 @@
         .level-btn {
             padding: 18px; border-radius: 12px; border: 2px solid var(--emerald);
             background: none; color: var(--text-main); font-weight: 600; cursor: pointer;
-            transition: 0.2s;
+            transition: 0.2s; font-size: 1rem;
         }
         .level-btn.locked { opacity: 0.4; cursor: not-allowed; border-color: var(--border); }
         .level-btn:not(.locked):hover { background: var(--emerald); color: white; }
-        #timer-box { font-weight: 700; font-size: 1.2rem; color: var(--gold); margin-bottom: 10px; display: none; }
+
         .option-btn {
             width: 100%; padding: 14px; margin: 8px 0; border-radius: 10px;
             border: 1px solid var(--border); background: var(--card-bg);
-            color: var(--text-main); cursor: pointer; transition: 0.2s;
+            color: var(--text-main); cursor: pointer; transition: 0.2s; font-size: 1rem;
         }
         .option-btn:hover { border-color: var(--gold); background: var(--soft-gold); }
+
+        /* Buttons */
+        .btn-action { background: var(--emerald); color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        .btn-share { background: #25d366; color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; margin-top: 10px; cursor: pointer; font-weight: 600; }
+        .btn-install { background: var(--gold); color: white; border: none; padding: 10px; width: 100%; border-radius: 8px; margin-top: 20px; cursor: pointer; font-weight: 600; display: none; }
+
         .modal-overlay {
             display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-            justify-content: center; align-items: center; z-index: 100;
+            justify-content: center; align-items: center; z-index: 100; padding: 20px;
         }
-        .modal { background: var(--card-bg); padding: 2rem; border-radius: 20px; max-width: 300px; width: 80%; border-top: 5px solid var(--gold); }
-        .btn-action { background: var(--emerald); color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; }
-        .btn-share { background: #25d366; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; margin-top: 10px; cursor: pointer; font-weight: 600; }
+        .modal { background: var(--card-bg); padding: 2rem; border-radius: 20px; max-width: 400px; width: 100%; border-top: 5px solid var(--gold); text-align: center; }
+        
         .hidden { display: none; }
         .slide-in { animation: slideIn 0.5s forwards; }
         @keyframes slideIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
@@ -90,10 +118,11 @@
             <h1>Islamic Quest</h1>
             <p id="user-welcome">Welcome, Seeker</p>
             <div class="level-grid" id="level-btns"></div>
+            <button id="installBtn" class="btn-install">📲 Install App for Offline Play</button>
         </div>
 
         <div id="screen-quiz" class="hidden">
-            <div id="timer-box">Time: <span id="time-left">15</span>s</div>
+            <div id="timer-box" style="font-weight:700; color:var(--gold); margin-bottom:10px;">Time: <span id="time-left">15</span>s</div>
             <p id="q-count" style="font-size: 0.8rem; opacity: 0.8;"></p>
             <h2 id="q-text" class="slide-in" style="font-size: 1.1rem;"></h2>
             <div id="opt-container"></div>
@@ -109,9 +138,9 @@
     </div>
 
     <div id="login-popup" class="modal-overlay" style="z-index: 2000;">
-        <div style="background:#064e3b; padding:30px; border-radius:15px; text-align:center; border:2px solid #fbbf24; max-width:300px;">
+        <div class="modal" style="background:#064e3b; color:white;">
             <h3 style="color:#fbbf24;">Save Your Progress?</h3>
-            <p style="color:white;">Sign in with Google to secure your levels.</p>
+            <p>Sign in with Google to secure your levels.</p>
             <div id="buttonDiv" style="margin:20px 0; display: flex; justify-content: center;"></div>
             <button onclick="continueAsGuest()" style="background:transparent; color:#fbbf24; border:none; cursor:pointer; text-decoration:underline;">Play as Guest</button>
         </div>
@@ -126,181 +155,9 @@
     </div>
 
     <script>
-        // --- DATA ---
+        // --- DATA & LOGIC ---
         const questions = [
-            // Level 1
             { q: "Who was the first Prophet?", o: ["Isa", "Adam", "Nuh", "Musa"], a: "Adam" },
             { q: "How many daily prayers?", o: ["3", "4", "5", "6"], a: "5" },
             { q: "Month of fasting?", o: ["Safar", "Ramadan", "Rajab", "Shawwal"], a: "Ramadan" },
             { q: "First month of Hijri calendar?", o: ["Muharram", "Ramadan", "Safar", "Hajj"], a: "Muharram" },
-            { q: "Prophet who built the Ark?", o: ["Musa", "Nuh", "Ibrahim", "Isa"], a: "Nuh" },
-            // Level 2
-            { q: "The Holy Book of Islam?", o: ["Torah", "Zabur", "Injeel", "Quran"], a: "Quran" },
-            { q: "House of Allah in Makkah?", o: ["Aqsa", "Kaaba", "Nabawi", "Quba"], a: "Kaaba" },
-            { q: "Who was the last Prophet?", o: ["Muhammad (PBUH)", "Isa", "Musa", "Yusuf"], a: "Muhammad (PBUH)" },
-            { q: "Arabic word for fasting?", o: ["Zakat", "Salah", "Sawm", "Hajj"], a: "Sawm" },
-            { q: "Number of Pillars in Islam?", o: ["3", "4", "5", "6"], a: "5" },
-            // Level 3 (Timer Level)
-            { q: "Which Prophet split the sea?", o: ["Ibrahim", "Musa", "Isa", "Adam"], a: "Musa" },
-            { q: "City where Prophet was born?", o: ["Madinah", "Makkah", "Taif", "Riyadh"], a: "Makkah" },
-            { q: "Angel of Revelation?", o: ["Mikaeel", "Jibreel", "Israfeel", "Izraeel"], a: "Jibreel" },
-            { q: "Prophet who spoke to animals?", o: ["Sulaiman", "Dawud", "Yusuf", "Musa"], a: "Sulaiman" },
-            { q: "Well that sprang for Hajar?", o: ["Zamzam", "Kauthar", "Tasnim", "Salsabil"], a: "Zamzam" }
-        ];
-
-        let curLvl = 1, qIdx = 0, score = 0, timer, timeLeft = 15;
-        let unlocked = parseInt(localStorage.getItem('islProg')) || 1;
-
-        function generateGuestName() {
-            const t = ["Brave", "Wise", "Seeker"];
-            const n = ["Sultan", "Scholar", "Knight"];
-            return t[Math.floor(Math.random()*3)] + "_" + n[Math.floor(Math.random()*3)] + "_" + Math.floor(1000 + Math.random()*9000);
-        }
-
-        let currentUser = JSON.parse(localStorage.getItem('user_profile')) || { name: generateGuestName(), isGuest: true };
-
-        function showMenu() {
-            document.getElementById('screen-quiz').classList.add('hidden');
-            document.getElementById('screen-result').classList.add('hidden');
-            document.getElementById('screen-levels').classList.remove('hidden');
-            document.getElementById('user-welcome').innerText = (currentUser.isGuest ? "Guest: " : "") + currentUser.name;
-            const grid = document.getElementById('level-btns');
-            grid.innerHTML = '';
-            for(let i=1; i<=3; i++) {
-                const btn = document.createElement('button');
-                btn.className = `level-btn ${i > unlocked ? 'locked' : ''}`;
-                btn.innerHTML = i == 3 ? `🔥 Level ${i}` : `Level ${i}`;
-                if(i <= unlocked) btn.onclick = () => startLvl(i);
-                grid.appendChild(btn);
-            }
-            document.getElementById('progress-bar').style.width = "0%";
-        }
-
-        function startLvl(l) {
-            curLvl = l; qIdx = 0; score = 0;
-            document.getElementById('screen-levels').classList.add('hidden');
-            document.getElementById('screen-quiz').classList.remove('hidden');
-            loadQ();
-        }
-
-        function loadQ() {
-            clearInterval(timer);
-            const absoluteIdx = ((curLvl - 1) * 5) + qIdx;
-            const qData = questions[absoluteIdx];
-            document.getElementById('q-count').innerText = `Level ${curLvl} - Question ${qIdx+1}/5`;
-            const qText = document.getElementById('q-text');
-            qText.innerText = qData.q;
-            qText.classList.remove('slide-in');
-            void qText.offsetWidth; 
-            qText.classList.add('slide-in');
-            document.getElementById('progress-bar').style.width = ((qIdx / 5) * 100) + "%";
-            if(curLvl == 3) { 
-                document.getElementById('timer-box').style.display = 'block'; 
-                startTimer(); 
-            } else { 
-                document.getElementById('timer-box').style.display = 'none'; 
-            }
-            const opts = document.getElementById('opt-container');
-            opts.innerHTML = '';
-            qData.o.forEach(o => {
-                const b = document.createElement('button');
-                b.className = 'option-btn';
-                b.innerText = o;
-                b.onclick = () => check(o, qData.a);
-                opts.appendChild(b);
-            });
-        }
-
-        function startTimer() {
-            timeLeft = 15;
-            document.getElementById('time-left').innerText = timeLeft;
-            timer = setInterval(() => {
-                timeLeft--;
-                document.getElementById('time-left').innerText = timeLeft;
-                if(timeLeft <= 0) { clearInterval(timer); timeOut(); }
-            }, 1000);
-        }
-
-        function timeOut() { popModal("⏰ Time's Up!", "Try again!", true); }
-
-        function check(sel, cor) {
-            clearInterval(timer);
-            if(sel === cor) { score++; popModal("✨ Mashallah!", "Correct answer!", false); }
-            else { popModal("❌ Incorrect", `Correct: ${cor}`, false); }
-        }
-
-        function popModal(stat, txt, isFail) {
-            document.getElementById('m-status').innerText = stat;
-            document.getElementById('m-text').innerText = txt;
-            const btn = document.getElementById('m-btn');
-            if(isFail) { 
-                btn.innerText = "Back to Menu"; 
-                btn.onclick = () => { document.getElementById('modal-feedback').style.display = 'none'; showMenu(); };
-            } else { 
-                btn.innerText = "Next Question"; 
-                btn.onclick = nextQ; 
-            }
-            document.getElementById('modal-feedback').style.display = 'flex';
-        }
-
-        function nextQ() {
-            document.getElementById('modal-feedback').style.display = 'none';
-            qIdx++;
-            if(qIdx < 5) loadQ();
-            else finishLvl();
-        }
-
-        function finishLvl() {
-            document.getElementById('screen-quiz').classList.add('hidden');
-            document.getElementById('screen-result').classList.remove('hidden');
-            document.getElementById('res-score').innerText = `${score}/5`;
-            if(score >= 4) {
-                document.getElementById('res-msg').innerText = "Level Passed!";
-                if(curLvl == unlocked && unlocked < 3) { unlocked++; localStorage.setItem('islProg', unlocked); }
-                if(curLvl === 1 && currentUser.isGuest) {
-                    setTimeout(() => { document.getElementById('login-popup').style.display = 'flex'; renderGoogleButton(); }, 1000);
-                }
-            } else { document.getElementById('res-msg').innerText = "Need 4/5 to pass!"; }
-        }
-
-        function renderGoogleButton() {
-            if (typeof google !== 'undefined') {
-                google.accounts.id.initialize({
-                    client_id: "597954711501-cpeqh0hfthr0399boj6fp86vt89k2gma.apps.googleusercontent.com",
-                    callback: (r) => {
-                        const p = JSON.parse(atob(r.credential.split('.')[1]));
-                        currentUser = { name: p.name, email: p.email, isGuest: false };
-                        localStorage.setItem('user_profile', JSON.stringify(currentUser));
-                        document.getElementById('login-popup').style.display = 'none';
-                        showMenu();
-                    }
-                });
-                google.accounts.id.renderButton(document.getElementById("buttonDiv"), { theme: "outline", size: "large" });
-            }
-        }
-
-        function continueAsGuest() { document.getElementById('login-popup').style.display = 'none'; showMenu(); }
-        
-        function toggleTheme() {
-            const t = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-            document.body.setAttribute('data-theme', t);
-        }
-
-        // --- UPDATED WHATSAPP SHARE LOGIC ---
-        function shareMe() {
-            const siteUrl = window.location.href; // Captures your Netlify URL
-            const text = `🌙 I scored ${score}/5 on Level ${curLvl} of Islamic Quest! Can you beat me?\n\nPlay here: ${siteUrl}`;
-            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
-        }
-
-        window.onload = showMenu;
-    </script>
-    <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js')
-      .then(() => console.log("Service Worker Registered"));
-  }
-</script>
-</body>
-</html>
-
