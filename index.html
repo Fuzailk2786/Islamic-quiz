@@ -8,12 +8,10 @@
     <meta property="og:title" content="Islamic Quest - Test Your Knowledge">
     <meta property="og:description" content="I'm playing the 100 Levels Islamic Quiz. Can you beat my score?">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://your-app-name.netlify.app">
     
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#064e3b">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <style>
         :root {
@@ -41,7 +39,7 @@
         }
 
         @media (min-width: 768px) { #quiz-card { max-width: 600px; padding: 3rem; } }
-        @media (max-width: 480px) { #quiz-card { padding: 1.5rem; } .level-grid { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 480px) { #quiz-card { padding: 1.5rem; } .level-grid { grid-template-columns: repeat(4, 1fr); } }
 
         .progress-container { width: 100%; height: 8px; background: rgba(0,0,0,0.1); border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
         #progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #fbbf24, #f59e0b); transition: width 0.4s ease; }
@@ -49,7 +47,7 @@
         .theme-toggle { position: absolute; top: 15px; right: 15px; background: none; border: 1px solid var(--emerald); border-radius: 50%; cursor: pointer; width: 35px; height: 35px; color: var(--emerald); font-size: 1.2rem; }
         
         h1 { font-family: 'Cinzel', serif; font-size: 1.5rem; margin-top: 0; }
-        .level-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px; }
+        .level-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 15px; }
         .level-btn { padding: 12px 5px; border-radius: 10px; border: 2px solid var(--emerald); background: none; color: var(--text-main); font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
         .level-btn.locked { opacity: 0.3; cursor: not-allowed; border-color: var(--border); }
         .level-btn:not(.locked):hover { background: var(--emerald); color: white; }
@@ -140,23 +138,97 @@
             { q: "Which Sahabi was known as Dhun-Nurayn?", o: ["Ali", "Uthman ibn Affan", "Hamza", "Zaid"], a: "Uthman ibn Affan" },
             { q: "The cousin of Prophet (PBUH) who married Fatima?", o: ["Umar", "Abu Bakr", "Ali ibn Abi Talib", "Uthman"], a: "Ali ibn Abi Talib" },
             { q: "First Muezzin of Islam?", o: ["Zaid", "Bilal ibn Rabah", "Ammar", "Anas"], a: "Bilal ibn Rabah" },
-            // Level 6-20: Simplified logic placeholders for brevity (You can fill specific Qs here)
+            // Level 6: General Knowledge
             { q: "How many Prophets are mentioned in Quran?", o: ["10", "25", "50", "99"], a: "25" },
             { q: "Which Prophet was swallowed by a whale?", o: ["Yunus", "Musa", "Isa", "Adam"], a: "Yunus" },
             { q: "The wife of Prophet (PBUH) - Mother of believers?", o: ["Khadijah", "Fatima", "Asiya", "Maryam"], a: "Khadijah" },
             { q: "Direction faced during prayer?", o: ["East", "West", "Qibla", "North"], a: "Qibla" },
-            { q: "What is the charity given to poor?", o: ["Zakat", "Hajj", "Sawm", "Salah"], a: "Zakat" }
-            // Note: I've included the structure. To reach 100, continue adding 5 per level below.
+            { q: "What is the charity given to poor?", o: ["Zakat", "Hajj", "Sawm", "Salah"], a: "Zakat" },
+            // Level 7: Fasting
+            { q: "Meal eaten before dawn?", o: ["Iftar", "Suhoor", "Dinner", "Brunch"], a: "Suhoor" },
+            { q: "Meal eaten to break the fast?", o: ["Suhoor", "Iftar", "Lunch", "Snack"], a: "Iftar" },
+            { q: "Charity given at end of Ramadan?", o: ["Sadaqah", "Zakat al-Fitr", "Waqf", "Jizya"], a: "Zakat al-Fitr" },
+            { q: "Gate of Paradise for those who fast?", o: ["Al-Araf", "Ar-Rayyan", "Al-Firdous", "Al-Mulk"], a: "Ar-Rayyan" },
+            { q: "Days in a lunar month?", o: ["28-29", "29-30", "30-31", "31"], a: "29-30" },
+            // Level 8: Hajj
+            { q: "City where Hajj is performed?", o: ["Madinah", "Jerusalem", "Makkah", "Cairo"], a: "Makkah" },
+            { q: "Plain where pilgrims stay on 9th Dhul-Hijjah?", o: ["Mina", "Arafat", "Muzdalifah", "Safa"], a: "Arafat" },
+            { q: "Walking 7 times between Safa and Marwa?", o: ["Tawaf", "Sa'ee", "Ihram", "Rami"], a: "Sa'ee" },
+            { q: "White clothing worn for Hajj?", o: ["Abaya", "Thobe", "Ihram", "Kufi"], a: "Ihram" },
+            { q: "Times pilgrims circle the Kaaba?", o: ["3", "5", "7", "9"], a: "7" },
+            // Level 9: Seerah
+            { q: "Name of the Prophet's father?", o: ["Abu Talib", "Abdullah", "Abdul Muttalib", "Hamza"], a: "Abdullah" },
+            { q: "Name of the Prophet's mother?", o: ["Halima", "Aminah", "Fatima", "Safiyyah"], a: "Aminah" },
+            { q: "Migration to Madinah is called?", o: ["Hijrah", "Isra", "Miraj", "Fath"], a: "Hijrah" },
+            { q: "First mosque built in Islam?", o: ["Masjid Al-Haram", "Masjid Quba", "Masjid Al-Aqsa", "Masjid Nabawi"], a: "Masjid Quba" },
+            { q: "Title 'Al-Amin' means?", o: ["The Brave", "The Trustworthy", "The Leader", "The Kind"], a: "The Trustworthy" },
+            // Level 10: Faith
+            { q: "Unity of God is called?", o: ["Tawheed", "Shirk", "Sunnah", "Hadith"], a: "Tawheed" },
+            { q: "Names of Allah well known?", o: ["25", "50", "99", "114"], a: "99" },
+            { q: "Eid of the week?", o: ["Monday", "Friday", "Saturday", "Sunday"], a: "Friday" },
+            { q: "Language of People of Paradise?", o: ["Hebrew", "English", "Arabic", "Persian"], a: "Arabic" },
+            { q: "Ramadan night prayer?", o: ["Tahajjud", "Taraweeh", "Ishraq", "Witr"], a: "Taraweeh" },
+            // Level 11: Islamic Months
+            { q: "Month of Hajj?", o: ["Ramadan", "Dhul-Hijjah", "Muharram", "Shawwal"], a: "Dhul-Hijjah" },
+            { q: "Month Prophet (PBUH) was born?", o: ["Rabi' al-Awwal", "Rajab", "Safar", "Muharram"], a: "Rabi' al-Awwal" },
+            { q: "Month of Eid-ul-Fitr?", o: ["Ramadan", "Shawwal", "Safar", "Rajab"], a: "Shawwal" },
+            { q: "Is the Islamic calendar Lunar or Solar?", o: ["Solar", "Lunar", "Both", "Neither"], a: "Lunar" },
+            { q: "10th day of Muharram is called?", o: ["Eid", "Ashura", "Arafat", "Layla"], a: "Ashura" },
+            // Level 12: Angels
+            { q: "Angel in charge of rain?", o: ["Jibreel", "Mikaeel", "Israfeel", "Izraeel"], a: "Mikaeel" },
+            { q: "Angel who blows the trumpet?", o: ["Mikaeel", "Israfeel", "Jibreel", "Malik"], a: "Israfeel" },
+            { q: "Angel of Death?", o: ["Izraeel", "Ridwan", "Mikaeel", "Jibreel"], a: "Izraeel" },
+            { q: "Guardian of Paradise?", o: ["Malik", "Ridwan", "Munkar", "Nakir"], a: "Ridwan" },
+            { q: "Guardian of Hellfire?", o: ["Ridwan", "Malik", "Nakir", "Israfeel"], a: "Malik" },
+            // Level 13: Scripture
+            { q: "Scripture given to Prophet Musa?", o: ["Quran", "Torah", "Injeel", "Zabur"], a: "Torah" },
+            { q: "Scripture given to Prophet Isa?", o: ["Injeel", "Torah", "Quran", "Zabur"], a: "Injeel" },
+            { q: "Scripture given to Prophet Dawud?", o: ["Zabur", "Quran", "Injeel", "Torah"], a: "Zabur" },
+            { q: "Final Scripture?", o: ["Torah", "Injeel", "Quran", "Zabur"], a: "Quran" },
+            { q: "Are the original Scrolls of Ibrahim lost?", o: ["Yes", "No", "Partially", "Unknown"], a: "Yes" },
+            // Level 14: Prophets 2
+            { q: "Prophet known as Khalilullah?", o: ["Musa", "Ibrahim", "Isa", "Adam"], a: "Ibrahim" },
+            { q: "Prophet who survived the fire?", o: ["Nuh", "Ibrahim", "Yunus", "Lut"], a: "Ibrahim" },
+            { q: "Prophet given a beautiful voice?", o: ["Dawud", "Yusuf", "Isa", "Musa"], a: "Dawud" },
+            { q: "Prophet given beauty?", o: ["Yusuf", "Dawud", "Adam", "Muhammad"], a: "Yusuf" },
+            { q: "Prophet known for patience?", o: ["Ayyub", "Adam", "Yahya", "Zakariyya"], a: "Ayyub" },
+            // Level 15: Salah
+            { q: "First prayer of the day?", o: ["Dhuhr", "Fajr", "Asr", "Maghrib"], a: "Fajr" },
+            { q: "Prayer with no sunnah?", o: ["Asr", "Maghrib", "Fajr", "Dhuhr"], a: "Asr" },
+            { q: "Prayer performed at sunset?", o: ["Maghrib", "Isha", "Asr", "Dhuhr"], a: "Maghrib" },
+            { q: "Washing before prayer?", o: ["Ghusl", "Wudu", "Tayammum", "Zakat"], a: "Wudu" },
+            { q: "Optional night prayer?", o: ["Tahajjud", "Fard", "Wajib", "Sunnah"], a: "Tahajjud" },
+            // Level 16: Family of Prophet
+            { q: "Beloved daughter of Prophet?", o: ["Aisha", "Fatima", "Zainab", "Ruqayyah"], a: "Fatima" },
+            { q: "First wife of Prophet?", o: ["Aisha", "Khadijah", "Hafsa", "Sawda"], a: "Khadijah" },
+            { q: "Prophet's grandfather?", o: ["Abu Talib", "Abdul Muttalib", "Abdullah", "Hamza"], a: "Abdul Muttalib" },
+            { q: "Prophet's uncle who supported him?", o: ["Abu Jahal", "Abu Talib", "Abu Lahab", "Abbas"], a: "Abu Talib" },
+            { q: "Prophet's grandson?", o: ["Hasan", "Ali", "Umar", "Zaid"], a: "Hasan" },
+            // Level 17: Afterlife
+            { q: "Day of Judgment in Arabic?", o: ["Yawm al-Qiyamah", "Jannah", "Jahannam", "Barzakh"], a: "Yawm al-Qiyamah" },
+            { q: "Garden of Paradise?", o: ["Jahannam", "Jannah", "Dunya", "Sidrat"], a: "Jannah" },
+            { q: "The Bridge over Hell?", o: ["Sirat", "Mizan", "Kawthar", "Araf"], a: "Sirat" },
+            { q: "The Scales of Deeds?", o: ["Mizan", "Sirat", "Mina", "Safa"], a: "Mizan" },
+            { q: "Life between death and resurrection?", o: ["Barzakh", "Dunya", "Akhirah", "Qiyamah"], a: "Barzakh" },
+            // Level 18: Manners
+            { q: "Islamic Greeting?", o: ["Hello", "Assalamu Alaikum", "Hi", "Welcome"], a: "Assalamu Alaikum" },
+            { q: "Response to a sneeze?", o: ["Bless you", "Yarhamukullah", "Alhamdulillah", "Mashallah"], a: "Yarhamukullah" },
+            { q: "Saying before eating?", o: ["Bismillah", "Alhamdulillah", "Mashallah", "Subhanallah"], a: "Bismillah" },
+            { q: "Saying after eating?", o: ["Bismillah", "Alhamdulillah", "Allahu Akbar", "Ameen"], a: "Alhamdulillah" },
+            { q: "Saying when seeing beauty?", o: ["Subhanallah", "Astaghfirullah", "Innalillah", "Walaikum"], a: "Subhanallah" },
+            // Level 19: Battles/History
+            { q: "First major battle of Islam?", o: ["Uhud", "Badr", "Khandaq", "Hunayn"], a: "Badr" },
+            { q: "City Muslims migrated to?", o: ["Cairo", "Madinah", "Taif", "Damascus"], a: "Madinah" },
+            { q: "Old name of Madinah?", o: ["Petra", "Yathrib", "Makkah", "Amman"], a: "Yathrib" },
+            { q: "The year Makkah was conquered?", o: ["6 AH", "8 AH", "10 AH", "2 AH"], a: "8 AH" },
+            { q: "The treaty between Muslims and Quraish?", o: ["Hudaibiyah", "Aqabah", "Medina", "Tabuk"], a: "Hudaibiyah" },
+            // Level 20: Excellence
+            { q: "Highest level of Paradise?", o: ["Adn", "Ma'wa", "Firdous", "Naim"], a: "Firdous" },
+            { q: "Number of gates of Jannah?", o: ["1", "5", "8", "12"], a: "8" },
+            { q: "Pond of Prophet in Afterlife?", o: ["Kawthar", "Zamzam", "Tasnim", "Salsabil"], a: "Kawthar" },
+            { q: "Is seeking knowledge mandatory?", o: ["Yes", "No", "Optional", "Only for men"], a: "Yes" },
+            { q: "The best of you is best to his...?", o: ["Friends", "Family", "Boss", "Neighbors"], a: "Family" }
         ];
-
-        // Fill remaining questions with placeholders so levels 7-20 work immediately
-        for(let i = questions.length; i < 100; i++) {
-            questions.push({
-                q: `[Level ${Math.floor(i/5)+1}] Challenge Question ${ (i%5)+1 }?`,
-                o: ["Option A", "Option B", "Correct", "Option D"],
-                a: "Correct"
-            });
-        }
 
         let curLvl = 1, qIdx = 0, score = 0, timer, timeLeft = 15, unlocked = parseInt(localStorage.getItem('islProg')) || 1;
         let deferredPrompt;
@@ -190,14 +262,14 @@
             document.getElementById('q-text').innerText = qData.q;
             document.getElementById('progress-bar').style.width = ((qIdx / 5) * 100) + "%";
             
-            if(curLvl >= 3) { // Timer starts from level 3 onwards
+            if(curLvl >= 3) { 
                 document.getElementById('timer-box').style.display = 'block'; 
                 startTimer(); 
             } else { document.getElementById('timer-box').style.display = 'none'; }
 
             const opts = document.getElementById('opt-container');
             opts.innerHTML = '';
-            qData.o.forEach(o => {
+            qData.o.sort(() => Math.random() - 0.5).forEach(o => {
                 const b = document.createElement('button'); b.className = 'option-btn';
                 b.innerText = o; b.onclick = () => check(o, qData.a);
                 opts.appendChild(b);
@@ -240,13 +312,13 @@
             document.getElementById('res-score').innerText = `${score}/5`;
             
             if(score >= 4) {
-                document.getElementById('res-msg').innerHTML = `✨ <span style="color:var(--emerald)">Congratulations!</span><br>You have mastered Level ${curLvl}!`;
+                document.getElementById('res-msg').innerHTML = `✨ <span style="color:var(--emerald)">Congratulations!</span><br>Level ${curLvl} Cleared!`;
                 if(curLvl == unlocked && unlocked < 20) {
                     unlocked++;
                     localStorage.setItem('islProg', unlocked);
                 }
             } else {
-                document.getElementById('res-msg').innerText = "You need at least 4/5 to unlock the next level.";
+                document.getElementById('res-msg').innerText = "Score 4/5 to unlock the next level.";
             }
         }
 
