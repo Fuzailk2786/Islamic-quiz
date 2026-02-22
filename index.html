@@ -80,12 +80,6 @@
         .btn-share { background: #25d366; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; margin-top: 10px; cursor: pointer; font-weight: 600; }
         .hidden { display: none; }
         
-        /* Leaderboard Table Styling */
-        .leader-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        .leader-table th { border-bottom: 2px solid var(--gold); padding: 10px; font-size: 0.9rem; }
-        .leader-table td { padding: 12px 8px; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
-        .current-user-row { background-color: var(--soft-gold); font-weight: 600; }
-
         .slide-in { animation: slideIn 0.5s forwards; }
         @keyframes slideIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
     </style>
@@ -102,23 +96,7 @@
         <div id="screen-levels">
             <h1>Islamic Quest</h1>
             <p id="user-welcome">Welcome, Seeker</p>
-            <button onclick="showLeaderboard()" style="background:none; border:none; color:var(--gold); cursor:pointer; font-weight:bold; margin-bottom:15px; text-decoration: underline;">🏆 View Leaderboard</button>
             <div class="level-grid" id="level-btns"></div>
-        </div>
-
-        <div id="screen-leaderboard" class="hidden">
-            <h2 style="color: var(--gold); font-family: 'Cinzel';">Rankings</h2>
-            <table class="leader-table">
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th style="text-align: left;">Player</th>
-                        <th>Level</th>
-                    </tr>
-                </thead>
-                <tbody id="leaderboard-body"></tbody>
-            </table>
-            <button class="btn-action" onclick="showMenu()">Back to Menu</button>
         </div>
 
         <div id="screen-quiz" class="hidden">
@@ -143,7 +121,7 @@
     <div id="login-popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:2000; justify-content:center; align-items:center;">
         <div style="background:#064e3b; padding:30px; border-radius:15px; text-align:center; border:2px solid #fbbf24; max-width:300px;">
             <h3 style="color:#fbbf24;">Save Your Progress?</h3>
-            <p style="color:white;">Sign in with Google to secure your levels and join the global leaderboard.</p>
+            <p style="color:white;">Sign in with Google to secure your levels and achievements.</p>
             <div id="buttonDiv" style="margin:20px 0; display: flex; justify-content: center;"></div>
             <button onclick="continueAsGuest()" style="background:transparent; color:#fbbf24; border:none; cursor:pointer; text-decoration:underline;">Maybe Later (Play as Guest)</button>
         </div>
@@ -185,7 +163,6 @@
             return t[Math.floor(Math.random()*4)] + "_" + n[Math.floor(Math.random()*4)] + "_" + Math.floor(1000 + Math.random()*9000);
         }
 
-        // --- GOOGLE CLIENT ID ADDED HERE ---
         function renderGoogleButton() {
             google.accounts.id.initialize({
                 client_id: "597954711501-cpeqh0hfthr0399boj6fp86vt89k2gma.apps.googleusercontent.com",
@@ -206,36 +183,6 @@
             document.getElementById('login-popup').style.display = 'none';
             localStorage.setItem('user_profile', JSON.stringify(currentUser));
             showMenu();
-        }
-
-        // --- STEP B: LEADERBOARD LOGIC ---
-        function showLeaderboard() {
-            document.querySelectorAll('#quiz-card > div').forEach(d => d.classList.add('hidden'));
-            document.getElementById('screen-leaderboard').classList.remove('hidden');
-
-            // Simulated players mixed with your real progress
-            const players = [
-                { name: "Sultan_Ahmed", level: 10, isGuest: false },
-                { name: "Scholar_Zaid", level: 8, isGuest: false },
-                { name: currentUser.name, level: unlocked, isCurrent: true, isGuest: currentUser.isGuest },
-                { name: "Wise_Seeker", level: 5, isGuest: true },
-                { name: "Brave_Traveler", level: 3, isGuest: true }
-            ];
-
-            players.sort((a, b) => b.level - a.level);
-            const tbody = document.getElementById('leaderboard-body');
-            tbody.innerHTML = '';
-
-            players.forEach((p, i) => {
-                const row = document.createElement('tr');
-                if(p.isCurrent) row.className = 'current-user-row';
-                row.innerHTML = `
-                    <td>${i + 1}</td>
-                    <td style="text-align: left;">${p.name} ${p.isGuest ? '(Guest)' : '⭐'}</td>
-                    <td>Lvl ${p.level}</td>
-                `;
-                tbody.appendChild(row);
-            });
         }
 
         function toggleTheme() {
@@ -271,3 +218,80 @@
         function loadQ() {
             clearInterval(timer);
             const qData = questions[((curLvl-1)*10) + qIdx];
+            if(!qData) return finishLvl();
+            
+            document.getElementById('q-count').innerText = `Level ${curLvl} - Question ${qIdx+1}/10`;
+            const qText = document.getElementById('q-text');
+            qText.innerText = qData.q;
+            qText.classList.remove('slide-in');
+            void qText.offsetWidth; 
+            qText.classList.add('slide-in');
+
+            document.getElementById('progress-bar').style.width = ((qIdx / 10) * 100) + "%";
+
+            if(curLvl == 10) { document.getElementById('timer-box').style.display = 'block'; startTimer(); }
+            else { document.getElementById('timer-box').style.display = 'none'; }
+
+            const opts = document.getElementById('opt-container');
+            opts.innerHTML = '';
+            qData.o.forEach(o => {
+                const b = document.createElement('button');
+                b.className = 'option-btn';
+                b.innerText = o;
+                b.onclick = () => check(o, qData.a);
+                opts.appendChild(b);
+            });
+        }
+
+        function startTimer() {
+            timeLeft = 15;
+            document.getElementById('time-left').innerText = timeLeft;
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('time-left').innerText = timeLeft;
+                if(timeLeft <= 0) { clearInterval(timer); timeOut(); }
+            }, 1000);
+        }
+
+        function timeOut() { popModal("⏰ Time's Up!", "Try again!", true); }
+
+        function check(sel, cor) {
+            clearInterval(timer);
+            if(sel === cor) { 
+                score++; 
+                if ("vibrate" in navigator) navigator.vibrate(50);
+                popModal("✨ Mashallah!", "Correct answer!", false); 
+            } else { 
+                if ("vibrate" in navigator) navigator.vibrate([100, 50, 100]);
+                popModal("❌ Incorrect", `Correct: ${cor}`, false); 
+            }
+        }
+
+        function popModal(stat, txt, isFail) {
+            document.getElementById('m-status').innerText = stat;
+            document.getElementById('m-text').innerText = txt;
+            const btn = document.getElementById('m-btn');
+            if(isFail) { btn.innerText = "Back to Menu"; btn.onclick = showMenu; }
+            else { btn.innerText = "Next Question"; btn.onclick = nextQ; }
+            document.getElementById('modal-feedback').style.display = 'flex';
+        }
+
+        function nextQ() {
+            document.getElementById('modal-feedback').style.display = 'none';
+            qIdx++;
+            if(qIdx < 10) loadQ();
+            else finishLvl();
+        }
+
+        function finishLvl() {
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-result').classList.remove('hidden');
+            document.getElementById('res-score').innerText = `${score}/10`;
+            
+            if(score >= 7) {
+                document.getElementById('res-msg').innerText = "Level Passed!";
+                if(curLvl == unlocked && unlocked < 10) { 
+                    unlocked++; 
+                    localStorage.setItem('islProg', unlocked); 
+                }
+                if(
