@@ -255,6 +255,7 @@
             document.getElementById('screen-quiz').classList.add('hidden');
             document.getElementById('screen-result').classList.remove('hidden');
             document.getElementById('res-score').innerText = `${score}/5`;
+            
             if(score >= 4) {
                 document.getElementById('res-msg').innerText = "Mubarak! Fast " + curLvl + " complete.";
                 if(curLvl === userProgress) {
@@ -264,7 +265,18 @@
             } else {
                 document.getElementById('res-msg').innerText = "Score 4/5 to unlock next level.";
             }
-            const shareMsg = encodeURIComponent(`🌙 *Ramadan Quest 2026* 🌙\n\nI just completed Day ${curLvl} with a score of ${score}/5! 🕋\n\nJoin me in this spiritual journey!`);
+
+            // --- WHATSAPP LINK UPDATE ---
+            // 1. Replace 'https://yourlinkhere.com' with your actual website URL
+            const appUrl = "https://yourlinkhere.com"; 
+            
+            const shareMsg = encodeURIComponent(
+                `🌙 *Ramadan Quest 2026* 🌙\n\n` +
+                `I just completed Day ${curLvl} with a score of ${score}/5! 🕋\n\n` +
+                `Challenge yourself and learn more about our Deen here:\n` +
+                `${appUrl}`
+            );
+            
             document.getElementById('whatsapp-share').href = `https://wa.me/?text=${shareMsg}`;
         }
 
@@ -272,3 +284,4 @@
     </script>
 </body>
 </html>
+
