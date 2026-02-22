@@ -6,7 +6,7 @@
     <title>Islamic Quest - 100 Challenges</title>
     
     <meta property="og:title" content="Islamic Quest - Test Your Knowledge">
-    <meta property="og:description" content="I'm playing the Islamic Quiz Challenge. Can you beat my score?">
+    <meta property="og:description" content="I'm playing the 100 Levels Islamic Quiz. Can you beat my score?">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://your-app-name.netlify.app">
     
@@ -34,75 +34,39 @@
             padding: 20px; box-sizing: border-box;
         }
 
-        /* Responsive Card Design */
         #quiz-card {
-            background: var(--card-bg); 
-            width: 100%; 
-            max-width: 500px; /* Desktop width */
-            padding: 2rem;
-            border-radius: 24px; 
-            box-shadow: 0 20px 40px var(--shadow);
-            border: 1px solid var(--border); 
-            position: relative; 
-            text-align: center;
+            background: var(--card-bg); width: 100%; max-width: 500px; padding: 2rem;
+            border-radius: 24px; box-shadow: 0 20px 40px var(--shadow);
+            border: 1px solid var(--border); position: relative; text-align: center;
         }
 
-        /* Tablet Adjustments */
-        @media (min-width: 768px) {
-            #quiz-card { max-width: 600px; padding: 3rem; }
-            h1 { font-size: 2rem !important; }
-        }
+        @media (min-width: 768px) { #quiz-card { max-width: 600px; padding: 3rem; } }
+        @media (max-width: 480px) { #quiz-card { padding: 1.5rem; } .level-grid { grid-template-columns: 1fr 1fr; } }
 
-        /* Mobile Adjustments */
-        @media (max-width: 480px) {
-            #quiz-card { padding: 1.5rem; border-radius: 15px; }
-            .level-grid { grid-template-columns: 1fr; } /* Stack buttons on small phones */
-        }
-
-        .progress-container {
-            width: 100%; height: 8px; background: rgba(0, 0, 0, 0.1);
-            border-radius: 10px; margin-bottom: 20px; overflow: hidden;
-        }
-        #progress-bar {
-            width: 0%; height: 100%; background: linear-gradient(90deg, #fbbf24, #f59e0b);
-            transition: width 0.4s ease;
-        }
-        .theme-toggle {
-            position: absolute; top: 15px; right: 15px; background: none;
-            border: 1px solid var(--emerald); border-radius: 50%; cursor: pointer;
-            width: 35px; height: 35px; color: var(--emerald); font-size: 1.2rem;
-        }
+        .progress-container { width: 100%; height: 8px; background: rgba(0,0,0,0.1); border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
+        #progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #fbbf24, #f59e0b); transition: width 0.4s ease; }
+        
+        .theme-toggle { position: absolute; top: 15px; right: 15px; background: none; border: 1px solid var(--emerald); border-radius: 50%; cursor: pointer; width: 35px; height: 35px; color: var(--emerald); font-size: 1.2rem; }
+        
         h1 { font-family: 'Cinzel', serif; font-size: 1.5rem; margin-top: 0; }
-        .level-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
-        .level-btn {
-            padding: 18px; border-radius: 12px; border: 2px solid var(--emerald);
-            background: none; color: var(--text-main); font-weight: 600; cursor: pointer;
-            transition: 0.2s; font-size: 1rem;
-        }
-        .level-btn.locked { opacity: 0.4; cursor: not-allowed; border-color: var(--border); }
+        .level-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px; }
+        .level-btn { padding: 12px 5px; border-radius: 10px; border: 2px solid var(--emerald); background: none; color: var(--text-main); font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
+        .level-btn.locked { opacity: 0.3; cursor: not-allowed; border-color: var(--border); }
         .level-btn:not(.locked):hover { background: var(--emerald); color: white; }
 
-        .option-btn {
-            width: 100%; padding: 14px; margin: 8px 0; border-radius: 10px;
-            border: 1px solid var(--border); background: var(--card-bg);
-            color: var(--text-main); cursor: pointer; transition: 0.2s; font-size: 1rem;
-        }
+        .option-btn { width: 100%; padding: 14px; margin: 8px 0; border-radius: 10px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-main); cursor: pointer; transition: 0.2s; font-size: 1rem; }
         .option-btn:hover { border-color: var(--gold); background: var(--soft-gold); }
 
-        /* Buttons */
         .btn-action { background: var(--emerald); color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; }
         .btn-share { background: #25d366; color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; margin-top: 10px; cursor: pointer; font-weight: 600; }
         .btn-install { background: var(--gold); color: white; border: none; padding: 10px; width: 100%; border-radius: 8px; margin-top: 20px; cursor: pointer; font-weight: 600; display: none; }
 
-        .modal-overlay {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-            justify-content: center; align-items: center; z-index: 100; padding: 20px;
-        }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 100; padding: 20px; }
         .modal { background: var(--card-bg); padding: 2rem; border-radius: 20px; max-width: 400px; width: 100%; border-top: 5px solid var(--gold); text-align: center; }
         
         .hidden { display: none; }
         .slide-in { animation: slideIn 0.5s forwards; }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
     </style>
 </head>
 <body data-theme="light">
@@ -110,39 +74,29 @@
     <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
 
     <div id="quiz-card">
-        <div class="progress-container">
-            <div id="progress-bar"></div>
-        </div>
+        <div class="progress-container"><div id="progress-bar"></div></div>
 
         <div id="screen-levels">
             <h1>Islamic Quest</h1>
-            <p id="user-welcome">Welcome, Seeker</p>
+            <p id="user-welcome" style="margin-bottom: 5px;">Welcome, Seeker</p>
+            <p style="font-size: 0.8rem; margin-bottom: 15px;">Unlock all 20 Levels</p>
             <div class="level-grid" id="level-btns"></div>
-            <button id="installBtn" class="btn-install">📲 Install App for Offline Play</button>
+            <button id="installBtn" class="btn-install">📲 Install App</button>
         </div>
 
         <div id="screen-quiz" class="hidden">
             <div id="timer-box" style="font-weight:700; color:var(--gold); margin-bottom:10px;">Time: <span id="time-left">15</span>s</div>
             <p id="q-count" style="font-size: 0.8rem; opacity: 0.8;"></p>
-            <h2 id="q-text" class="slide-in" style="font-size: 1.1rem;"></h2>
+            <h2 id="q-text" class="slide-in" style="font-size: 1.1rem; min-height: 3em;"></h2>
             <div id="opt-container"></div>
         </div>
 
         <div id="screen-result" class="hidden">
-            <h2 id="res-title">Finished!</h2>
+            <h2 id="res-title">Level Result</h2>
             <div style="font-size: 3rem; font-weight: 700; color: var(--gold);" id="res-score">0/5</div>
-            <p id="res-msg"></p>
-            <button class="btn-action" onclick="showMenu()">Back to Levels</button>
-            <button class="btn-share" onclick="shareMe()">Share on WhatsApp</button>
-        </div>
-    </div>
-
-    <div id="login-popup" class="modal-overlay" style="z-index: 2000;">
-        <div class="modal" style="background:#064e3b; color:white;">
-            <h3 style="color:#fbbf24;">Save Your Progress?</h3>
-            <p>Sign in with Google to secure your levels.</p>
-            <div id="buttonDiv" style="margin:20px 0; display: flex; justify-content: center;"></div>
-            <button onclick="continueAsGuest()" style="background:transparent; color:#fbbf24; border:none; cursor:pointer; text-decoration:underline;">Play as Guest</button>
+            <p id="res-msg" style="font-weight: 600; margin-bottom: 20px;"></p>
+            <button class="btn-action" onclick="showMenu()">Continue Journey</button>
+            <button class="btn-share" onclick="shareMe()">Share Progress</button>
         </div>
     </div>
 
@@ -155,9 +109,168 @@
     </div>
 
     <script>
-        // --- DATA & LOGIC ---
         const questions = [
+            // Level 1: Basics
             { q: "Who was the first Prophet?", o: ["Isa", "Adam", "Nuh", "Musa"], a: "Adam" },
-            { q: "How many daily prayers?", o: ["3", "4", "5", "6"], a: "5" },
-            { q: "Month of fasting?", o: ["Safar", "Ramadan", "Rajab", "Shawwal"], a: "Ramadan" },
-            { q: "First month of Hijri calendar?", o: ["Muharram", "Ramadan", "Safar", "Hajj"], a: "Muharram" },
+            { q: "How many daily prayers are mandatory?", o: ["3", "4", "5", "6"], a: "5" },
+            { q: "Which month is for fasting?", o: ["Safar", "Ramadan", "Rajab", "Shawwal"], a: "Ramadan" },
+            { q: "What is the first month of Hijri calendar?", o: ["Muharram", "Ramadan", "Safar", "Hajj"], a: "Muharram" },
+            { q: "Which Prophet built the Ark?", o: ["Musa", "Nuh", "Ibrahim", "Isa"], a: "Nuh" },
+            // Level 2: Pillars
+            { q: "The Holy Book of Islam?", o: ["Torah", "Zabur", "Injeel", "Quran"], a: "Quran" },
+            { q: "House of Allah in Makkah?", o: ["Aqsa", "Kaaba", "Nabawi", "Quba"], a: "Kaaba" },
+            { q: "Who was the last Prophet?", o: ["Muhammad (PBUH)", "Isa", "Musa", "Yusuf"], a: "Muhammad (PBUH)" },
+            { q: "Arabic word for fasting?", o: ["Zakat", "Salah", "Sawm", "Hajj"], a: "Sawm" },
+            { q: "Number of Pillars in Islam?", o: ["3", "4", "5", "6"], a: "5" },
+            // Level 3: Prophets
+            { q: "Which Prophet split the sea?", o: ["Ibrahim", "Musa", "Isa", "Adam"], a: "Musa" },
+            { q: "City where Prophet (PBUH) was born?", o: ["Madinah", "Makkah", "Taif", "Riyadh"], a: "Makkah" },
+            { q: "Angel of Revelation?", o: ["Mikaeel", "Jibreel", "Israfeel", "Izraeel"], a: "Jibreel" },
+            { q: "Prophet who spoke to animals?", o: ["Sulaiman", "Dawud", "Yusuf", "Musa"], a: "Sulaiman" },
+            { q: "Well that sprang for Hajar (AS)?", o: ["Zamzam", "Kauthar", "Tasnim", "Salsabil"], a: "Zamzam" },
+            // Level 4: Quran
+            { q: "How many chapters (Surahs) in Quran?", o: ["110", "114", "124", "130"], a: "114" },
+            { q: "The shortest Surah in the Quran?", o: ["Al-Ikhlas", "Al-Asr", "Al-Kauthar", "Al-Nas"], a: "Al-Kauthar" },
+            { q: "The longest Surah in the Quran?", o: ["Al-Imran", "Al-Baqarah", "Al-Nisa", "Al-Maidah"], a: "Al-Baqarah" },
+            { q: "First word revealed of the Quran?", o: ["Islam", "Allah", "Iqra", "Salah"], a: "Iqra" },
+            { q: "In which language was Quran revealed?", o: ["Hebrew", "Persian", "Arabic", "Urdu"], a: "Arabic" },
+            // Level 5: Sahaba
+            { q: "First man to embrace Islam?", o: ["Umar", "Abu Bakr", "Ali", "Uthman"], a: "Abu Bakr" },
+            { q: "Who was known as Al-Farooq?", o: ["Uthman", "Umar ibn Al-Khattab", "Ali", "Abu Bakr"], a: "Umar ibn Al-Khattab" },
+            { q: "Which Sahabi was known as Dhun-Nurayn?", o: ["Ali", "Uthman ibn Affan", "Hamza", "Zaid"], a: "Uthman ibn Affan" },
+            { q: "The cousin of Prophet (PBUH) who married Fatima?", o: ["Umar", "Abu Bakr", "Ali ibn Abi Talib", "Uthman"], a: "Ali ibn Abi Talib" },
+            { q: "First Muezzin of Islam?", o: ["Zaid", "Bilal ibn Rabah", "Ammar", "Anas"], a: "Bilal ibn Rabah" },
+            // Level 6-20: Simplified logic placeholders for brevity (You can fill specific Qs here)
+            { q: "How many Prophets are mentioned in Quran?", o: ["10", "25", "50", "99"], a: "25" },
+            { q: "Which Prophet was swallowed by a whale?", o: ["Yunus", "Musa", "Isa", "Adam"], a: "Yunus" },
+            { q: "The wife of Prophet (PBUH) - Mother of believers?", o: ["Khadijah", "Fatima", "Asiya", "Maryam"], a: "Khadijah" },
+            { q: "Direction faced during prayer?", o: ["East", "West", "Qibla", "North"], a: "Qibla" },
+            { q: "What is the charity given to poor?", o: ["Zakat", "Hajj", "Sawm", "Salah"], a: "Zakat" }
+            // Note: I've included the structure. To reach 100, continue adding 5 per level below.
+        ];
+
+        // Fill remaining questions with placeholders so levels 7-20 work immediately
+        for(let i = questions.length; i < 100; i++) {
+            questions.push({
+                q: `[Level ${Math.floor(i/5)+1}] Challenge Question ${ (i%5)+1 }?`,
+                o: ["Option A", "Option B", "Correct", "Option D"],
+                a: "Correct"
+            });
+        }
+
+        let curLvl = 1, qIdx = 0, score = 0, timer, timeLeft = 15, unlocked = parseInt(localStorage.getItem('islProg')) || 1;
+        let deferredPrompt;
+
+        function showMenu() {
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-result').classList.add('hidden');
+            document.getElementById('screen-levels').classList.remove('hidden');
+            const grid = document.getElementById('level-btns');
+            grid.innerHTML = '';
+            for(let i=1; i<=20; i++) {
+                const btn = document.createElement('button');
+                btn.className = `level-btn ${i > unlocked ? 'locked' : ''}`;
+                btn.innerText = i;
+                if(i <= unlocked) btn.onclick = () => startLvl(i);
+                grid.appendChild(btn);
+            }
+        }
+
+        function startLvl(l) {
+            curLvl = l; qIdx = 0; score = 0;
+            document.getElementById('screen-levels').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.remove('hidden');
+            loadQ();
+        }
+
+        function loadQ() {
+            clearInterval(timer);
+            const qData = questions[((curLvl - 1) * 5) + qIdx];
+            document.getElementById('q-count').innerText = `Level ${curLvl} - Question ${qIdx+1}/5`;
+            document.getElementById('q-text').innerText = qData.q;
+            document.getElementById('progress-bar').style.width = ((qIdx / 5) * 100) + "%";
+            
+            if(curLvl >= 3) { // Timer starts from level 3 onwards
+                document.getElementById('timer-box').style.display = 'block'; 
+                startTimer(); 
+            } else { document.getElementById('timer-box').style.display = 'none'; }
+
+            const opts = document.getElementById('opt-container');
+            opts.innerHTML = '';
+            qData.o.forEach(o => {
+                const b = document.createElement('button'); b.className = 'option-btn';
+                b.innerText = o; b.onclick = () => check(o, qData.a);
+                opts.appendChild(b);
+            });
+        }
+
+        function startTimer() {
+            timeLeft = 15; document.getElementById('time-left').innerText = timeLeft;
+            timer = setInterval(() => {
+                timeLeft--; document.getElementById('time-left').innerText = timeLeft;
+                if(timeLeft <= 0) { clearInterval(timer); check("TIMEOUT", ""); }
+            }, 1000);
+        }
+
+        function check(sel, cor) {
+            clearInterval(timer);
+            if(sel === cor) { score++; popModal("✨ Mashallah!", "That is correct!", false); }
+            else { popModal("❌ Try Again", sel === "TIMEOUT" ? "Time ran out!" : `The correct answer was: ${cor}`, false); }
+        }
+
+        function popModal(stat, txt, isFail) {
+            document.getElementById('m-status').innerText = stat;
+            document.getElementById('m-text').innerText = txt;
+            const btn = document.getElementById('m-btn');
+            btn.innerText = "Next";
+            btn.onclick = nextQ;
+            document.getElementById('modal-feedback').style.display = 'flex';
+        }
+
+        function nextQ() {
+            document.getElementById('modal-feedback').style.display = 'none';
+            qIdx++;
+            if(qIdx < 5) loadQ();
+            else finishLvl();
+        }
+
+        function finishLvl() {
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-result').classList.remove('hidden');
+            document.getElementById('res-score').innerText = `${score}/5`;
+            
+            if(score >= 4) {
+                document.getElementById('res-msg').innerHTML = `✨ <span style="color:var(--emerald)">Congratulations!</span><br>You have mastered Level ${curLvl}!`;
+                if(curLvl == unlocked && unlocked < 20) {
+                    unlocked++;
+                    localStorage.setItem('islProg', unlocked);
+                }
+            } else {
+                document.getElementById('res-msg').innerText = "You need at least 4/5 to unlock the next level.";
+            }
+        }
+
+        function toggleTheme() {
+            const t = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            document.body.setAttribute('data-theme', t);
+        }
+
+        function shareMe() {
+            const siteUrl = window.location.href;
+            const text = `🌙 I just completed Level ${curLvl} of Islamic Quest! Can you beat my score? Play here: ${siteUrl}`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
+        }
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault(); deferredPrompt = e;
+            document.getElementById('installBtn').style.display = 'block';
+        });
+
+        document.getElementById('installBtn').addEventListener('click', async () => {
+            if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; }
+        });
+
+        window.onload = showMenu;
+    </script>
+</body>
+</html>
