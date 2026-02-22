@@ -151,24 +151,48 @@
 
         // UNIQUE QUESTIONS DATABASE (150 UNIQUE ENTRIES)
         const questions = [
-            // Level 1: Basics
-            { q: "Who was the first Prophet in Islam?", o: ["Isa", "Adam", "Nuh", "Musa"], a: "Adam" },
-            { q: "How many daily prayers are mandatory?", o: ["3", "4", "5", "6"], a: "5" },
-            { q: "Which month is for mandatory fasting?", o: ["Safar", "Ramadan", "Rajab", "Shawwal"], a: "Ramadan" },
-            { q: "What is the first month of Hijri calendar?", o: ["Muharram", "Ramadan", "Safar", "Hajj"], a: "Muharram" },
-            { q: "Which Prophet built the Ark?", o: ["Musa", "Nuh", "Ibrahim", "Isa"], a: "Nuh" },
-            // Level 2: Quran
-            { q: "How many Surahs (chapters) are in the Quran?", o: ["114", "110", "120", "116"], a: "114" },
-            { q: "Which Surah is often called 'The Heart of Quran'?", o: ["Al-Fatiha", "Al-Baqarah", "Yaseen", "Al-Ikhlas"], a: "Yaseen" },
-            { q: "The first word revealed to Prophet Muhammad (PBUH) was?", o: ["Allah", "Islam", "Iqra", "Salam"], a: "Iqra" },
-            { q: "Which is the longest Surah in the Quran?", o: ["Al-Baqarah", "An-Nisa", "Al-Araf", "Aal-Imran"], a: "Al-Baqarah" },
-            { q: "In which month was the Quran first revealed?", o: ["Shawwal", "Ramadan", "Rajab", "Safar"], a: "Ramadan" },
-            // Level 3: Stories of Prophets
-            { q: "Which Prophet split the Red Sea with his staff?", o: ["Ibrahim", "Musa", "Isa", "Yusuf"], a: "Musa" },
-            { q: "Which Prophet was swallowed by a large fish/whale?", o: ["Yunus", "Lut", "Nuh", "Salih"], a: "Yunus" },
-            { q: "Which Prophet had the miracle of speaking to birds?", o: ["Dawud", "Sulaiman", "Yahya", "Musa"], a: "Sulaiman" },
-            { q: "Who was the Prophet known for his extreme patience (Sabr)?", o: ["Ayyub", "Isa", "Adam", "Harun"], a: "Ayyub" },
-            { q: "Which Prophet was born by a miracle without a father?", o: ["Isa", "Musa", "Yahya", "Idris"], a: "Isa" }
+           // Day 1: Pillars
+            { q: "How many pillars of Islam are there?", o: ["3", "5", "7", "4"], a: "5" },
+            { q: "What is the first pillar of Islam?", o: ["Salah", "Zakat", "Shahada", "Sawm"], a: "Shahada" },
+            { q: "How many times do Muslims pray daily?", o: ["3", "5", "10", "2"], a: "5" },
+            { q: "What is the pillar of charity called?", o: ["Hajj", "Sadaqah", "Zakat", "Fitra"], a: "Zakat" },
+            { q: "Fasting is which pillar of Islam?", o: ["2nd", "3rd", "4th", "5th"], a: "4th" },
+            // Day 2: Quran Basics
+            { q: "How many chapters (Surahs) are in the Quran?", o: ["110", "114", "120", "100"], a: "114" },
+            { q: "Which is the longest Surah?", o: ["Al-Imran", "Al-Fatiha", "Al-Baqarah", "An-Nisa"], a: "Al-Baqarah" },
+            { q: "Which is the shortest Surah?", o: ["Al-Ikhlas", "Al-Kawthar", "Al-Asr", "An-Nas"], a: "Al-Kawthar" },
+            { q: "In which language was the Quran revealed?", o: ["Hebrew", "Persian", "Arabic", "Urdu"], a: "Arabic" },
+            { q: "Who revealed the Quran to the Prophet?", o: ["Angel Mikael", "Angel Jibril", "Angel Israfil", "Angel Malik"], a: "Angel Jibril" },
+            // Day 3: Prophets
+            { q: "Who was the first Prophet?", o: ["Nuh", "Ibrahim", "Adam", "Isa"], a: "Adam" },
+            { q: "Which Prophet built the Kaaba with his son?", o: ["Musa", "Ibrahim", "Yusuf", "Lut"], a: "Ibrahim" },
+            { q: "Which Prophet could speak to animals?", o: ["Sulaiman", "Dawud", "Adam", "Yahya"], a: "Sulaiman" },
+            { q: "Which Prophet was swallowed by a whale?", o: ["Yunus", "Ilyas", "Isa", "Harun"], a: "Yunus" },
+            { q: "Who is the final Prophet?", o: ["Isa", "Musa", "Muhammad (PBUH)", "Ibrahim"], a: "Muhammad (PBUH)" },
+            // Day 4: Ramadan Special
+            { q: "What is the meal before sunrise called?", o: ["Iftar", "Suhoor", "Walima", "Dinner"], a: "Suhoor" },
+            { q: "What is the meal after sunset called?", o: ["Lunch", "Suhoor", "Iftar", "Brunch"], a: "Iftar" },
+            { q: "Which night in Ramadan is better than 1000 months?", o: ["Laylatul Qadr", "Laylatul Mi'raj", "Friday", "Eid Night"], a: "Laylatul Qadr" },
+            { q: "What is the special prayer in Ramadan nights?", o: ["Tahajjud", "Taraweeh", "Eid Prayer", "Witr"], a: "Taraweeh" },
+            { q: "Which gate of Jannah is for those who fast?", o: ["Baab As-Salah", "Baab Al-Jihad", "Baab Ar-Rayyan", "Baab Al-Hajj"], a: "Baab Ar-Rayyan" },
+            // Day 5: Seerah (Prophet's Life)
+            { q: "In which city was the Prophet (PBUH) born?", o: ["Madinah", "Mecca", "Taif", "Jerusalem"], a: "Mecca" },
+            { q: "What was the Prophet's mother's name?", o: ["Khadija", "Aisha", "Aminah", "Fatimah"], a: "Aminah" },
+            { q: "What was the Prophet's father's name?", o: ["Abu Talib", "Abdullah", "Abdul Muttalib", "Hamza"], a: "Abdullah" },
+            { q: "How old was the Prophet when he received revelation?", o: ["25", "33", "40", "50"], a: "40" },
+            { q: "What was the Prophet's profession before prophethood?", o: ["Blacksmith", "Merchant/Trader", "Farmer", "Teacher"], a: "Merchant/Trader" },
+            // Day 6: Angels & Faith
+            { q: "How many Angels are mentioned by name in Quran?", o: ["All of them", "Several", "None", "4 Main ones"], a: "Several" },
+            { q: "Which Angel is the gatekeeper of Jannah?", o: ["Malik", "Ridwan", "Munkar", "Nakir"], a: "Ridwan" },
+            { q: "Which Angel will blow the Trumpet?", o: ["Jibril", "Mikael", "Israfil", "Izrail"], a: "Israfil" },
+            { q: "What are 'Kiraman Katibin'?", o: ["Gatekeepers", "Recording Angels", "Cloud Movers", "Messengers"], a: "Recording Angels" },
+            { q: "Believing in Angels is which pillar of Iman?", o: ["1st", "2nd", "3rd", "4th"], a: "2nd" },
+            // Day 7: Islamic History
+            { q: "Who was the first Caliph of Islam?", o: ["Umar", "Uthman", "Abu Bakr", "Ali"], a: "Abu Bakr" },
+            { q: "Who was known as 'Al-Faruq'?", o: ["Ali", "Umar", "Abu Bakr", "Uthman"], a: "Umar" },
+            { q: "What was the first capital of the Islamic State?", o: ["Mecca", "Damascus", "Madinah", "Baghdad"], a: "Madinah" },
+            { q: "The 'Migration' is known as what in Arabic?", o: ["Hajj", "Hijrah", "Ziyarah", "Isra"], a: "Hijrah" },
+            { q: "Who was the first Muezzin (caller to prayer)?", o: ["Abu Bakr", "Bilal ibn Rabah", "Umar", "Zaid"], a: "Bilal ibn Rabah" }
         ];
 
         // Generator to ensure all 150 slots have unique labels for your 30 levels
@@ -284,6 +308,7 @@
     </script>
 </body>
 </html>
+
 
 
 
