@@ -64,6 +64,9 @@
         .btn-action { background: var(--emerald); color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 15px; }
         .btn-restart { background: var(--gold); color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; }
         .btn-whatsapp { background: var(--whatsapp); color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
+        
+        /* Install Button Styling */
+        #btn-install { background: #3b82f6; color: white; border: none; padding: 10px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; display: none; }
 
         .feedback-section { margin-top: 25px; padding-top: 20px; border-top: 1px dashed var(--border); }
         .feedback-section h3 { font-size: 1rem; color: var(--text-main); margin-bottom: 10px; }
@@ -98,6 +101,8 @@
 
             <div id="fast-counter" class="ramadan-status">Loading...</div>
             <div class="level-grid" id="level-btns"></div>
+
+            <button id="btn-install">📲 Install App for Offline Access</button>
             
             <div class="feedback-section">
                 <h3>💡 Feedback & Suggestions</h3>
@@ -131,7 +136,8 @@
     </div>
 
     <script>
-        const RAMADAN_START = new Date('2026-02-18T00:00:00'); 
+        // FIXED DATE LOGIC FOR 2026
+        const RAMADAN_START = new Date('2026-02-18'); 
         
         function toggleTheme() {
             const body = document.body;
@@ -145,9 +151,10 @@
         }
 
         function getCurrentFastDay() {
-            const today = new Date();
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
             const diffTime = today - RAMADAN_START;
-            const day = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            const day = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
             return day < 0 ? 0 : (day > 30 ? 30 : day);
         }
 
@@ -174,7 +181,7 @@
             { u: "صدقہ بلاؤں کو ٹالتا ہے", h: "Sadaqah balaon ko taalta hai." },
             { u: "قرآن دلوں کا سکون ہے", h: "Quran dilon ka sukoon hai." },
             { u: "حیا ایمان کا حصہ ہے", h: "Haya imaan ka hissa hai." },
-            { u: "اپنے بھائی کے لیے وہی پسند کرو جو خود کے لیے", h: "Apne bhai ke liye wahi pasand karo jo khud کے لیے." },
+            { u: "اپنے بھائی کے لیے وہی پسند کرو جو خود کے لیے", h: "Apne bhai ke liye wahi pasand karo jo khud ke liye." },
             { u: "اللہ ہر چیز پر قادر ہے", h: "Allah har cheez par qadir hai." },
             { u: "رمضان میں جنت کے دروازے کھل جاتے ہیں", h: "Ramadan mein Jannat ke darwaze khul jate hain." },
             { u: "لیلۃ القدر ہزار مہینوں سے بہتر ہے", h: "Laylatul Qadr hazaar mahinon se behtar hai." },
@@ -345,10 +352,31 @@
             }
         }
         
-        window.onload = () => {
-             // If user reloads, skip overlay if already started, 
-             // but here we keep it for the 'Bismillah' experience.
-        };
+        // --- INSTALL APP (PWA) LOGIC ---
+        let deferredPrompt;
+        const installBtn = document.getElementById('btn-install');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'block'; // Only show if app isn't installed
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installBtn.style.display = 'none';
+                }
+                deferredPrompt = null;
+            }
+        });
+
+        window.addEventListener('appinstalled', () => {
+            installBtn.style.display = 'none';
+            console.log('App was installed');
+        });
     </script>
 </body>
 </html>
