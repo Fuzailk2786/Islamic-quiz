@@ -340,7 +340,9 @@
                 document.getElementById('res-msg').innerText = "Try again to unlock the next level!";
             }
             
-            const shareText = `I scored ${score}/5 on Day ${curLvl} of Ramadan Quest 2026! 🌙✨`;
+            // Updated Share Link logic to include the website URL
+            const appUrl = window.location.href;
+            const shareText = `I scored ${score}/5 on Day ${curLvl} of Ramadan Quest 2026! 🌙✨\n\nPlay here: ${appUrl}`;
             document.getElementById('whatsapp-share').href = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
         }
 
