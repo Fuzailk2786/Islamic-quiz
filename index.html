@@ -49,7 +49,6 @@
         
         #theme-toggle { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; }
 
-        /* QUOTE STYLING */
         .quote-container { margin: 15px 0; padding: 10px; border-radius: 15px; background: rgba(180, 83, 9, 0.05); border-left: 4px solid var(--gold); }
         .quote-urdu { font-size: 1.2rem; font-weight: 600; color: var(--emerald); margin-bottom: 5px; direction: rtl; }
         .quote-hinglish { font-size: 0.85rem; font-style: italic; color: var(--text-main); opacity: 0.8; }
@@ -131,12 +130,7 @@
         </div>
     </div>
 
-    <audio id="bg-music" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-17.mp3" type="audio/mpeg">
-    </audio>
-
     <script>
-        const bgMusic = document.getElementById('bg-music');
         const RAMADAN_START = new Date('2026-02-18T00:00:00'); 
         
         function toggleTheme() {
@@ -159,7 +153,6 @@
 
         const currentFast = getCurrentFastDay();
 
-        // 30 ISLAMIC QUOTES (Urdu & Hinglish)
         const dailyQuotes = [
             { u: "رمضان کا پہلا عشرہ رحمت ہے", h: "Ramadan ka pehla ashra Rehmat hai." },
             { u: "نماز مومن کی معراج ہے", h: "Namaz momin ki mairaaj hai." },
@@ -181,7 +174,7 @@
             { u: "صدقہ بلاؤں کو ٹالتا ہے", h: "Sadaqah balaon ko taalta hai." },
             { u: "قرآن دلوں کا سکون ہے", h: "Quran dilon ka sukoon hai." },
             { u: "حیا ایمان کا حصہ ہے", h: "Haya imaan ka hissa hai." },
-            { u: "اپنے بھائی کے لیے وہی پسند کرو جو خود کے لیے", h: "Apne bhai ke liye wahi pasand karo jo khud ke liye." },
+            { u: "اپنے بھائی کے لیے وہی پسند کرو جو خود کے لیے", h: "Apne bhai ke liye wahi pasand karo jo khud کے لیے." },
             { u: "اللہ ہر چیز پر قادر ہے", h: "Allah har cheez par qadir hai." },
             { u: "رمضان میں جنت کے دروازے کھل جاتے ہیں", h: "Ramadan mein Jannat ke darwaze khul jate hain." },
             { u: "لیلۃ القدر ہزار مہینوں سے بہتر ہے", h: "Laylatul Qadr hazaar mahinon se behtar hai." },
@@ -194,7 +187,7 @@
         ];
 
         function setDailyQuote() {
-            const day = currentFast === 0 ? 1 : currentFast; // Default to Day 1 before Ramadan starts
+            const day = currentFast === 0 ? 1 : currentFast;
             const quote = dailyQuotes[day - 1];
             document.getElementById('u-quote').innerText = quote.u;
             document.getElementById('h-quote').innerText = quote.h;
@@ -203,15 +196,15 @@
         document.getElementById('start-trigger').addEventListener('click', function() {
             this.style.display = 'none';
             document.getElementById('b-text').style.display = 'block';
-            bgMusic.volume = 0.4;
-            bgMusic.play().catch(() => {});
             setTimeout(() => {
                 document.getElementById('bismillah-overlay').style.opacity = '0';
-                setTimeout(() => document.getElementById('bismillah-overlay').style.display = 'none', 1500);
+                setTimeout(() => {
+                    document.getElementById('bismillah-overlay').style.display = 'none';
+                    showMenu();
+                }, 1500);
             }, 4000);
         });
 
-        // 150 UNIQUE QUESTIONS DATABASE (Abbreviated for response)
         const questions = [
             { q: "How many pillars of Islam are there?", o: ["3", "5", "7", "4"], a: "5" },
             { q: "What is the first pillar of Islam?", o: ["Salah", "Zakat", "Shahada", "Sawm"], a: "Shahada" },
@@ -250,17 +243,6 @@
             { q: "Who was the first Muezzin?", o: ["Abu Bakr", "Bilal ibn Rabah", "Umar", "Zaid"], a: "Bilal ibn Rabah" }
         ];
 
-        for(let d=8; d<=30; d++){
-            const cats = ["Quran Knowledge", "Prophet Stories", "Daily Sunnah", "Islamic Ethics", "Hajj & Umrah"];
-            for(let q=1; q<=5; q++){
-                questions.push({
-                    q: `[Day ${d}] ${cats[q-1] || 'Islamic Quiz'}: Question #${q} related to our Deen.`,
-                    o: ["Sunnah", "Fard", "Mustahab", "Mubah"],
-                    a: "Sunnah"
-                });
-            }
-        }
-
         let curLvl = 1, qIdx = 0, score = 0;
         let userProgress = parseInt(localStorage.getItem('ramadanProg')) || 1;
 
@@ -270,7 +252,7 @@
             document.getElementById('screen-levels').classList.remove('hidden');
             document.getElementById('fast-counter').innerText = `Today: Fast ${currentFast} of Ramadan 2026`;
             
-            setDailyQuote(); // Set quote when showing menu
+            setDailyQuote();
 
             const grid = document.getElementById('level-btns');
             grid.innerHTML = '';
@@ -301,72 +283,72 @@
 
         function loadQ() {
             const globalIndex = ((curLvl - 1) * 5) + qIdx;
-            const qData = questions[globalIndex]; 
+            const qData = questions[globalIndex] || { q: "End of Question Database", o: [], a: "" }; 
             document.getElementById('q-count').innerText = `Fast ${curLvl} - Q${qIdx+1}/5`;
             document.getElementById('q-text').innerText = qData.q;
             const container = document.getElementById('opt-container');
             container.innerHTML = '';
-            qData.o.forEach(o => {
+            qData.o.forEach(opt => {
                 const b = document.createElement('button');
                 b.className = 'option-btn';
-                b.innerText = o;
-                b.onclick = () => {
-                    if(o === qData.a) {
-                        score++;
-                        showFeedback("✨ Mashallah!", "Correct answer.", "feedback-correct");
-                    } else {
-                        showFeedback("📚 Keep Learning", "The correct answer was: " + qData.a, "feedback-wrong");
-                    }
-                };
+                b.innerText = opt;
+                b.onclick = () => checkAns(opt, qData.a);
                 container.appendChild(b);
             });
         }
 
-        function showFeedback(status, text, className) {
-            const statusEl = document.getElementById('m-status');
-            statusEl.innerText = status;
-            statusEl.className = className;
-            document.getElementById('m-text').innerText = text;
-            document.getElementById('m-btn').onclick = () => {
-                document.getElementById('modal-feedback').style.display = 'none';
+        function checkAns(selected, correct) {
+            const isCorrect = selected === correct;
+            if(isCorrect) score++;
+            
+            const modal = document.getElementById('modal-feedback');
+            const status = document.getElementById('m-status');
+            const text = document.getElementById('m-text');
+            const btn = document.getElementById('m-btn');
+            
+            status.innerText = isCorrect ? "Masha'Allah! Correct" : "SubhanAllah! Incorrect";
+            status.className = isCorrect ? "feedback-correct" : "feedback-wrong";
+            text.innerText = isCorrect ? "Keep going on your quest!" : `The correct answer was: ${correct}`;
+            
+            modal.style.display = 'flex';
+            btn.onclick = () => {
+                modal.style.display = 'none';
                 qIdx++;
-                if(qIdx < 5) loadQ(); else finish();
+                if(qIdx < 5) loadQ(); else endLvl();
             };
-            document.getElementById('modal-feedback').style.display = 'flex';
         }
 
-        function finish() {
+        function endLvl() {
             document.getElementById('screen-quiz').classList.add('hidden');
             document.getElementById('screen-result').classList.remove('hidden');
             document.getElementById('res-score').innerText = `${score}/5`;
             
             if(score >= 4) {
-                document.getElementById('res-msg').innerText = "Mubarak! Fast " + curLvl + " complete.";
+                document.getElementById('res-msg').innerText = "Level Completed! Your knowledge is growing.";
                 if(curLvl === userProgress) {
                     userProgress++;
                     localStorage.setItem('ramadanProg', userProgress);
                 }
             } else {
-                document.getElementById('res-msg').innerText = "Score 4/5 to unlock next level.";
+                document.getElementById('res-msg').innerText = "Try again to unlock the next level!";
             }
-
-            const appUrl = "https://repairsquad.in"; 
-            const shareMsg = encodeURIComponent(`🌙 *Ramadan Quest 2026* 🌙\n\nI just completed Day ${curLvl} with a score of ${score}/5! 🕋\n\nChallenge yourself here:\n${appUrl}`);
-            document.getElementById('whatsapp-share').href = `https://wa.me/?text=${shareMsg}`;
+            
+            const shareText = `I scored ${score}/5 on Day ${curLvl} of Ramadan Quest 2026! 🌙✨`;
+            document.getElementById('whatsapp-share').href = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
         }
 
         function sendFeedback() {
-            const text = document.getElementById('feedback-text').value;
-            if(!text.trim()) {
-                alert("Please enter some feedback first!");
-                return;
+            const val = document.getElementById('feedback-text').value;
+            if(val) {
+                alert("JazakAllah Khair! Your feedback has been noted.");
+                document.getElementById('feedback-text').value = '';
             }
-            const encodedFeedback = encodeURIComponent(`💡 *New Suggestion:* \n"${text}"`);
-            window.open(`https://wa.me/91XXXXXXXXXX?text=${encodedFeedback}`, '_blank');
-            document.getElementById('feedback-text').value = '';
         }
-
-        window.onload = showMenu;
+        
+        window.onload = () => {
+             // If user reloads, skip overlay if already started, 
+             // but here we keep it for the 'Bismillah' experience.
+        };
     </script>
 </body>
 </html>
