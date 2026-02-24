@@ -379,6 +379,30 @@
             installBtn.style.display = 'none';
             console.log('App was installed');
         });
+        // ... (your existing code for installBtn) ...
+        window.addEventListener('appinstalled', () => {
+            installBtn.style.display = 'none';
+            console.log('App was installed');
+        });
+
+        // ADD ONLY THIS PART BELOW:
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').then((reg) => {
+                    reg.onupdatefound = () => {
+                        const installingWorker = reg.installing;
+                        installingWorker.onstatechange = () => {
+                            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                window.location.reload();
+                            }
+                        };
+                    };
+                });
+            });
+        }
+    </script> 
+</body>
+</html>
     </script>
 </body>
 </html>
