@@ -1,4 +1,4 @@
-const CACHE_NAME = 'islamic-quest-v3'; // Incremented to v3 to force refresh
+const CACHE_NAME = 'islamic-quest-v4'; // Incremented to v4 to force a fresh start
 const assets = [
   './',
   './index.html',
@@ -8,17 +8,17 @@ const assets = [
   'https://img.icons8.com/fluency/512/mosque.png'
 ];
 
-// Install Event
+// 1. Install Event
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(assets);
     })
   );
-  self.skipWaiting(); // Forces the new service worker to take over immediately
+  self.skipWaiting();
 });
 
-// Activate Event: Deletes old versions
+// 2. Activate Event: Clears old data
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then((keys) => {
@@ -28,22 +28,27 @@ self.addEventListener('activate', (e) => {
       );
     })
   );
-  return self.clients.claim(); // Immediately start controlling all open tabs
+  return self.clients.claim();
 });
 
-// Fetch Event: NETWORK-FIRST Strategy
-// This ensures users see the live site if online, preventing "Bad Gateway" caching
+// 3. Fetch Event: Network-First with Error Prevention
 self.addEventListener('fetch', (e) => {
   e.respondWith(
     fetch(e.request)
       .then((res) => {
-        // If the network is working, save a copy to the cache
-        const resClone = res.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(e.request, resClone);
-        });
+        // SAFETY CHECK: Only cache if the server says "OK" (Status 200)
+        // If the server sends a 502, 504, or 404, we DON'T cache it.
+        if (res && res.status === 200) {
+          const resClone = res.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(e.request, resClone);
+          });
+        }
         return res;
       })
-      .catch(() => caches.match(e.request)) // If network fails (offline), use cache
+      .catch(() => {
+        // If the network is totally down (Offline), show the cached version
+        return caches.match(e.request);
+      })
   );
 });
