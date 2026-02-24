@@ -354,14 +354,14 @@
             }
         }
         
-        // --- INSTALL APP (PWA) LOGIC ---
+       // --- INSTALL APP (PWA) LOGIC ---
         let deferredPrompt;
         const installBtn = document.getElementById('btn-install');
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            installBtn.style.display = 'block'; // Only show if app isn't installed
+            installBtn.style.display = 'block'; 
         });
 
         installBtn.addEventListener('click', async () => {
@@ -379,30 +379,28 @@
             installBtn.style.display = 'none';
             console.log('App was installed');
         });
-        // ... (your existing code for installBtn) ...
-        window.addEventListener('appinstalled', () => {
-            installBtn.style.display = 'none';
-            console.log('App was installed');
-        });
 
-        // ADD ONLY THIS PART BELOW:
+        // SERVICE WORKER REGISTRATION (Optimized for Mobile)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').then((reg) => {
+                navigator.serviceWorker.register('./sw.js')
+                .then((reg) => {
+                    console.log('SW Registered');
+                    
+                    // Force update if the server version changed
                     reg.onupdatefound = () => {
                         const installingWorker = reg.installing;
                         installingWorker.onstatechange = () => {
                             if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                // This forces the mobile app to refresh and clear the 502 error
                                 window.location.reload();
                             }
                         };
                     };
-                });
+                })
+                .catch(err => console.log('SW Registration Failed:', err));
             });
         }
     </script> 
-</body>
-</html>
-    </script>
 </body>
 </html>
