@@ -1,4 +1,4 @@
-const CACHE_NAME = 'islamic-questz-v5';
+const CACHE_NAME = 'islamic-questz-v6';
 const assets = ['./', './index.html', './manifest.json'];
 
 self.addEventListener('install', (e) => {
