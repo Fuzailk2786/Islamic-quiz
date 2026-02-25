@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Islamic Questz - 2026</title>
+    <title>Islamic Questz - Knowledge Journey</title>
     <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
@@ -12,6 +12,7 @@
             --emerald: #065f46; --gold: #b45309; --soft-gold: #fef3c7;
             --border: #d1d5db; --shadow: rgba(0,0,0,0.1);
             --whatsapp: #25D366; --error: #b91c1c;
+            --blue: #1e40af; --purple: #6b21a8;
         }
         [data-theme="dark"] {
             --bg-color: #020617; --card-bg: #1e293b; --text-main: #f1f5f9;
@@ -32,52 +33,53 @@
         }
 
         .bismillah-text {
-            font-family: 'Cinzel', serif; font-size: 2.5rem; color: #fbbf24; 
-            text-align: center; direction: rtl; opacity: 0; display: none;
+            font-family: 'Cinzel', serif; font-size: 2.2rem; color: #fbbf24; 
+            text-align: center; direction: rtl; display: none;
             text-shadow: 0 0 25px rgba(251, 191, 36, 0.6);
             animation: bismillahFade 4s ease-in-out forwards;
         }
 
         @keyframes bismillahFade {
-            0% { opacity: 0; transform: scale(0.8) translateY(20px); }
-            40% { opacity: 1; transform: scale(1) translateY(0); }
+            0% { opacity: 0; transform: scale(0.8); }
+            40% { opacity: 1; transform: scale(1); }
             100% { opacity: 0; transform: scale(1.1); }
         }
 
         body { font-family: 'Poppins', sans-serif; background: var(--bg-color); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; transition: background 0.3s; padding: 20px 0; }
-        #quiz-card { background: var(--card-bg); width: 90%; max-width: 500px; padding: 2rem; border-radius: 24px; box-shadow: 0 20px 40px var(--shadow); text-align: center; position: relative; transition: background 0.3s; }
+        #quiz-card { background: var(--card-bg); width: 90%; max-width: 500px; padding: 1.5rem; border-radius: 24px; box-shadow: 0 20px 40px var(--shadow); text-align: center; position: relative; transition: background 0.3s; min-height: 500px; }
         
-        #theme-toggle { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+        #theme-toggle { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; z-index: 10; }
 
-        .mode-btn { width: 100%; padding: 20px; border-radius: 15px; margin-bottom: 15px; border: none; cursor: pointer; color: white; transition: 0.3s; display: flex; flex-direction: column; align-items: center; }
-        .mode-ramadan { background: linear-gradient(135deg, var(--emerald), #064e3b); border-bottom: 5px solid #022c22; }
-        .mode-regular { background: linear-gradient(135deg, #1e3a8a, #1e40af); border-bottom: 5px solid #172554; }
-        
+        /* Mode Selection Cards */
+        .mode-card { padding: 20px; border-radius: 18px; color: white; margin-bottom: 15px; cursor: pointer; transition: transform 0.2s; position: relative; text-align: left; overflow: hidden; }
+        .mode-card:hover { transform: translateY(-3px); }
+        .mode-ramadan { background: linear-gradient(135deg, #065f46, #064e3b); border: 2px solid var(--gold); }
+        .mode-regular { background: linear-gradient(135deg, #1e3a8a, #1e40af); }
+
+        .category-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .cat-btn { background: var(--soft-gold); border: 1px solid var(--gold); padding: 15px; border-radius: 12px; font-weight: 600; color: var(--gold); cursor: pointer; font-size: 0.85rem; }
+
         .quote-container { margin: 15px 0; padding: 10px; border-radius: 15px; background: rgba(180, 83, 9, 0.05); border-left: 4px solid var(--gold); }
-        .quote-urdu { font-size: 1.1rem; font-weight: 600; color: var(--emerald); margin-bottom: 5px; direction: rtl; }
-        .quote-hinglish { font-size: 0.8rem; font-style: italic; color: var(--text-main); opacity: 0.8; }
+        .quote-urdu { font-size: 1.1rem; font-weight: 600; color: var(--emerald); direction: rtl; }
 
-        .ramadan-status { background: var(--soft-gold); color: var(--gold); padding: 10px; border-radius: 12px; font-weight: 600; margin-bottom: 15px; font-size: 0.9rem; border: 1px solid var(--gold); }
-        .level-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 10px; }
-        .level-btn { padding: 12px 5px; border-radius: 10px; border: 2px solid var(--emerald); background: none; color: var(--text-main); font-weight: 600; cursor: pointer; transition: 0.3s; }
-        .level-btn.locked { opacity: 0.3; cursor: not-allowed; filter: grayscale(1); }
+        .level-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 15px 0; }
+        .level-btn { padding: 12px 5px; border-radius: 10px; border: 2px solid var(--emerald); background: none; color: var(--text-main); font-weight: 600; cursor: pointer; font-size: 0.8rem; }
+        .level-btn.locked { opacity: 0.3; cursor: not-allowed; }
         .level-btn.completed { background: var(--emerald); color: white; }
-
-        .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
-        .cat-btn { background: var(--card-bg); border: 1px solid var(--border); padding: 15px; border-radius: 15px; cursor: pointer; color: var(--text-main); }
         
-        .option-btn { width: 100%; padding: 14px; margin: 8px 0; border-radius: 12px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-main); cursor: pointer; font-weight: 500; }
-        .btn-action { background: var(--emerald); color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 15px; }
-        .btn-restart { background: var(--gold); color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        .option-btn { width: 100%; padding: 12px; margin: 6px 0; border-radius: 12px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-main); cursor: pointer; font-weight: 500; text-align: left; padding-left: 20px; }
+        .option-btn:hover { background: var(--soft-gold); }
+
+        .btn-action { background: var(--emerald); color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; }
         .btn-whatsapp { background: var(--whatsapp); color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
+        #btn-install { background: #3b82f6; color: white; border: none; padding: 10px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 15px; display: none; }
+
+        /* Deep Dive Hadith View */
+        .hadith-box { background: var(--soft-gold); padding: 15px; border-radius: 12px; border-left: 4px solid var(--gold); text-align: left; margin-top: 15px; font-size: 0.9rem; color: var(--gold); line-height: 1.5; }
         
-        #btn-install { background: #3b82f6; color: white; border: none; padding: 10px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; display: none; }
-
-        .insta-mode-card { margin-top: 20px; text-align: left; padding: 15px; background: var(--bg-color); border-radius: 15px; border-left: 4px solid #e1306c; }
-
         .hidden { display: none; }
-        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 100; }
-        .modal { background: var(--card-bg); padding: 2rem; border-radius: 20px; max-width: 400px; width: 90%; text-align: center; border-top: 5px solid var(--gold); }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; z-index: 1000; }
+        .modal { background: var(--card-bg); padding: 1.5rem; border-radius: 20px; max-width: 400px; width: 90%; border-top: 5px solid var(--gold); overflow-y: auto; max-height: 80vh; }
     </style>
 </head>
 <body data-theme="light">
@@ -88,202 +90,201 @@
     </div>
 
     <div id="quiz-card">
-        <button id="theme-toggle" onclick="toggleTheme()" title="Switch Mode">🌓</button>
+        <button id="theme-toggle" onclick="toggleTheme()">🌓</button>
 
-        <!-- NEW: Screen Selection Mode -->
-        <div id="screen-mode-selection">
-            <h1 style="font-family: 'Cinzel', serif; color: var(--text-main);">Islamic Questz</h1>
-            <p style="color: var(--text-main); opacity: 0.7; margin-bottom: 25px;">Select your journey</p>
+        <!-- Screen 1: Home / Mode Selection -->
+        <div id="screen-home">
+            <h1 style="font-family: 'Cinzel', serif; color: var(--text-main); margin-bottom: 20px;">Islamic Questz</h1>
             
-            <button class="mode-btn mode-ramadan" onclick="enterRamadanMode()">
-                <span style="font-size: 1.5rem;">🌙</span>
-                <span style="font-size: 1.2rem; font-weight: bold;">Ramadan Challenge</span>
-                <span style="font-size: 0.8rem; opacity: 0.9;">30 Days • 150 Questions</span>
-            </button>
-
-            <button class="mode-btn mode-regular" onclick="enterRegularMode()">
-                <span style="font-size: 1.5rem;">📖</span>
-                <span style="font-size: 1.2rem; font-weight: bold;">Knowledge Library</span>
-                <span style="font-size: 0.8rem; opacity: 0.9;">History, Quran & Hadith</span>
-            </button>
-
-            <div class="insta-mode-card">
-                <p style="font-size: 0.7rem; font-weight: bold; color: #e1306c; margin-bottom: 5px;">INSTA-HADITH OF THE DAY</p>
-                <p id="insta-hadith" style="font-size: 0.85rem; font-style: italic; color: var(--text-main);">"The best among you are those who learn the Quran and teach it." (Bukhari)</p>
+            <div class="mode-card mode-ramadan" onclick="switchMode('ramadan')">
+                <h3 class="margin-0">Ramadan Challenge</h3>
+                <p style="font-size: 0.8rem; opacity: 0.9;">30 Days • 150 Questions • Weekly Rewards</p>
+                <div style="position:absolute; right: -10px; bottom: -10px; opacity: 0.2; font-size: 4rem;">🌙</div>
             </div>
+
+            <div class="mode-card mode-regular" onclick="switchMode('regular')">
+                <h3 class="margin-0">Knowledge Pathways</h3>
+                <p style="font-size: 0.8rem; opacity: 0.9;">Quran, Hadith, Seerah & History</p>
+                <div style="position:absolute; right: -10px; bottom: -10px; opacity: 0.2; font-size: 4rem;">📖</div>
+            </div>
+
+            <div class="quote-container">
+                <div class="quote-urdu" id="u-quote">...</div>
+                <div style="font-size: 0.8rem; font-style: italic;" id="h-quote">...</div>
+            </div>
+
+            <button id="btn-install">📲 Install App</button>
         </div>
 
-        <!-- Ramadan Menu -->
+        <!-- Screen 2: Ramadan Levels -->
         <div id="screen-ramadan-levels" class="hidden">
-            <h2 style="font-family: 'Cinzel', serif; color: var(--emerald);">Ramadan Quest</h2>
-            <div id="fast-counter" class="ramadan-status">Loading...</div>
-            <div class="level-grid" id="ramadan-level-btns"></div>
-            <button class="btn-action" style="background: var(--gold);" onclick="showMenuSelection()">Return to Selection</button>
+            <button onclick="showHome()" style="float: left; background: none; border: none; color: var(--gold); font-weight: bold; cursor: pointer;">← Back</button>
+            <h2 style="color: var(--emerald);">Ramadan 2026</h2>
+            <div id="fast-counter" style="font-size: 0.8rem; color: var(--gold); font-weight: bold;"></div>
+            <div class="level-grid" id="ramadan-grid"></div>
         </div>
 
-        <!-- Regular Menu -->
-        <div id="screen-regular-categories" class="hidden">
-            <h2 style="font-family: 'Cinzel', serif; color: #1e3a8a;">Knowledge Library</h2>
-            <div class="cat-grid">
-                <button class="cat-btn" onclick="startCategory('Quran')">📖<br>Quran</button>
-                <button class="cat-btn" onclick="startCategory('Hadith')">📜<br>Hadith</button>
-                <button class="cat-btn" onclick="startCategory('Sahaba')">⚔️<br>Sahaba</button>
-                <button class="cat-btn" onclick="startCategory('History')">🕌<br>History</button>
+        <!-- Screen 3: Regular Categories -->
+        <div id="screen-regular-cats" class="hidden">
+            <button onclick="showHome()" style="float: left; background: none; border: none; color: var(--blue); font-weight: bold; cursor: pointer;">← Back</button>
+            <h2 style="color: var(--blue);">General Knowledge</h2>
+            <div class="category-grid">
+                <button class="cat-btn" onclick="startRegular('Quran')">📖 Al-Quran</button>
+                <button class="cat-btn" onclick="startRegular('Hadith')">📜 Hadith</button>
+                <button class="cat-btn" onclick="startRegular('History')">🕌 History</button>
+                <button class="cat-btn" onclick="startRegular('Sahaba')">⚔️ Sahaba</button>
             </div>
-            <button class="btn-action" style="background: var(--gold);" onclick="showMenuSelection()">Return to Selection</button>
         </div>
 
-        <!-- Shared Quiz Screen -->
+        <!-- Screen 4: Quiz Play -->
         <div id="screen-quiz" class="hidden">
-            <p id="q-category" style="color: var(--gold); font-weight: bold; margin:0; font-size: 0.8rem;"></p>
-            <p id="q-count" style="color: var(--gold); font-weight: 600; margin-top: 0;"></p>
-            <h2 id="q-text" style="font-size: 1.2rem; min-height: 3em; color: var(--text-main);"></h2>
+            <p id="q-meta" style="color: var(--gold); font-size: 0.8rem; font-weight: 700;"></p>
+            <h3 id="q-text" style="color: var(--text-main); margin-bottom: 20px;"></h3>
             <div id="opt-container"></div>
         </div>
 
-        <!-- Result Screen -->
+        <!-- Screen 5: Result -->
         <div id="screen-result" class="hidden">
-            <div id="res-icon" style="font-size: 3rem; margin-bottom: 10px;">🏆</div>
-            <h2 id="res-score" style="font-size: 2.5rem; margin: 0; color: var(--text-main);"></h2>
-            <p id="res-msg" style="font-weight: 600; color: var(--text-main);"></p>
-            <a id="whatsapp-share" class="btn-whatsapp" target="_blank"><span>Share My Score</span></a>
-            <button class="btn-action" onclick="showMenuSelection()">Main Menu</button>
+            <h2 id="res-score" style="font-size: 2.5rem; color: var(--text-main);"></h2>
+            <p id="res-msg"></p>
+            <a id="whatsapp-share" class="btn-whatsapp" target="_blank">Share Progress</a>
+            <button class="btn-action" onclick="showHome()">Return Home</button>
         </div>
-
-        <button id="btn-install">📲 Install App for Offline Access</button>
     </div>
 
-    <!-- Modal for Feedback -->
-    <div id="modal-feedback" class="modal-overlay">
+    <!-- Explanation Modal -->
+    <div id="modal-explain" class="modal-overlay">
         <div class="modal">
-            <h2 id="m-status"></h2>
-            <p id="m-text" style="font-size: 1.1rem; margin: 15px 0; color: var(--text-main);"></p>
-            <button class="btn-action" id="m-btn">Next</button>
+            <h3 id="m-title">Correct!</h3>
+            <p id="m-answer" style="font-weight: bold; color: var(--emerald);"></p>
+            <div class="hadith-box" id="m-explain"></div>
+            <button class="btn-action" onclick="closeModal()">Next Question</button>
         </div>
     </div>
 
     <script>
-        const RAMADAN_START = new Date('2026-02-18'); 
+        const RAMADAN_START = new Date('2026-02-18');
         let currentMode = 'ramadan'; 
-        let currentCategory = '';
-        let curLvl = 1, qIdx = 0, score = 0;
-
-        // PROGRESS STORAGE
-        let ramadanProgress = parseInt(localStorage.getItem('ramadanProg')) || 1;
-        let regularProgress = JSON.parse(localStorage.getItem('regProg')) || { Quran: 1, Hadith: 1, Sahaba: 1, History: 1 };
-
-        // DATA: RAMADAN QUESTIONS (150 Total - Simplified for file size)
-        const ramadanQuestions = [];
-        for(let i=1; i<=30; i++) {
-            for(let j=1; j<=5; j++) {
-                ramadanQuestions.push({
-                    q: `[Ramadan Day ${i}] Question ${j}: Related to Fiqh/History/Quran?`,
-                    o: ["Option A", "Option B", "Option C", "Option D"],
-                    a: "Option A"
-                });
+        let currentCat = '';
+        let qIdx = 0, score = 0, curLvl = 1;
+        
+        // --- DATABASE STRUCTURE ---
+        const db = {
+            ramadan: [
+                { q: "What is the primary purpose of fasting in Ramadan?", o: ["To lose weight", "To attain Taqwa (God-consciousness)", "To save food", "To sleep more"], a: "To attain Taqwa (God-consciousness)", e: "As mentioned in Surah Al-Baqarah (2:183), fasting is prescribed so that you may become righteous." },
+                { q: "Which battle took place in the month of Ramadan?", o: ["Battle of Uhud", "Battle of Badr", "Battle of Khandaq", "Battle of Hunayn"], a: "Battle of Badr", e: "The Battle of Badr occurred on the 17th of Ramadan in the 2nd year of Hijrah." },
+                // ... (Load remaining 148 here)
+            ],
+            regular: {
+                Quran: [
+                    { q: "How many Surahs are in the Quran?", o: ["110", "114", "120", "112"], a: "114", e: "The Quran contains 114 Surahs, divided into Makki and Madani." },
+                    // ... (Load 79 more)
+                ],
+                Hadith: [
+                    { q: "Who compiled the most authentic book of Hadith?", o: ["Imam Muslim", "Imam Bukhari", "Imam Malik", "Imam Tirmidhi"], a: "Imam Bukhari", e: "Sahih Al-Bukhari is considered the most authentic book after the Quran." },
+                    // ... (Load 49 more)
+                ],
+                History: [
+                    { q: "Who was the first Caliph?", o: ["Umar", "Ali", "Abu Bakr", "Uthman"], a: "Abu Bakr", e: "Abu Bakr As-Siddiq was the first of the four Rightly Guided Caliphs." }
+                ],
+                Sahaba: [
+                    { q: "Which Sahabi was known as the 'Sword of Allah'?", o: ["Umar ibn Khattab", "Khalid ibn al-Walid", "Ali ibn Abi Talib", "Hamza"], a: "Khalid ibn al-Walid", e: "The Prophet (PBUH) gave him the title 'Saifullah' after the Battle of Mu'tah." }
+                ]
             }
-        }
-
-        // DATA: REGULAR QUESTIONS (300 Total - 75 per category)
-        const regularQuestions = {
-            Quran: Array.from({length: 75}, (_, i) => ({ q: `Quran Question ${i+1}?`, o: ["A", "B", "C", "D"], a: "A" })),
-            Hadith: Array.from({length: 75}, (_, i) => ({ q: `Hadith Question ${i+1}?`, o: ["A", "B", "C", "D"], a: "A" })),
-            Sahaba: Array.from({length: 75}, (_, i) => ({ q: `Sahaba Question ${i+1}?`, o: ["A", "B", "C", "D"], a: "A" })),
-            History: Array.from({length: 75}, (_, i) => ({ q: `History Question ${i+1}?`, o: ["A", "B", "C", "D"], a: "A" }))
         };
 
+        // --- CORE LOGIC ---
         function toggleTheme() {
-            const b = document.body;
-            b.setAttribute('data-theme', b.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+            const body = document.body;
+            body.setAttribute('data-theme', body.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
         }
 
-        function showMenuSelection() {
-            document.querySelectorAll('#quiz-card > div').forEach(d => d.classList.add('hidden'));
-            document.getElementById('screen-mode-selection').classList.remove('hidden');
+        function getCurrentDay() {
+            const diff = Math.floor((new Date() - RAMADAN_START) / (1000 * 60 * 60 * 24)) + 1;
+            return Math.max(0, Math.min(30, diff));
         }
 
-        function enterRamadanMode() {
-            currentMode = 'ramadan';
+        function showHome() {
             document.querySelectorAll('#quiz-card > div').forEach(d => d.classList.add('hidden'));
-            document.getElementById('screen-ramadan-levels').classList.remove('hidden');
-            renderRamadanLevels();
+            document.getElementById('screen-home').classList.remove('hidden');
+            updateQuotes();
         }
 
-        function enterRegularMode() {
-            currentMode = 'regular';
-            document.querySelectorAll('#quiz-card > div').forEach(d => d.classList.add('hidden'));
-            document.getElementById('screen-regular-categories').classList.remove('hidden');
+        function switchMode(mode) {
+            document.getElementById('screen-home').classList.add('hidden');
+            if(mode === 'ramadan') {
+                document.getElementById('screen-ramadan-levels').classList.remove('hidden');
+                renderRamadanLevels();
+            } else {
+                document.getElementById('screen-regular-cats').classList.remove('hidden');
+            }
         }
 
         function renderRamadanLevels() {
-            const day = Math.floor((new Date() - RAMADAN_START) / 86400000) + 1;
-            const validDay = day < 0 ? 0 : (day > 30 ? 30 : day);
-            document.getElementById('fast-counter').innerText = `Current: Day ${validDay} of Ramadan 2026`;
-            
-            const grid = document.getElementById('ramadan-level-btns');
+            const grid = document.getElementById('ramadan-grid');
+            const day = getCurrentDay() || 1;
             grid.innerHTML = '';
             for(let i=1; i<=30; i++) {
-                const b = document.createElement('button');
-                b.className = 'level-btn';
-                b.innerText = i;
-                if(i > ramadanProgress) b.classList.add('locked');
-                else b.onclick = () => startQuiz(i);
-                if(i < ramadanProgress) b.classList.add('completed');
-                grid.appendChild(b);
+                const btn = document.createElement('button');
+                btn.className = 'level-btn';
+                btn.innerText = i;
+                if(i > day) btn.classList.add('locked');
+                else btn.onclick = () => startQuiz('ramadan', i);
+                grid.appendChild(btn);
             }
+            document.getElementById('fast-counter').innerText = `Current Status: Day ${day} of 30`;
         }
 
-        function startCategory(cat) {
-            currentCategory = cat;
-            startQuiz(regularProgress[cat]);
-        }
-
-        function startQuiz(lvl) {
-            curLvl = lvl; qIdx = 0; score = 0;
+        function startQuiz(mode, lvl, cat = '') {
+            currentMode = mode; curLvl = lvl; currentCat = cat;
+            qIdx = 0; score = 0;
             document.querySelectorAll('#quiz-card > div').forEach(d => d.classList.add('hidden'));
             document.getElementById('screen-quiz').classList.remove('hidden');
             loadQuestion();
         }
 
-        function loadQuestion() {
-            let qData;
-            if(currentMode === 'ramadan') {
-                qData = ramadanQuestions[((curLvl-1)*5) + qIdx];
-                document.getElementById('q-category').innerText = "RAMADAN CHALLENGE";
-                document.getElementById('q-count').innerText = `Day ${curLvl} - Question ${qIdx+1}/5`;
-            } else {
-                qData = regularQuestions[currentCategory][((curLvl-1)*5) + qIdx];
-                document.getElementById('q-category').innerText = `LIBRARY: ${currentCategory.toUpperCase()}`;
-                document.getElementById('q-count').innerText = `Level ${curLvl} - Question ${qIdx+1}/5`;
-            }
+        function startRegular(cat) {
+            startQuiz('regular', 1, cat);
+        }
 
-            document.getElementById('q-text').innerText = qData.q;
+        function loadQuestion() {
+            const data = currentMode === 'ramadan' ? db.ramadan : db.regular[currentCat];
+            const q = data[qIdx];
+            
+            document.getElementById('q-meta').innerText = currentMode === 'ramadan' ? `Ramadan Day ${curLvl} - Q${qIdx+1}` : `${currentCat} - Q${qIdx+1}`;
+            document.getElementById('q-text').innerText = q.q;
+            
             const container = document.getElementById('opt-container');
             container.innerHTML = '';
-            qData.o.forEach(o => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.innerText = o;
-                btn.onclick = () => checkAnswer(o, qData.a);
-                container.appendChild(btn);
+            q.o.forEach(opt => {
+                const b = document.createElement('button');
+                b.className = 'option-btn';
+                b.innerText = opt;
+                b.onclick = () => handleAnswer(opt, q);
+                container.appendChild(b);
             });
         }
 
-        function checkAnswer(sel, correct) {
-            const isCorrect = sel === correct;
+        function handleAnswer(sel, qData) {
+            const isCorrect = sel === qData.a;
             if(isCorrect) score++;
-
-            const modal = document.getElementById('modal-feedback');
-            document.getElementById('m-status').innerText = isCorrect ? "✅ Correct!" : "❌ Incorrect";
-            document.getElementById('m-text').innerText = isCorrect ? "SubhanAllah! Well done." : `The correct answer was: ${correct}`;
             
-            document.getElementById('m-btn').onclick = () => {
-                modal.style.display = 'none';
-                qIdx++;
-                if(qIdx < 5) loadQuestion();
-                else showResult();
-            };
-            modal.style.display = 'flex';
+            document.getElementById('m-title').innerText = isCorrect ? "✅ Correct!" : "❌ Incorrect";
+            document.getElementById('m-answer').innerText = `Answer: ${qData.a}`;
+            document.getElementById('m-explain').innerText = qData.e;
+            document.getElementById('modal-explain').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal-explain').style.display = 'none';
+            qIdx++;
+            const data = currentMode === 'ramadan' ? db.ramadan : db.regular[currentCat];
+            
+            if(qIdx < 5 && qIdx < data.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
         }
 
         function showResult() {
@@ -291,38 +292,32 @@
             document.getElementById('screen-result').classList.remove('hidden');
             document.getElementById('res-score').innerText = `${score}/5`;
             
-            const passed = score >= 4;
-            document.getElementById('res-msg').innerText = passed ? "MashaAllah! You passed!" : "Try again to unlock the next level!";
-            
-            if(passed) {
-                if(currentMode === 'ramadan' && curLvl === ramadanProgress) {
-                    ramadanProgress++;
-                    localStorage.setItem('ramadanProg', ramadanProgress);
-                } else if(currentMode === 'regular' && curLvl === regularProgress[currentCategory]) {
-                    regularProgress[currentCategory]++;
-                    localStorage.setItem('regProg', JSON.stringify(regularProgress));
-                }
-            }
-
-            // SHARED LINK LOGIC
-            const shareText = `I just scored ${score}/5 on Islamic Questz (${currentMode === 'ramadan' ? 'Ramadan Day ' + curLvl : currentCategory + ' Lvl ' + curLvl})! Join me: ${window.location.href}`;
+            const shareText = `I scored ${score}/5 on Islamic Questz (${currentMode})! Challenge yourself this Ramadan 🌙`;
             document.getElementById('whatsapp-share').href = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
         }
 
+        function updateQuotes() {
+            const quotes = [
+                { u: "علم حاصل کرنا ہر مسلمان پر فرض ہے", h: "Ilm hasil karna har musalman par farz hai." },
+                { u: "نماز مومن کی معراج ہے", h: "Namaz momin ki mairaaj hai." }
+            ];
+            const q = quotes[Math.floor(Math.random()*quotes.length)];
+            document.getElementById('u-quote').innerText = q.u;
+            document.getElementById('h-quote').innerText = q.h;
+        }
+
         // Bismillah Overlay
-        document.getElementById('start-trigger').addEventListener('click', function() {
+        document.getElementById('start-trigger').onclick = function() {
             this.style.display = 'none';
             document.getElementById('b-text').style.display = 'block';
             setTimeout(() => {
                 document.getElementById('bismillah-overlay').style.opacity = '0';
-                setTimeout(() => document.getElementById('bismillah-overlay').style.display = 'none', 1500);
-            }, 3000);
-        });
-
-        // Register Service Worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
-        }
+                setTimeout(() => {
+                    document.getElementById('bismillah-overlay').style.display = 'none';
+                    showHome();
+                }, 1000);
+            }, 3500);
+        };
     </script>
 </body>
 </html>
