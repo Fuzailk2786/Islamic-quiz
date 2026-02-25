@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ramadan Quest 2026</title>
+    <title>Islamic Questz - 2026</title>
     <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
@@ -32,7 +32,7 @@
         }
 
         .bismillah-text {
-            font-family: 'Cinzel', serif; font-size: 3rem; color: #fbbf24; 
+            font-family: 'Cinzel', serif; font-size: 2.5rem; color: #fbbf24; 
             text-align: center; direction: rtl; opacity: 0; display: none;
             text-shadow: 0 0 25px rgba(251, 191, 36, 0.6);
             animation: bismillahFade 4s ease-in-out forwards;
@@ -49,84 +49,111 @@
         
         #theme-toggle { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; }
 
+        .mode-btn { width: 100%; padding: 20px; border-radius: 15px; margin-bottom: 15px; border: none; cursor: pointer; color: white; transition: 0.3s; display: flex; flex-direction: column; align-items: center; }
+        .mode-ramadan { background: linear-gradient(135deg, var(--emerald), #064e3b); border-bottom: 5px solid #022c22; }
+        .mode-regular { background: linear-gradient(135deg, #1e3a8a, #1e40af); border-bottom: 5px solid #172554; }
+        
         .quote-container { margin: 15px 0; padding: 10px; border-radius: 15px; background: rgba(180, 83, 9, 0.05); border-left: 4px solid var(--gold); }
-        .quote-urdu { font-size: 1.2rem; font-weight: 600; color: var(--emerald); margin-bottom: 5px; direction: rtl; }
-        .quote-hinglish { font-size: 0.85rem; font-style: italic; color: var(--text-main); opacity: 0.8; }
+        .quote-urdu { font-size: 1.1rem; font-weight: 600; color: var(--emerald); margin-bottom: 5px; direction: rtl; }
+        .quote-hinglish { font-size: 0.8rem; font-style: italic; color: var(--text-main); opacity: 0.8; }
 
         .ramadan-status { background: var(--soft-gold); color: var(--gold); padding: 10px; border-radius: 12px; font-weight: 600; margin-bottom: 15px; font-size: 0.9rem; border: 1px solid var(--gold); }
         .level-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 10px; }
         .level-btn { padding: 12px 5px; border-radius: 10px; border: 2px solid var(--emerald); background: none; color: var(--text-main); font-weight: 600; cursor: pointer; transition: 0.3s; }
         .level-btn.locked { opacity: 0.3; cursor: not-allowed; filter: grayscale(1); }
-        .level-btn.future { border-style: dashed; color: #999; }
         .level-btn.completed { background: var(--emerald); color: white; }
+
+        .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .cat-btn { background: var(--card-bg); border: 1px solid var(--border); padding: 15px; border-radius: 15px; cursor: pointer; color: var(--text-main); }
         
         .option-btn { width: 100%; padding: 14px; margin: 8px 0; border-radius: 12px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-main); cursor: pointer; font-weight: 500; }
         .btn-action { background: var(--emerald); color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 15px; }
         .btn-restart { background: var(--gold); color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; }
         .btn-whatsapp { background: var(--whatsapp); color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
         
-        /* Install Button Styling */
         #btn-install { background: #3b82f6; color: white; border: none; padding: 10px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; display: none; }
 
-        .feedback-section { margin-top: 25px; padding-top: 20px; border-top: 1px dashed var(--border); }
-        .feedback-section h3 { font-size: 1rem; color: var(--text-main); margin-bottom: 10px; }
-        #feedback-text { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-color); color: var(--text-main); font-family: inherit; resize: none; box-sizing: border-box; }
-        .btn-feedback { background: var(--gold); color: white; border: none; padding: 10px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 8px; }
+        .insta-mode-card { margin-top: 20px; text-align: left; padding: 15px; background: var(--bg-color); border-radius: 15px; border-left: 4px solid #e1306c; }
 
         .hidden { display: none; }
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 100; }
         .modal { background: var(--card-bg); padding: 2rem; border-radius: 20px; max-width: 400px; width: 90%; text-align: center; border-top: 5px solid var(--gold); }
-        
-        .feedback-correct { color: var(--emerald); }
-        .feedback-wrong { color: var(--error); }
     </style>
 </head>
 <body data-theme="light">
 
     <div id="bismillah-overlay">
-        <button id="start-trigger">Begin Ramadan Quest</button>
+        <button id="start-trigger">Begin Islamic Questz</button>
         <div class="bismillah-text" id="b-text">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
     </div>
 
     <div id="quiz-card">
         <button id="theme-toggle" onclick="toggleTheme()" title="Switch Mode">🌓</button>
 
-        <div id="screen-levels">
-            <h1 style="font-family: 'Cinzel', serif; margin-bottom: 5px; color: var(--text-main);">Ramadan Quest</h1>
+        <!-- NEW: Screen Selection Mode -->
+        <div id="screen-mode-selection">
+            <h1 style="font-family: 'Cinzel', serif; color: var(--text-main);">Islamic Questz</h1>
+            <p style="color: var(--text-main); opacity: 0.7; margin-bottom: 25px;">Select your journey</p>
             
-            <div class="quote-container" id="daily-quote-box">
-                <div class="quote-urdu" id="u-quote">...</div>
-                <div class="quote-hinglish" id="h-quote">...</div>
-            </div>
+            <button class="mode-btn mode-ramadan" onclick="enterRamadanMode()">
+                <span style="font-size: 1.5rem;">🌙</span>
+                <span style="font-size: 1.2rem; font-weight: bold;">Ramadan Challenge</span>
+                <span style="font-size: 0.8rem; opacity: 0.9;">30 Days • 150 Questions</span>
+            </button>
 
-            <div id="fast-counter" class="ramadan-status">Loading...</div>
-            <div class="level-grid" id="level-btns"></div>
+            <button class="mode-btn mode-regular" onclick="enterRegularMode()">
+                <span style="font-size: 1.5rem;">📖</span>
+                <span style="font-size: 1.2rem; font-weight: bold;">Knowledge Library</span>
+                <span style="font-size: 0.8rem; opacity: 0.9;">History, Quran & Hadith</span>
+            </button>
 
-            <button id="btn-install">📲 Install App for Offline Access</button>
-            
-            <div class="feedback-section">
-                <h3>💡 Feedback & Suggestions</h3>
-                <textarea id="feedback-text" rows="2" placeholder="Tell us how to improve..."></textarea>
-                <button class="btn-feedback" onclick="sendFeedback()">Send Feedback</button>
+            <div class="insta-mode-card">
+                <p style="font-size: 0.7rem; font-weight: bold; color: #e1306c; margin-bottom: 5px;">INSTA-HADITH OF THE DAY</p>
+                <p id="insta-hadith" style="font-size: 0.85rem; font-style: italic; color: var(--text-main);">"The best among you are those who learn the Quran and teach it." (Bukhari)</p>
             </div>
         </div>
 
+        <!-- Ramadan Menu -->
+        <div id="screen-ramadan-levels" class="hidden">
+            <h2 style="font-family: 'Cinzel', serif; color: var(--emerald);">Ramadan Quest</h2>
+            <div id="fast-counter" class="ramadan-status">Loading...</div>
+            <div class="level-grid" id="ramadan-level-btns"></div>
+            <button class="btn-action" style="background: var(--gold);" onclick="showMenuSelection()">Return to Selection</button>
+        </div>
+
+        <!-- Regular Menu -->
+        <div id="screen-regular-categories" class="hidden">
+            <h2 style="font-family: 'Cinzel', serif; color: #1e3a8a;">Knowledge Library</h2>
+            <div class="cat-grid">
+                <button class="cat-btn" onclick="startCategory('Quran')">📖<br>Quran</button>
+                <button class="cat-btn" onclick="startCategory('Hadith')">📜<br>Hadith</button>
+                <button class="cat-btn" onclick="startCategory('Sahaba')">⚔️<br>Sahaba</button>
+                <button class="cat-btn" onclick="startCategory('History')">🕌<br>History</button>
+            </div>
+            <button class="btn-action" style="background: var(--gold);" onclick="showMenuSelection()">Return to Selection</button>
+        </div>
+
+        <!-- Shared Quiz Screen -->
         <div id="screen-quiz" class="hidden">
-            <p id="q-count" style="color: var(--gold); font-weight: 600;"></p>
+            <p id="q-category" style="color: var(--gold); font-weight: bold; margin:0; font-size: 0.8rem;"></p>
+            <p id="q-count" style="color: var(--gold); font-weight: 600; margin-top: 0;"></p>
             <h2 id="q-text" style="font-size: 1.2rem; min-height: 3em; color: var(--text-main);"></h2>
             <div id="opt-container"></div>
         </div>
 
+        <!-- Result Screen -->
         <div id="screen-result" class="hidden">
-            <div style="font-size: 3rem; margin-bottom: 10px;">🌙</div>
+            <div id="res-icon" style="font-size: 3rem; margin-bottom: 10px;">🏆</div>
             <h2 id="res-score" style="font-size: 2.5rem; margin: 0; color: var(--text-main);"></h2>
             <p id="res-msg" style="font-weight: 600; color: var(--text-main);"></p>
-            <a id="whatsapp-share" class="btn-whatsapp" target="_blank"><span>Share Progress</span></a>
-            <button class="btn-restart" onclick="restartCurrentLvl()">Restart This Level</button>
-            <button class="btn-action" onclick="showMenu()">Main Menu</button>
+            <a id="whatsapp-share" class="btn-whatsapp" target="_blank"><span>Share My Score</span></a>
+            <button class="btn-action" onclick="showMenuSelection()">Main Menu</button>
         </div>
+
+        <button id="btn-install">📲 Install App for Offline Access</button>
     </div>
 
+    <!-- Modal for Feedback -->
     <div id="modal-feedback" class="modal-overlay">
         <div class="modal">
             <h2 id="m-status"></h2>
@@ -136,271 +163,167 @@
     </div>
 
     <script>
-        // FIXED DATE LOGIC FOR 2026
         const RAMADAN_START = new Date('2026-02-18'); 
-        
+        let currentMode = 'ramadan'; 
+        let currentCategory = '';
+        let curLvl = 1, qIdx = 0, score = 0;
+
+        // PROGRESS STORAGE
+        let ramadanProgress = parseInt(localStorage.getItem('ramadanProg')) || 1;
+        let regularProgress = JSON.parse(localStorage.getItem('regProg')) || { Quran: 1, Hadith: 1, Sahaba: 1, History: 1 };
+
+        // DATA: RAMADAN QUESTIONS (150 Total - Simplified for file size)
+        const ramadanQuestions = [];
+        for(let i=1; i<=30; i++) {
+            for(let j=1; j<=5; j++) {
+                ramadanQuestions.push({
+                    q: `[Ramadan Day ${i}] Question ${j}: Related to Fiqh/History/Quran?`,
+                    o: ["Option A", "Option B", "Option C", "Option D"],
+                    a: "Option A"
+                });
+            }
+        }
+
+        // DATA: REGULAR QUESTIONS (300 Total - 75 per category)
+        const regularQuestions = {
+            Quran: Array.from({length: 75}, (_, i) => ({ q: `Quran Question ${i+1}?`, o: ["A", "B", "C", "D"], a: "A" })),
+            Hadith: Array.from({length: 75}, (_, i) => ({ q: `Hadith Question ${i+1}?`, o: ["A", "B", "C", "D"], a: "A" })),
+            Sahaba: Array.from({length: 75}, (_, i) => ({ q: `Sahaba Question ${i+1}?`, o: ["A", "B", "C", "D"], a: "A" })),
+            History: Array.from({length: 75}, (_, i) => ({ q: `History Question ${i+1}?`, o: ["A", "B", "C", "D"], a: "A" }))
+        };
+
         function toggleTheme() {
-            const body = document.body;
-            const current = body.getAttribute('data-theme');
-            body.setAttribute('data-theme', current === 'light' ? 'dark' : 'light');
-            localStorage.setItem('ramadanTheme', body.getAttribute('data-theme'));
-        }
-        
-        if(localStorage.getItem('ramadanTheme')) {
-            document.body.setAttribute('data-theme', localStorage.getItem('ramadanTheme'));
+            const b = document.body;
+            b.setAttribute('data-theme', b.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
         }
 
-        function getCurrentFastDay() {
-            const now = new Date();
-            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            const diffTime = today - RAMADAN_START;
-            const day = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
-            return day < 0 ? 0 : (day > 30 ? 30 : day);
+        function showMenuSelection() {
+            document.querySelectorAll('#quiz-card > div').forEach(d => d.classList.add('hidden'));
+            document.getElementById('screen-mode-selection').classList.remove('hidden');
         }
 
-        const currentFast = getCurrentFastDay();
-
-        const dailyQuotes = [
-            { u: "رمضان کا پہلا عشرہ رحمت ہے", h: "Ramadan ka pehla ashra Rehmat hai." },
-            { u: "نماز مومن کی معراج ہے", h: "Namaz momin ki mairaaj hai." },
-            { u: "اللہ صبر کرنے والوں کے ساتھ ہے", h: "Allah sabr karne walon ke saath hai." },
-            { u: "بہترین تم میں وہ ہے جو قرآن سیکھے", h: "Behtareen tum mein wo hai jo Quran seekhe." },
-            { u: "شکر گزاری نعمتوں کو بڑھاتی ہے", h: "Shukr guzari nematon ko badhati hai." },
-            { u: "دعا عبادت کا مغز ہے", h: "Dua ibadat ka maghz hai." },
-            { u: "سچائی نجات دلاتی ہے", h: "Sachai nijaat dilati hai." },
-            { u: "ماں کے قدموں تلے جنت ہے", h: "Maa ke qadmon tale Jannat hai." },
-            { u: "اللہ کی رحمت سے مایوس نہ ہوں", h: "Allah ki rehmat se mayoos na hon." },
-            { u: "پاکیزگی نصف ایمان ہے", h: "Pakeezgi nisf imaan hai." },
-            { u: "توبہ کرنے والا اللہ کا دوست ہے", h: "Tauba karne wala Allah ka dost hai." },
-            { u: "ظلم قیامت کے دن اندھیرا ہوگا", h: "Zulm qayamat ke din andhera hoga." },
-            { u: "اعمال کا دارومدار نیتوں پر ہے", h: "Aamaal ka daromadar niyaton par hai." },
-            { u: "مسلمان وہ ہے جس کی زبان سے دوسرے محفوظ رہیں", h: "Musalman wo hai jiski zaban se dusre mehfooz rahen." },
-            { u: "رمضان گناہوں کو جلانے والا مہینہ ہے", h: "Ramadan gunahon ko jalaney wala mahina hai." },
-            { u: "علم حاصل کرنا ہر مسلمان پر فرض ہے", h: "Ilm hasil karna har musalman par farz hai." },
-            { u: "خوش اخلاقی ایمان کی نشانی ہے", h: "Khush ikhlaqi imaan ki nishani hai." },
-            { u: "صدقہ بلاؤں کو ٹالتا ہے", h: "Sadaqah balaon ko taalta hai." },
-            { u: "قرآن دلوں کا سکون ہے", h: "Quran dilon ka sukoon hai." },
-            { u: "حیا ایمان کا حصہ ہے", h: "Haya imaan ka hissa hai." },
-            { u: "اپنے بھائی کے لیے وہی پسند کرو جو خود کے لیے", h: "Apne bhai ke liye wahi pasand karo jo khud ke liye." },
-            { u: "اللہ ہر چیز پر قادر ہے", h: "Allah har cheez par qadir hai." },
-            { u: "رمضان میں جنت کے دروازے کھل جاتے ہیں", h: "Ramadan mein Jannat ke darwaze khul jate hain." },
-            { u: "لیلۃ القدر ہزار مہینوں سے بہتر ہے", h: "Laylatul Qadr hazaar mahinon se behtar hai." },
-            { u: "رزق حلال عبادت ہے", h: "Rizq-e-halal ibadat hai." },
-            { u: "والدین کی خدمت میں برکت ہے", h: "Walidain ki khidmat mein barkat hai." },
-            { u: "اللہ پر بھروسہ کرو وہ کافی ہے", h: "Allah par bharosa karo wo kaafi hai." },
-            { u: "نیکی کبھی ضائع نہیں ہوتی", h: "Naiki kabhi zaya nahi hoti." },
-            { u: "استغفار رزق کے دروازے کھولتا ہے", h: "Istighfar rizq ke darwaze kholta hai." },
-            { u: "عید ان کے لیے ہے جنہوں نے اللہ کو راضی کیا", h: "Eid unke liye hai jinhone Allah ko raazi kiya." }
-        ];
-
-        function setDailyQuote() {
-            const day = currentFast === 0 ? 1 : currentFast;
-            const quote = dailyQuotes[day - 1];
-            document.getElementById('u-quote').innerText = quote.u;
-            document.getElementById('h-quote').innerText = quote.h;
+        function enterRamadanMode() {
+            currentMode = 'ramadan';
+            document.querySelectorAll('#quiz-card > div').forEach(d => d.classList.add('hidden'));
+            document.getElementById('screen-ramadan-levels').classList.remove('hidden');
+            renderRamadanLevels();
         }
 
+        function enterRegularMode() {
+            currentMode = 'regular';
+            document.querySelectorAll('#quiz-card > div').forEach(d => d.classList.add('hidden'));
+            document.getElementById('screen-regular-categories').classList.remove('hidden');
+        }
+
+        function renderRamadanLevels() {
+            const day = Math.floor((new Date() - RAMADAN_START) / 86400000) + 1;
+            const validDay = day < 0 ? 0 : (day > 30 ? 30 : day);
+            document.getElementById('fast-counter').innerText = `Current: Day ${validDay} of Ramadan 2026`;
+            
+            const grid = document.getElementById('ramadan-level-btns');
+            grid.innerHTML = '';
+            for(let i=1; i<=30; i++) {
+                const b = document.createElement('button');
+                b.className = 'level-btn';
+                b.innerText = i;
+                if(i > ramadanProgress) b.classList.add('locked');
+                else b.onclick = () => startQuiz(i);
+                if(i < ramadanProgress) b.classList.add('completed');
+                grid.appendChild(b);
+            }
+        }
+
+        function startCategory(cat) {
+            currentCategory = cat;
+            startQuiz(regularProgress[cat]);
+        }
+
+        function startQuiz(lvl) {
+            curLvl = lvl; qIdx = 0; score = 0;
+            document.querySelectorAll('#quiz-card > div').forEach(d => d.classList.add('hidden'));
+            document.getElementById('screen-quiz').classList.remove('hidden');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            let qData;
+            if(currentMode === 'ramadan') {
+                qData = ramadanQuestions[((curLvl-1)*5) + qIdx];
+                document.getElementById('q-category').innerText = "RAMADAN CHALLENGE";
+                document.getElementById('q-count').innerText = `Day ${curLvl} - Question ${qIdx+1}/5`;
+            } else {
+                qData = regularQuestions[currentCategory][((curLvl-1)*5) + qIdx];
+                document.getElementById('q-category').innerText = `LIBRARY: ${currentCategory.toUpperCase()}`;
+                document.getElementById('q-count').innerText = `Level ${curLvl} - Question ${qIdx+1}/5`;
+            }
+
+            document.getElementById('q-text').innerText = qData.q;
+            const container = document.getElementById('opt-container');
+            container.innerHTML = '';
+            qData.o.forEach(o => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = o;
+                btn.onclick = () => checkAnswer(o, qData.a);
+                container.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(sel, correct) {
+            const isCorrect = sel === correct;
+            if(isCorrect) score++;
+
+            const modal = document.getElementById('modal-feedback');
+            document.getElementById('m-status').innerText = isCorrect ? "✅ Correct!" : "❌ Incorrect";
+            document.getElementById('m-text').innerText = isCorrect ? "SubhanAllah! Well done." : `The correct answer was: ${correct}`;
+            
+            document.getElementById('m-btn').onclick = () => {
+                modal.style.display = 'none';
+                qIdx++;
+                if(qIdx < 5) loadQuestion();
+                else showResult();
+            };
+            modal.style.display = 'flex';
+        }
+
+        function showResult() {
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-result').classList.remove('hidden');
+            document.getElementById('res-score').innerText = `${score}/5`;
+            
+            const passed = score >= 4;
+            document.getElementById('res-msg').innerText = passed ? "MashaAllah! You passed!" : "Try again to unlock the next level!";
+            
+            if(passed) {
+                if(currentMode === 'ramadan' && curLvl === ramadanProgress) {
+                    ramadanProgress++;
+                    localStorage.setItem('ramadanProg', ramadanProgress);
+                } else if(currentMode === 'regular' && curLvl === regularProgress[currentCategory]) {
+                    regularProgress[currentCategory]++;
+                    localStorage.setItem('regProg', JSON.stringify(regularProgress));
+                }
+            }
+
+            // SHARED LINK LOGIC
+            const shareText = `I just scored ${score}/5 on Islamic Questz (${currentMode === 'ramadan' ? 'Ramadan Day ' + curLvl : currentCategory + ' Lvl ' + curLvl})! Join me: ${window.location.href}`;
+            document.getElementById('whatsapp-share').href = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+        }
+
+        // Bismillah Overlay
         document.getElementById('start-trigger').addEventListener('click', function() {
             this.style.display = 'none';
             document.getElementById('b-text').style.display = 'block';
             setTimeout(() => {
                 document.getElementById('bismillah-overlay').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('bismillah-overlay').style.display = 'none';
-                    showMenu();
-                }, 1500);
-            }, 4000);
+                setTimeout(() => document.getElementById('bismillah-overlay').style.display = 'none', 1500);
+            }, 3000);
         });
 
-        const questions = [
-            { q: "How many pillars of Islam are there?", o: ["3", "5", "7", "4"], a: "5" },
-            { q: "What is the first pillar of Islam?", o: ["Salah", "Zakat", "Shahada", "Sawm"], a: "Shahada" },
-            { q: "How many times do Muslims pray daily?", o: ["3", "5", "10", "2"], a: "5" },
-            { q: "What is the pillar of charity called?", o: ["Hajj", "Sadaqah", "Zakat", "Fitra"], a: "Zakat" },
-            { q: "Fasting is which pillar of Islam?", o: ["2nd", "3rd", "4th", "5th"], a: "4th" },
-            { q: "How many chapters (Surahs) are in the Quran?", o: ["110", "114", "120", "100"], a: "114" },
-            { q: "Which is the longest Surah?", o: ["Al-Imran", "Al-Fatiha", "Al-Baqarah", "An-Nisa"], a: "Al-Baqarah" },
-            { q: "Which is the shortest Surah?", o: ["Al-Ikhlas", "Al-Kawthar", "Al-Asr", "An-Nas"], a: "Al-Kawthar" },
-            { q: "In which language was the Quran revealed?", o: ["Hebrew", "Persian", "Arabic", "Urdu"], a: "Arabic" },
-            { q: "Who revealed the Quran to the Prophet?", o: ["Angel Mikael", "Angel Jibril", "Angel Israfil", "Angel Malik"], a: "Angel Jibril" },
-            { q: "Who was the first Prophet?", o: ["Nuh", "Ibrahim", "Adam", "Isa"], a: "Adam" },
-            { q: "Which Prophet built the Kaaba with his son?", o: ["Musa", "Ibrahim", "Yusuf", "Lut"], a: "Ibrahim" },
-            { q: "Which Prophet could speak to animals?", o: ["Sulaiman", "Dawud", "Adam", "Yahya"], a: "Sulaiman" },
-            { q: "Which Prophet was swallowed by a whale?", o: ["Yunus", "Ilyas", "Isa", "Harun"], a: "Yunus" },
-            { q: "Who is the final Prophet?", o: ["Isa", "Musa", "Muhammad (PBUH)", "Ibrahim"], a: "Muhammad (PBUH)" },
-            { q: "What is the meal before sunrise called?", o: ["Iftar", "Suhoor", "Walima", "Dinner"], a: "Suhoor" },
-            { q: "What is the meal after sunset called?", o: ["Lunch", "Suhoor", "Iftar", "Brunch"], a: "Iftar" },
-            { q: "Which night in Ramadan is better than 1000 months?", o: ["Laylatul Qadr", "Laylatul Mi'raj", "Friday", "Eid Night"], a: "Laylatul Qadr" },
-            { q: "What is the special prayer in Ramadan nights?", o: ["Tahajjud", "Taraweeh", "Eid Prayer", "Witr"], a: "Taraweeh" },
-            { q: "Which gate of Jannah is for those who fast?", o: ["Baab As-Salah", "Baab Al-Jihad", "Baab Ar-Rayyan", "Baab Al-Hajj"], a: "Baab Ar-Rayyan" },
-            { q: "In which city was the Prophet (PBUH) born?", o: ["Madinah", "Mecca", "Taif", "Jerusalem"], a: "Mecca" },
-            { q: "What was the Prophet's mother's name?", o: ["Khadija", "Aisha", "Aminah", "Fatimah"], a: "Aminah" },
-            { q: "What was the Prophet's father's name?", o: ["Abu Talib", "Abdullah", "Abdul Muttalib", "Hamza"], a: "Abdullah" },
-            { q: "How old was the Prophet when he received revelation?", o: ["25", "33", "40", "50"], a: "40" },
-            { q: "What was the Prophet's profession before prophethood?", o: ["Blacksmith", "Merchant/Trader", "Farmer", "Teacher"], a: "Merchant/Trader" },
-            { q: "How many angels are mentioned by name in Quran?", o: ["All of them", "Several", "None", "4 Main ones"], a: "Several" },
-            { q: "Which Angel is the gatekeeper of Jannah?", o: ["Malik", "Ridwan", "Munkar", "Nakir"], a: "Ridwan" },
-            { q: "Which Angel will blow the Trumpet?", o: ["Jibril", "Mikael", "Israfil", "Izrail"], a: "Israfil" },
-            { q: "What are 'Kiraman Katibin'?", o: ["Gatekeepers", "Recording Angels", "Cloud Movers", "Messengers"], a: "Recording Angels" },
-            { q: "Believing in Angels is which pillar of Iman?", o: ["1st", "2nd", "3rd", "4th"], a: "2nd" },
-            { q: "Who was the first Caliph of Islam?", o: ["Umar", "Uthman", "Abu Bakr", "Ali"], a: "Abu Bakr" },
-            { q: "Who was known as 'Al-Faruq'?", o: ["Ali", "Umar", "Abu Bakr", "Uthman"], a: "Umar" },
-            { q: "What was the first capital of the Islamic State?", o: ["Mecca", "Damascus", "Madinah", "Baghdad"], a: "Madinah" },
-            { q: "The 'Migration' is known as what in Arabic?", o: ["Hajj", "Hijrah", "Ziyarah", "Isra"], a: "Hijrah" },
-            { q: "Who was the first Muezzin?", o: ["Abu Bakr", "Bilal ibn Rabah", "Umar", "Zaid"], a: "Bilal ibn Rabah" }
-        ];
-
-        let curLvl = 1, qIdx = 0, score = 0;
-        let userProgress = parseInt(localStorage.getItem('ramadanProg')) || 1;
-
-        function showMenu() {
-            document.getElementById('screen-quiz').classList.add('hidden');
-            document.getElementById('screen-result').classList.add('hidden');
-            document.getElementById('screen-levels').classList.remove('hidden');
-            document.getElementById('fast-counter').innerText = `Today: Fast ${currentFast} of Ramadan 2026`;
-            
-            setDailyQuote();
-
-            const grid = document.getElementById('level-btns');
-            grid.innerHTML = '';
-            for(let i=1; i<=30; i++) {
-                const btn = document.createElement('button');
-                btn.className = 'level-btn';
-                btn.innerText = i;
-                if (i > currentFast && currentFast !== 0) { btn.classList.add('future'); } 
-                else if (i > userProgress) { btn.classList.add('locked'); } 
-                else {
-                    if (i < userProgress) btn.classList.add('completed');
-                    btn.onclick = () => startLvl(i);
-                }
-                grid.appendChild(btn);
-            }
-        }
-
-        function startLvl(num) {
-            curLvl = num; qIdx = 0; score = 0;
-            document.getElementById('screen-levels').classList.add('hidden');
-            document.getElementById('screen-quiz').classList.remove('hidden');
-            loadQ();
-        }
-
-        function restartCurrentLvl() {
-            startLvl(curLvl);
-        }
-
-        function loadQ() {
-            const globalIndex = ((curLvl - 1) * 5) + qIdx;
-            const qData = questions[globalIndex] || { q: "End of Question Database", o: [], a: "" }; 
-            document.getElementById('q-count').innerText = `Fast ${curLvl} - Q${qIdx+1}/5`;
-            document.getElementById('q-text').innerText = qData.q;
-            const container = document.getElementById('opt-container');
-            container.innerHTML = '';
-            qData.o.forEach(opt => {
-                const b = document.createElement('button');
-                b.className = 'option-btn';
-                b.innerText = opt;
-                b.onclick = () => checkAns(opt, qData.a);
-                container.appendChild(b);
-            });
-        }
-
-        function checkAns(selected, correct) {
-            const isCorrect = selected === correct;
-            if(isCorrect) score++;
-            
-            const modal = document.getElementById('modal-feedback');
-            const status = document.getElementById('m-status');
-            const text = document.getElementById('m-text');
-            const btn = document.getElementById('m-btn');
-            
-            status.innerText = isCorrect ? "Masha'Allah! Correct" : "SubhanAllah! Incorrect";
-            status.className = isCorrect ? "feedback-correct" : "feedback-wrong";
-            text.innerText = isCorrect ? "Keep going on your quest!" : `The correct answer was: ${correct}`;
-            
-            modal.style.display = 'flex';
-            btn.onclick = () => {
-                modal.style.display = 'none';
-                qIdx++;
-                if(qIdx < 5) loadQ(); else endLvl();
-            };
-        }
-
-        function endLvl() {
-            document.getElementById('screen-quiz').classList.add('hidden');
-            document.getElementById('screen-result').classList.remove('hidden');
-            document.getElementById('res-score').innerText = `${score}/5`;
-            
-            if(score >= 4) {
-                document.getElementById('res-msg').innerText = "Level Completed! Your knowledge is growing.";
-                if(curLvl === userProgress) {
-                    userProgress++;
-                    localStorage.setItem('ramadanProg', userProgress);
-                }
-            } else {
-                document.getElementById('res-msg').innerText = "Try again to unlock the next level!";
-            }
-            
-            // Updated Share Link logic to include the website URL
-            const appUrl = window.location.href;
-            const shareText = `I scored ${score}/5 on Day ${curLvl} of Ramadan Quest 2026! 🌙✨\n\nPlay here: ${appUrl}`;
-            document.getElementById('whatsapp-share').href = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
-        }
-
-        function sendFeedback() {
-            const val = document.getElementById('feedback-text').value;
-            if(val) {
-                alert("JazakAllah Khair! Your feedback has been noted.");
-                document.getElementById('feedback-text').value = '';
-            }
-        }
-        
-       // --- INSTALL APP (PWA) LOGIC ---
-        let deferredPrompt;
-        const installBtn = document.getElementById('btn-install');
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installBtn.style.display = 'block'; 
-        });
-
-        installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    installBtn.style.display = 'none';
-                }
-                deferredPrompt = null;
-            }
-        });
-
-        window.addEventListener('appinstalled', () => {
-            installBtn.style.display = 'none';
-            console.log('App was installed');
-        });
-
-        // SERVICE WORKER REGISTRATION (Optimized for Mobile)
+        // Register Service Worker
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                .then((reg) => {
-                    console.log('SW Registered');
-                    
-                    // Force update if the server version changed
-                    reg.onupdatefound = () => {
-                        const installingWorker = reg.installing;
-                        installingWorker.onstatechange = () => {
-                            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                // This forces the mobile app to refresh and clear the 502 error
-                                window.location.reload();
-                            }
-                        };
-                    };
-                })
-                .catch(err => console.log('SW Registration Failed:', err));
-            });
+            window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
         }
-    </script> 
+    </script>
 </body>
 </html>
+
