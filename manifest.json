@@ -1,24 +1,21 @@
 {
   "name": "Islamic Questz 2026",
-  "short_name": "IslamicQuestz",
-  "description": "Ramadan Challenge and Islamic Knowledge Library",
+  "short_name": "Questz",
+  "description": "Daily Ramadan Challenge & Islamic Knowledge Library",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#064e3b",
   "theme_color": "#064e3b",
-  "orientation": "portrait",
   "icons": [
     {
       "src": "https://img.icons8.com/fluency/192/mosque.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
       "src": "https://img.icons8.com/fluency/512/mosque.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }
