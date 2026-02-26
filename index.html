@@ -20,20 +20,16 @@
 
         body { font-family: 'Poppins', sans-serif; background: var(--bg-color); margin: 0; color: var(--text-main); transition: 0.3s; }
 
-        /* --- Animations --- */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Bismillah Overlay */
         #bismillah-overlay {
             position: fixed; inset: 0; background: #064e3b;
             display: flex; flex-direction: column; justify-content: center;
             align-items: center; z-index: 10000; transition: 1s;
-            pointer-events: none; 
-            user-select: none;
+            pointer-events: none; user-select: none;
         }
         .bismillah-text { color: #fbbf24; font-size: 2rem; margin-bottom: 20px; font-family: 'Cinzel'; opacity: 0; animation: fadeIn 2s forwards; }
 
-        /* Sidebar Customization */
         #sidebar {
             position: fixed; right: -280px; top: 0; width: 280px; height: 100%;
             background: var(--card-bg); z-index: 2000; transition: 0.3s;
@@ -41,25 +37,26 @@
         }
         #sidebar.open { right: 0; }
         .profile-section { padding: 20px; text-align: center; border-bottom: 2px solid var(--gold); }
-        .avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--soft-gold); margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 2rem; border: 2px solid var(--gold); position: relative; overflow: hidden;}
-        #profile-img { width: 100%; height: 100%; object-fit: cover; display: none; }
+        .avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--soft-gold); margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 2rem; border: 2px solid var(--gold); position: relative; cursor: pointer; }
+        #profile-img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: none; }
 
-        /* Main Menu */
         .nav-item { padding: 12px 25px; display: flex; align-items: center; gap: 10px; color: var(--text-main); text-decoration: none; cursor: pointer; border-bottom: 1px solid var(--border); }
         .nav-item:hover { background: var(--soft-gold); }
 
-        /* Grid & Cards */
         .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-        .main-btn { background: var(--card-bg); border: 1px solid var(--border); padding: 20px; border-radius: 20px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px var(--shadow); }
-        .main-btn:hover { transform: translateY(-5px); border-color: var(--gold); }
-        .main-btn i { font-size: 1.5rem; display: block; margin-bottom: 10px; }
+        .main-btn { background: var(--card-bg); border: 1px solid var(--border); padding: 15px; border-radius: 15px; cursor: pointer; transition: 0.2s; font-weight: 600; color: var(--text-main); }
+        .main-btn:hover { border-color: var(--gold); transform: translateY(-2px); }
 
-        /* Auth Screen */
-        #screen-auth { padding: 40px 20px; text-align: center; }
-        .auth-input { width: 80%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid var(--border); }
+        .level-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 20px 0; }
+        .lvl { padding: 15px 5px; border-radius: 12px; border: 2px solid var(--emerald); background: none; color: var(--text-main); font-weight: bold; cursor: pointer; }
+        .lvl.locked { opacity: 0.3; background: #eee; cursor: not-allowed; }
+        .lvl.completed { background: var(--emerald) !important; color: white !important; }
 
+        .dua-card { background: var(--card-bg); border-left: 5px solid var(--gold); padding: 15px; margin: 10px 0; border-radius: 10px; box-shadow: 0 2px 5px var(--shadow); text-align: right; }
+        
         .hidden { display: none; }
-        #menu-btn { position: fixed; top: 15px; right: 15px; font-size: 1.8rem; z-index: 2001; cursor: pointer; background: var(--gold); color: white; border: none; border-radius: 8px; width: 45px; height: 45px; }
+        #menu-btn { position: fixed; top: 15px; right: 15px; font-size: 1.5rem; z-index: 2001; cursor: pointer; background: var(--gold); color: white; border: none; border-radius: 8px; width: 40px; height: 40px; }
+        .back-btn { background: none; border: none; color: var(--gold); font-weight: bold; cursor: pointer; margin-bottom: 15px; font-size: 1rem; }
     </style>
 </head>
 <body>
@@ -70,6 +67,7 @@
     </div>
 
     <button id="menu-btn" class="hidden" onclick="toggleMenu()">☰</button>
+    
     <nav id="sidebar">
         <div class="profile-section">
             <div class="avatar" onclick="document.getElementById('upload-pic').click()">
@@ -81,9 +79,9 @@
         </div>
         <div class="nav-item" onclick="showScreen('home')">🏠 Home</div>
         <div class="nav-item" onclick="showScreen('ramadan-grid')">🌙 Ramadan Quiz</div>
-        <div class="nav-item" onclick="showScreen('regular-grid')">📖 Knowledge & Learning</div>
-        <div class="nav-item" onclick="showHadith()">📜 Hadith of the Day</div>
-        <div class="nav-item" onclick="showScreen('duas')">🤲 Daily Duas</div>
+        <div class="nav-item" onclick="showScreen('regular-grid')">📖 Learning</div>
+        <div class="nav-item" onclick="showHadith()">📜 Hadith of Day</div>
+        <div class="nav-item" onclick="showDuas()">🤲 Daily Duas</div>
         <div class="nav-item" onclick="showScreen('feedback')">💡 Feedback</div>
         <div class="nav-item" onclick="shareApp()">📤 Invite Friends</div>
         <div class="nav-item" onclick="toggleTheme()">🌓 Theme Mode</div>
@@ -93,9 +91,9 @@
         <div class="app-card" style="margin: 0 auto; max-width: 500px; padding: 20px;">
             
             <div id="screen-auth">
-                <h2 style="font-family: 'Cinzel';">Welcome</h2>
-                <div id="login-box">
-                    <input type="email" id="auth-email" class="auth-input" placeholder="Enter Email">
+                <h2 style="font-family: 'Cinzel'; text-align:center;">Welcome</h2>
+                <div id="login-box" style="text-align:center;">
+                    <input type="email" id="auth-email" class="auth-input" placeholder="Enter Email" style="width: 80%; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: 1px solid var(--border);">
                     <button class="main-btn" style="width: 85%; background: var(--emerald); color: white;" onclick="handleAuth('register')">Register & Login</button>
                     <div style="margin: 15px 0;">OR</div>
                     <button class="main-btn" style="width: 85%; background: var(--gold); color: white;" onclick="handleAuth('guest')">Continue as Guest</button>
@@ -103,12 +101,12 @@
             </div>
 
             <div id="screen-home" class="hidden">
-                <h1 style="font-family: 'Cinzel';">Islamic Questz</h1>
+                <h1 style="font-family: 'Cinzel'; text-align:center;">Islamic Questz</h1>
                 <div class="mode-grid">
                     <div class="main-btn" onclick="showScreen('ramadan-grid')">🌙<br>Ramadan Quiz</div>
                     <div class="main-btn" onclick="showScreen('regular-grid')">📖<br>Learning</div>
                     <div class="main-btn" onclick="showHadith()">📜<br>Daily Hadith</div>
-                    <div class="main-btn" onclick="showScreen('duas')">🤲<br>Daily Duas</div>
+                    <div class="main-btn" onclick="showDuas()">🤲<br>Daily Duas</div>
                 </div>
                 <button id="install-btn" class="main-btn" style="width: 100%; margin-top: 20px; background: #3b82f6; color: white;">📲 Install App</button>
             </div>
@@ -122,7 +120,21 @@
     </div>
 
     <script>
-        // --- 1. INITIALIZATION & BISMILLAH ---
+        // --- DATA ---
+        const DUA_DB = [
+            { t: "Before Eating", a: "بِسْمِ اللَّهِ", tr: "In the name of Allah" },
+            { t: "After Eating", a: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا", tr: "Praise be to Allah who fed us" },
+            { t: "Before Sleeping", a: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا", tr: "In Your name O Allah I die and live" }
+        ];
+
+        const HADITH_LIST = [
+            "The best among you are those who learn the Quran and teach it.",
+            "Cleanliness is half of faith.",
+            "A good word is a charity.",
+            "He who does not show mercy to others will not be shown mercy."
+        ];
+
+        // --- CORE ENGINE ---
         window.addEventListener('load', () => {
             setTimeout(() => {
                 document.getElementById('bismillah-overlay').style.opacity = '0';
@@ -134,24 +146,17 @@
             }, 2500);
         });
 
-        // --- 2. AUTH LOGIC ---
         function handleAuth(type) {
-    console.log("Auth button clicked:", type); // This helps you check in the browser console
-    let user = { name: "", avatar: "🌙", theme: "light" };
-
-    if(type === 'guest') {
-        user.name = "Guest_" + Math.floor(Math.random() * 9000);
-    } else {
-        const emailInput = document.getElementById('auth-email');
-        if(!emailInput.value.includes('@')) {
-            alert("Please enter a valid email");
-            return;
-        }
-        user.name = emailInput.value.split('@')[0];
-    }
-    
-    localStorage.setItem('iq_user', JSON.stringify(user));
-    loginUser(user);
+            let user = { name: "", avatar: "" };
+            if(type === 'guest') {
+                user.name = "Guest_" + Math.floor(Math.random() * 9000);
+            } else {
+                const val = document.getElementById('auth-email').value;
+                if(!val.includes('@')) return alert("Valid email required");
+                user.name = val.split('@')[0];
+            }
+            localStorage.setItem('iq_user', JSON.stringify(user));
+            loginUser(user);
         }
 
         function loginUser(user) {
@@ -167,55 +172,72 @@
             if(saved) loginUser(JSON.parse(saved));
         }
 
-        // --- 3. SIDEBAR & THEME ---
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
-        function toggleTheme() {
-            const current = document.body.getAttribute('data-theme');
-            const target = current === 'dark' ? 'light' : 'dark';
-            document.body.setAttribute('data-theme', target);
-        }
 
-        // --- 4. SCREEN NAVIGATION ---
-        function showScreen(screenId) {
+        function showScreen(id) {
             const screens = ['screen-auth', 'screen-home', 'screen-content'];
             screens.forEach(s => document.getElementById(s).classList.add('hidden'));
-            
-            if(screenId === 'ramadan-grid') {
-                renderRamadanGrid();
-                document.getElementById('screen-content').classList.remove('hidden');
-            } else {
-                document.getElementById('screen-' + screenId).classList.remove('hidden');
-            }
+            document.getElementById('screen-' + id).classList.remove('hidden');
+            if(id === 'ramadan-grid') renderRamadanGrid();
             if(document.getElementById('sidebar').classList.contains('open')) toggleMenu();
         }
 
-        // --- 5. RAMADAN 2026 DAILY UNLOCK LOGIC ---
+        // --- RAMADAN LOGIC (Feb 18 Start) ---
         function renderRamadanGrid() {
             const container = document.getElementById('dynamic-body');
-            container.innerHTML = '<h2>Ramadan 30-Day Challenge</h2><div class="level-grid" id="grid"></div>';
-            const grid = document.getElementById('grid');
-            
-            // Start of Ramadan 2026 is approx March 1st (Check local moon)
-            const ramadanStart = new Date('2026-03-01'); 
-            const today = new Date();
-            const diffDays = Math.floor((today - ramadanStart) / (1000 * 60 * 60 * 24)) + 1;
+            container.innerHTML = '<h2>Ramadan Challenge</h2><div class="level-grid" id="grid"></div>';
+            const ramadanStart = new Date('2026-02-18');
+            const diff = Math.floor((new Date() - ramadanStart) / 86400000) + 1;
 
-            for(let i=1; i<=30; i++) {
+            for(let i=1; i<=31; i++) {
                 const btn = document.createElement('button');
                 btn.className = 'lvl';
-                btn.innerText = i;
-                if(i > diffDays) {
+                btn.innerText = i === 31 ? "EID" : i;
+                if(i > diff) {
                     btn.classList.add('locked');
-                    btn.innerHTML = i + " 🔒";
-                    btn.onclick = () => alert("This level will unlock on Ramadan Day " + i);
+                    btn.onclick = () => alert("Unlocks on Day " + i);
                 } else {
-                    btn.onclick = () => startRamadanLevel(i);
+                    const done = localStorage.getItem('lvl_'+i);
+                    if(done) btn.classList.add('completed');
+                    btn.onclick = () => i === 31 ? startEidQuiz() : alert("Starting Level " + i + "... (Connect your Question Database here)");
                 }
-                grid.appendChild(btn);
+                document.getElementById('grid').appendChild(btn);
             }
         }
 
-        // --- 6. UTILITIES ---
+        function showDuas() {
+            showScreen('content');
+            const body = document.getElementById('dynamic-body');
+            body.innerHTML = '<h2>Daily Duas</h2>';
+            DUA_DB.forEach(d => {
+                body.innerHTML += `<div class="dua-card"><strong>${d.t}</strong><br><span style="font-size:1.2rem;">${d.a}</span><br><small>${d.tr}</small></div>`;
+            });
+        }
+
+        function showHadith() {
+            showScreen('content');
+            const dayIdx = new Date().getDate() % HADITH_LIST.length;
+            document.getElementById('dynamic-body').innerHTML = `<h2>Hadith of the Day</h2><div class="dua-card" style="text-align:center; border:none; background:var(--soft-gold);">"${HADITH_LIST[dayIdx]}"</div>`;
+        }
+
+        function startEidQuiz() {
+            alert("Welcome to the Final Eid Quiz! Complete this for your certificate.");
+            // Logic to show certificate after 10 questions
+            showCertificate();
+        }
+
+        function showCertificate() {
+            const user = JSON.parse(localStorage.getItem('iq_user'));
+            document.getElementById('dynamic-body').innerHTML = `
+                <div style="border:10px double var(--gold); padding:20px; text-align:center; background:white;">
+                    <h1 style="font-family:Cinzel">CERTIFICATE</h1>
+                    <p>Presented to</p>
+                    <h3>${user.name}</h3>
+                    <p>For completing 30 Days of Ramadan Quest 2026</p>
+                </div>
+                <button class="main-btn" style="width:100%; margin-top:10px;" onclick="window.print()">Download</button>`;
+        }
+
         function uploadImage(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
@@ -228,10 +250,13 @@
             }
         }
 
+        function toggleTheme() {
+            const t = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.body.setAttribute('data-theme', t);
+        }
+
         function shareApp() {
-            if (navigator.share) {
-                navigator.share({ title: 'Islamic Questz', url: window.location.href });
-            }
+            if(navigator.share) navigator.share({title:'Islamic Questz', url: location.href});
         }
     </script>
 </body>
