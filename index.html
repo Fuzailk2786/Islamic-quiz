@@ -136,16 +136,22 @@
 
         // --- 2. AUTH LOGIC ---
         function handleAuth(type) {
-            let user = { name: "", avatar: "🌙", theme: "light" };
-            if(type === 'guest') {
-                user.name = "Guest_" + Math.floor(Math.random() * 9000);
-            } else {
-                const email = document.getElementById('auth-email').value;
-                if(!email.includes('@')) return alert("Please enter valid email");
-                user.name = email.split('@')[0];
-            }
-            localStorage.setItem('iq_user', JSON.stringify(user));
-            loginUser(user);
+    console.log("Auth button clicked:", type); // This helps you check in the browser console
+    let user = { name: "", avatar: "🌙", theme: "light" };
+
+    if(type === 'guest') {
+        user.name = "Guest_" + Math.floor(Math.random() * 9000);
+    } else {
+        const emailInput = document.getElementById('auth-email');
+        if(!emailInput.value.includes('@')) {
+            alert("Please enter a valid email");
+            return;
+        }
+        user.name = emailInput.value.split('@')[0];
+    }
+    
+    localStorage.setItem('iq_user', JSON.stringify(user));
+    loginUser(user);
         }
 
         function loginUser(user) {
