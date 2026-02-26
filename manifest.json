@@ -1,7 +1,6 @@
 {
-  "name": "Islamic Questz",
-  "short_name": "Questz",
-  "description": "Daily Ramadan Challenge and Islamic Library",
+  "name": "Islamic Questz 2026",
+  "short_name": "IslamicQuestz",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#064e3b",
