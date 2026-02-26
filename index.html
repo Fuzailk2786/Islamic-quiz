@@ -18,7 +18,7 @@
             --border: #334155; --shadow: rgba(0,0,0,0.4);
         }
 
-        body { font-family: 'Poppins', sans-serif; background: var(--bg-color); margin: 0; color: var(--text-main); transition: 0.3s; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg-color); margin: 0; color: var(--text-main); transition: 0.3s; overflow-x: hidden; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
@@ -37,7 +37,7 @@
         }
         #sidebar.open { right: 0; }
         .profile-section { padding: 20px; text-align: center; border-bottom: 2px solid var(--gold); }
-        .avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--soft-gold); margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 2rem; border: 2px solid var(--gold); position: relative; cursor: pointer; }
+        .avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--soft-gold); margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 2rem; border: 2px solid var(--gold); position: relative; cursor: pointer; overflow: hidden; }
         #profile-img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: none; }
 
         .nav-item { padding: 12px 25px; display: flex; align-items: center; gap: 10px; color: var(--text-main); text-decoration: none; cursor: pointer; border-bottom: 1px solid var(--border); }
@@ -54,7 +54,7 @@
 
         .dua-card { background: var(--card-bg); border-left: 5px solid var(--gold); padding: 15px; margin: 10px 0; border-radius: 10px; box-shadow: 0 2px 5px var(--shadow); text-align: right; }
         
-        .hidden { display: none; }
+        .hidden { display: none !important; }
         #menu-btn { position: fixed; top: 15px; right: 15px; font-size: 1.5rem; z-index: 2001; cursor: pointer; background: var(--gold); color: white; border: none; border-radius: 8px; width: 40px; height: 40px; }
         .back-btn { background: none; border: none; color: var(--gold); font-weight: bold; cursor: pointer; margin-bottom: 15px; font-size: 1rem; }
     </style>
@@ -119,6 +119,8 @@
         </div>
     </div>
 
+    <script src="questions.js"></script>
+
     <script>
         // --- DATA ---
         const DUA_DB = [
@@ -177,77 +179,89 @@
         function showScreen(id) {
             const screens = ['screen-auth', 'screen-home', 'screen-content'];
             screens.forEach(s => document.getElementById(s).classList.add('hidden'));
-            document.getElementById('screen-' + id).classList.remove('hidden');
-            if(id === 'ramadan-grid') renderRamadanGrid();
+            
+            if(id === 'ramadan-grid') {
+                renderRamadanGrid();
+                document.getElementById('screen-content').classList.remove('hidden');
+            } else if (id === 'regular-grid') {
+                // Future Learning Logic
+                document.getElementById('screen-content').classList.remove('hidden');
+                document.getElementById('dynamic-body').innerHTML = "<h2>Learning Pathways</h2><p>Coming Soon!</p>";
+            } else {
+                document.getElementById('screen-' + id).classList.remove('hidden');
+            }
+            
             if(document.getElementById('sidebar').classList.contains('open')) toggleMenu();
         }
 
-        // --- RAMADAN LOGIC (Feb 18 Start) ---
-  function startRamadanLevel(levelNum) {
-    const questions = RAMADAN_QUESTIONS[`level${levelNum}`];
-    if (!questions || questions.length === 0) {
-        alert("Questions for this level are being prepared. Check back soon!");
-        return;
-    }
-    
-    showScreen('content');
-    const body = document.getElementById('dynamic-body');
-    body.innerHTML = `<h3 id="quiz-title">Day ${levelNum} Challenge</h3>
-                      <div id="quiz-area"></div>`;
-    
-    loadQuestion(levelNum, 0); // Start with first question
-}
-
-function loadQuestion(level, index) {
-    const qData = RAMADAN_QUESTIONS[`level${level}`][index];
-    const area = document.getElementById('quiz-area');
-    
-    area.innerHTML = `
-        <p style="color:var(--gold)">Question ${index + 1} of ${RAMADAN_QUESTIONS[`level${level}`].length}</p>
-        <h4>${qData.q}</h4>
-        <div id="options-box"></div>
-    `;
-
-    qData.o.forEach(opt => {
-        const b = document.createElement('button');
-        b.className = 'main-btn';
-        b.style.width = "100%";
-        b.style.marginBottom = "10px";
-        b.innerText = opt;
-        b.onclick = () => checkAnswer(level, index, opt);
-        document.getElementById('options-box').appendChild(b);
-    });
-}
-
-function checkAnswer(level, index, selected) {
-    const qData = RAMADAN_QUESTIONS[`level${level}`][index];
-    if(selected === qData.a) {
-        alert("Correct! " + qData.e);
-        if(index + 1 < RAMADAN_QUESTIONS[`level${level}`].length) {
-            loadQuestion(level, index + 1);
-        } else {
-            localStorage.setItem(`lvl_${level}`, 'true');
-            alert("Level Complete!");
-            renderRamadanGrid();
-        }
-    } else {
-        alert("Incorrect. Try again!");
-    }
-}
+        // --- RAMADAN LOGIC ---
+        function renderRamadanGrid() {
+            const container = document.getElementById('dynamic-body');
+            container.innerHTML = '<h2>Ramadan Challenge 2026</h2><div class="level-grid" id="grid"></div>';
+            
+            const ramadanStart = new Date('2026-02-18');
+            const diff = Math.floor((new Date() - ramadanStart) / 86400000) + 1;
 
             for(let i=1; i<=31; i++) {
                 const btn = document.createElement('button');
                 btn.className = 'lvl';
                 btn.innerText = i === 31 ? "EID" : i;
+                
                 if(i > diff) {
                     btn.classList.add('locked');
                     btn.onclick = () => alert("Unlocks on Day " + i);
                 } else {
                     const done = localStorage.getItem('lvl_'+i);
                     if(done) btn.classList.add('completed');
-                    btn.onclick = () => i === 31 ? startEidQuiz() : alert("Starting Level " + i + "... (Connect your Question Database here)");
+                    btn.onclick = () => i === 31 ? startEidQuiz() : startRamadanLevel(i);
                 }
                 document.getElementById('grid').appendChild(btn);
+            }
+        }
+
+        function startRamadanLevel(levelNum) {
+            if (typeof RAMADAN_QUESTIONS === 'undefined') return alert("Error: Questions not loaded.");
+            const questions = RAMADAN_QUESTIONS[`level${levelNum}`];
+            if (!questions) return alert("Coming soon!");
+
+            const body = document.getElementById('dynamic-body');
+            body.innerHTML = `<h3 id="quiz-title">Day ${levelNum}</h3><div id="quiz-area"></div>`;
+            loadQuestion(levelNum, 0);
+        }
+
+        function loadQuestion(level, index) {
+            const qData = RAMADAN_QUESTIONS[`level${level}`][index];
+            const area = document.getElementById('quiz-area');
+            area.innerHTML = `
+                <p>Question ${index + 1} of ${RAMADAN_QUESTIONS[`level${level}`].length}</p>
+                <h4>${qData.q}</h4>
+                <div id="options-box"></div>
+            `;
+
+            qData.o.forEach(opt => {
+                const b = document.createElement('button');
+                b.className = 'main-btn';
+                b.style.width = "100%";
+                b.style.marginBottom = "10px";
+                b.innerText = opt;
+                b.onclick = () => checkAnswer(level, index, opt);
+                document.getElementById('options-box').appendChild(b);
+            });
+        }
+
+        function checkAnswer(level, index, selected) {
+            const qData = RAMADAN_QUESTIONS[`level${level}`][index];
+            if(selected === qData.a) {
+                alert("Correct! " + (qData.e || ""));
+                if(index + 1 < RAMADAN_QUESTIONS[`level${level}`].length) {
+                    loadQuestion(level, index + 1);
+                } else {
+                    localStorage.setItem(`lvl_${level}`, 'true');
+                    alert("Day " + level + " Completed!");
+                    renderRamadanGrid();
+                }
+            } else {
+                alert("Incorrect. Try again!");
             }
         }
 
@@ -256,32 +270,40 @@ function checkAnswer(level, index, selected) {
             const body = document.getElementById('dynamic-body');
             body.innerHTML = '<h2>Daily Duas</h2>';
             DUA_DB.forEach(d => {
-                body.innerHTML += `<div class="dua-card"><strong>${d.t}</strong><br><span style="font-size:1.2rem;">${d.a}</span><br><small>${d.tr}</small></div>`;
+                body.innerHTML += `<div class="dua-card"><strong>${d.t}</strong><br><span>${d.a}</span><br><small>${d.tr}</small></div>`;
             });
         }
 
         function showHadith() {
             showScreen('content');
             const dayIdx = new Date().getDate() % HADITH_LIST.length;
-            document.getElementById('dynamic-body').innerHTML = `<h2>Hadith of the Day</h2><div class="dua-card" style="text-align:center; border:none; background:var(--soft-gold);">"${HADITH_LIST[dayIdx]}"</div>`;
+            document.getElementById('dynamic-body').innerHTML = `<h2>Hadith</h2><div class="dua-card" style="text-align:center;">"${HADITH_LIST[dayIdx]}"</div>`;
         }
 
         function startEidQuiz() {
-            alert("Welcome to the Final Eid Quiz! Complete this for your certificate.");
-            // Logic to show certificate after 10 questions
+            // Check if all 30 days are done
+            let completedAll = true;
+            for(let i=1; i<=30; i++) { if(!localStorage.getItem('lvl_'+i)) completedAll = false; }
+            
+            if(!completedAll) {
+                alert("Please complete all 30 days of Ramadan challenges first!");
+                return;
+            }
             showCertificate();
         }
 
         function showCertificate() {
             const user = JSON.parse(localStorage.getItem('iq_user'));
             document.getElementById('dynamic-body').innerHTML = `
-                <div style="border:10px double var(--gold); padding:20px; text-align:center; background:white;">
+                <div style="border:10px double var(--gold); padding:20px; text-align:center; background:white; color:#064e3b;">
                     <h1 style="font-family:Cinzel">CERTIFICATE</h1>
                     <p>Presented to</p>
-                    <h3>${user.name}</h3>
-                    <p>For completing 30 Days of Ramadan Quest 2026</p>
+                    <h2 style="text-transform:uppercase">${user.name}</h2>
+                    <p>For successfully completing the 30-Day Ramadan Quest 2026</p>
+                    <p><small>Date: Eid-ul-Fitr 2026</small></p>
                 </div>
-                <button class="main-btn" style="width:100%; margin-top:10px;" onclick="window.print()">Download</button>`;
+                <button class="main-btn" style="width:100%; margin-top:10px; background:var(--emerald); color:white;" onclick="window.print()">Download Certificate</button>
+            `;
         }
 
         function uploadImage(input) {
@@ -304,8 +326,6 @@ function checkAnswer(level, index, selected) {
         function shareApp() {
             if(navigator.share) navigator.share({title:'Islamic Questz', url: location.href});
         }
-        <script src="questions.js"></script>
-
     </script>
 </body>
 </html>
