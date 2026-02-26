@@ -183,11 +183,57 @@
         }
 
         // --- RAMADAN LOGIC (Feb 18 Start) ---
-        function renderRamadanGrid() {
-            const container = document.getElementById('dynamic-body');
-            container.innerHTML = '<h2>Ramadan Challenge</h2><div class="level-grid" id="grid"></div>';
-            const ramadanStart = new Date('2026-02-18');
-            const diff = Math.floor((new Date() - ramadanStart) / 86400000) + 1;
+  function startRamadanLevel(levelNum) {
+    const questions = RAMADAN_QUESTIONS[`level${levelNum}`];
+    if (!questions || questions.length === 0) {
+        alert("Questions for this level are being prepared. Check back soon!");
+        return;
+    }
+    
+    showScreen('content');
+    const body = document.getElementById('dynamic-body');
+    body.innerHTML = `<h3 id="quiz-title">Day ${levelNum} Challenge</h3>
+                      <div id="quiz-area"></div>`;
+    
+    loadQuestion(levelNum, 0); // Start with first question
+}
+
+function loadQuestion(level, index) {
+    const qData = RAMADAN_QUESTIONS[`level${level}`][index];
+    const area = document.getElementById('quiz-area');
+    
+    area.innerHTML = `
+        <p style="color:var(--gold)">Question ${index + 1} of ${RAMADAN_QUESTIONS[`level${level}`].length}</p>
+        <h4>${qData.q}</h4>
+        <div id="options-box"></div>
+    `;
+
+    qData.o.forEach(opt => {
+        const b = document.createElement('button');
+        b.className = 'main-btn';
+        b.style.width = "100%";
+        b.style.marginBottom = "10px";
+        b.innerText = opt;
+        b.onclick = () => checkAnswer(level, index, opt);
+        document.getElementById('options-box').appendChild(b);
+    });
+}
+
+function checkAnswer(level, index, selected) {
+    const qData = RAMADAN_QUESTIONS[`level${level}`][index];
+    if(selected === qData.a) {
+        alert("Correct! " + qData.e);
+        if(index + 1 < RAMADAN_QUESTIONS[`level${level}`].length) {
+            loadQuestion(level, index + 1);
+        } else {
+            localStorage.setItem(`lvl_${level}`, 'true');
+            alert("Level Complete!");
+            renderRamadanGrid();
+        }
+    } else {
+        alert("Incorrect. Try again!");
+    }
+}
 
             for(let i=1; i<=31; i++) {
                 const btn = document.createElement('button');
