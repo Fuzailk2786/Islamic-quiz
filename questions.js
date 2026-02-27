@@ -1,14 +1,6 @@
 window.RAMADAN_QUESTIONS = {
     level1: [
-        { 
-            q: "What is the primary purpose of fasting (Sawm)?", 
-            qh: "Roza (Sawm) rakhne ka asli maqsad kya hai?",
-            o: ["To lose weight", "To gain Taqwa (God-consciousness)", "To save money", "To sleep more"], 
-            oh: ["Wazan kam karna", "Taqwa hasil karna", "Paise bachana", "Zyada sona"],
-            a: "To gain Taqwa (God-consciousness)", 
-            e: "Quran 2:183 mentions Taqwa as the goal.",
-            eh: "Quran ki Ayat 2:183 ke mutabiq Taqwa hi asli maqsad hai."
-        },
+        
         { 
             q: "In which month was the Quran first revealed?", 
             qh: "Quran sabse pehle kis mahine mein nazil hua tha?",
