@@ -265,15 +265,12 @@
     const area = document.getElementById('quiz-area');
     if (!qData) return;
 
-    // Display English Question with Hinglish below it
     area.innerHTML = `
         <p style="color:var(--gold); font-weight:600;">Question ${index + 1} of ${window.RAMADAN_QUESTIONS[`level${level}`].length}</p>
-        
         <div style="margin-bottom:20px;">
-            <h4 style="margin-bottom:5px;">${qData.q}</h4>
-            <p style="margin:0; font-style:italic; color:var(--emerald); font-size:0.9rem;">(${qData.qh || ""})</p>
+            <h4 style="margin-bottom:5px; line-height:1.4;">${qData.q}</h4>
+            <p style="margin:0; font-style:italic; color:var(--emerald); font-size:0.95rem; opacity:0.9;">${qData.qh || ""}</p>
         </div>
-
         <div id="options-box"></div>
     `;
 
@@ -284,9 +281,9 @@
         b.style.marginBottom = "10px";
         b.style.textAlign = "left";
         
-        // Show English option and Hinglish option in brackets
-        const hinglishOpt = qData.oh ? ` (${qData.oh[i]})` : "";
-        b.innerText = opt + hinglishOpt;
+        // Combine English and Hinglish options
+        const hinglishOpt = (qData.oh && qData.oh[i]) ? `<br><span style="font-size:0.85rem; font-weight:normal; opacity:0.8;">${qData.oh[i]}</span>` : "";
+        b.innerHTML = `<strong>${opt}</strong>${hinglishOpt}`;
         
         b.onclick = (e) => {
             e.preventDefault();
@@ -296,29 +293,29 @@
     });
 }
 
-        function checkAnswer(level, index, selected) {
+       function checkAnswer(level, index, selected) {
     const qData = window.RAMADAN_QUESTIONS[`level${level}`][index];
     
     if (selected.trim() === qData.a.trim()) {
-        // Create a combined explanation message
-        const explanation = qData.e + (qData.eh ? `\n\n(${qData.eh})` : "");
+        // Show English explanation followed by Hinglish
+        const fullExplanation = qData.e + (qData.eh ? `\n\n(${qData.eh})` : "");
         
-        showPopup("Correct! ✨", explanation, "🌙", () => {
+        showPopup("Correct! ✨", fullExplanation, "🌙", () => {
             const nextIndex = index + 1;
             if (nextIndex < window.RAMADAN_QUESTIONS[`level${level}`].length) {
                 loadQuestion(level, nextIndex);
             } else {
                 localStorage.setItem(`lvl_${level}`, 'true');
                 if (level === 31) {
-                    showPopup("MABROOK!", "You have passed the Grand Finale!", "🏆", () => showCertificate());
+                    showPopup("MABROOK!", "Finale Completed! / Finale Poora Hua!", "🏆", () => showCertificate());
                 } else {
-                    showPopup("Day Completed!", `Day ${level} is finished.`, "⭐", () => renderRamadanGrid());
+                    showPopup("Day Completed!", `Day ${level} finished. / Din ${level} poora hua.`, "⭐", () => renderRamadanGrid());
                 }
                 updateSidebarLinks();
             }
         });
     } else {
-        showPopup("Try Again", "Think carefully and try again! / Dobara sochein! 🤔", "❌");
+        showPopup("Try Again", "Incorrect answer. / Galat jawab. Dobara sochein! 🤔", "❌");
     }
 }
 
