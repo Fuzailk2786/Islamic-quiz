@@ -1,7 +1,7 @@
 window.RAMADAN_QUESTIONS = {
     // ASHRA OF MERCY (Days 1-10)
     level1: [
-        { q: "What is the primary purpose of fasting (Sawm)?", o: ["To lose weight", "To gain Taqwa (God-consciousness)", "To save money", "To sleep more"], a: "To gain Taqwa", e: "Quran 2:183 mentions Taqwa as the goal." },
+        { q: "What is the primary purpose of fasting (Sawm)?", o: ["To lose weight", "To gain Taqwa(God-consciousness)", "To save money", "To sleep more"], a: "To gain Taqwa", e: "Quran 2:183 mentions Taqwa as the goal." },
         { q: "In which month was the Quran first revealed?", o: ["Rajab", "Ramadan", "Shawwal", "Dhul-Hijjah"], a: "Ramadan", e: "The Quran was sent down in the month of Ramadan." },
         { q: "What is the pre-dawn meal called?", o: ["Iftar", "Suhoor", "Walima", "Aqiqah"], a: "Suhoor", e: "Suhoor is a sunnah meal before the fast begins." },
         { q: "Fasting is one of the ___ pillars of Islam.", o: ["Three", "Four", "Five", "Six"], a: "Five", e: "Sawm is the 4th pillar of Islam." },
