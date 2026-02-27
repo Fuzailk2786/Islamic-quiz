@@ -358,7 +358,7 @@ window.RAMADAN_QUESTIONS = {
             e: "Bilal (RA) was chosen by the Prophet for his beautiful voice.",
             eh: "Hazrat Bilal (R.A) ko unki khoobsurat awaaz ki wajah se Azan ke liye chuna gaya tha."
         },
-    
+        {
             q: "Which Prophet built the Ark?", 
             qh: "Kis Nabi ne Kashti (Ark) banayi thi?",
             o: ["Prophet Ibrahim", "Prophet Nuh", "Prophet Salih", "Prophet Hud"], 
@@ -1025,3 +1025,4 @@ window.RAMADAN_QUESTIONS = {
         },
     ],
 };
+
