@@ -368,7 +368,6 @@ window.RAMADAN_QUESTIONS = {
             eh: "Hazrat Nuh (A.S) ne Allah ke hukum se Toofaan se bachne ke liye Kashti banayi thi."
         }
     ],
-        
 level9: [
         { 
             q: "What is the name of the fountain in Jannah?", 
@@ -1497,5 +1496,6 @@ level9: [
         },
     ],
 };
+
 
 
