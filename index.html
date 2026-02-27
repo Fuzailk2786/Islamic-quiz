@@ -183,6 +183,33 @@
             (seconds < 10 ? "0" + seconds : seconds);
     }, 1000);
 }
+        function startTimer(targetDate) {
+    function updateClock() {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        if (distance < 0) {
+            clearInterval(timerInterval);
+            renderRamadanGrid(); // Auto-unlock the next day when timer hits zero
+            return;
+        }
+
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        const clockElement = document.getElementById('countdown-clock');
+        if (clockElement) {
+            clockElement.innerText = 
+                (hours < 10 ? "0" + hours : hours) + ":" + 
+                (minutes < 10 ? "0" + minutes : minutes) + ":" + 
+                (seconds < 10 ? "0" + seconds : seconds);
+        }
+    }
+
+    const timerInterval = setInterval(updateClock, 1000);
+    updateClock(); // Run once immediately
+}
 
         window.addEventListener('load', () => {
             setTimeout(() => {
@@ -253,29 +280,29 @@
         function renderRamadanGrid() {
     const container = document.getElementById('dynamic-body');
     
-    // Ramadan 2026 Start Date
-    const ramadanStart = new Date('2026-02-18T00:00:00');
+    // Ramadan 2026 Start Date (Adjust if official moon sighting varies)
+    const ramadanStart = new Date('2026-02-18T00:00:00'); 
     const now = new Date();
     
     // Calculate current day of Ramadan
-    const diffTime = now - ramadanStart;
-    const currentDay = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+    const diffInMs = now - ramadanStart;
+    const currentDay = Math.floor(diffInMs / (1000 * 60 * 60 * 24)) + 1;
     
-    // Calculate time until next day starts
-    const nextDayDate = new Date(ramadanStart);
-    nextDayDate.setDate(ramadanStart.getDate() + currentDay);
-    
+    // Calculate when the next day starts (Midnight)
+    const nextUnlock = new Date(now);
+    nextUnlock.setHours(24, 0, 0, 0); 
+
     container.innerHTML = `
-        <div id="unlock-timer" style="background:var(--soft-gold); padding:10px; border-radius:10px; margin-bottom:20px; text-align:center; border:1px solid var(--gold);">
-            <small style="color:var(--gold); font-weight:600; text-transform:uppercase;">Next Challenge Unlocks In:</small>
-            <div id="countdown-clock" style="font-family:'Cinzel'; font-size:1.5rem; color:var(--emerald);">00:00:00</div>
+        <div id="timer-banner" style="background:var(--soft-gold); padding:15px; border-radius:15px; margin-bottom:20px; text-align:center; border:1px solid var(--gold); border-left:5px solid var(--gold);">
+            <small style="color:var(--gold); font-weight:600; text-transform:uppercase; letter-spacing:1px;">Next Level Unlocks In / Agla Level Khulega:</small>
+            <div id="countdown-clock" style="font-family:'Cinzel'; font-size:1.8rem; color:var(--emerald); margin-top:5px;">00:00:00</div>
         </div>
-        <h2>Ramadan Challenge 2026</h2>
+        <h2 style="font-family:'Cinzel'; text-align:center;">Ramadan Challenge 2026</h2>
         <div class="level-grid" id="grid"></div>
     `;
 
-    // Start the live countdown
-    updateCountdown(nextDayDate);
+    // Initialize the ticking timer
+    startTimer(nextUnlock);
 
     // Build the grid
     for(let i=1; i<=31; i++) {
@@ -283,7 +310,7 @@
         btn.className = 'lvl';
         btn.innerText = i === 31 ? "EID" : i;
         
-        // Logical unlock: Only allow days that have passed
+        // Lock logic: If the day hasn't arrived yet
         if(i > currentDay && i !== 31) { 
             btn.classList.add('locked');
             btn.onclick = () => showPopup("Locked / Band Hai", `This challenge unlocks on Day ${i}.\n(Yeh challenge Day ${i} ko khulega.)`, "🔒");
@@ -294,7 +321,6 @@
         document.getElementById('grid').appendChild(btn);
     }
 }
-
         function startRamadanLevel(levelNum) {
             if (typeof window.RAMADAN_QUESTIONS === 'undefined') {
                 return showPopup("Loading", "Questions are still loading, please wait.", "⏳");
