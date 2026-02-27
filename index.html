@@ -121,11 +121,10 @@
     </div>
 
     
+<script src="questions.js"></script>
 
-    <script>
-       
-
-        // --- DATA ---
+<script>
+    // --- DATA ---
         const DUA_DB = [
             { t: "Before Eating", a: "بِسْمِ اللَّهِ", tr: "In the name of Allah" },
             { t: "After Eating", a: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا", tr: "Praise be to Allah who fed us" },
@@ -264,29 +263,42 @@
             });
         }
 
-       function checkAnswer(level, index, selected) {
+      function checkAnswer(level, index, selected) {
+    // SAFETY CHECK: If the external file didn't load, stop here
+    if (typeof RAMADAN_QUESTIONS === 'undefined') {
+        alert("Error: Questions database not found. Please refresh the page.");
+        return;
+    }
+
+    // SAFETY CHECK: If this specific level is missing in questions.js, stop here
+    if (!RAMADAN_QUESTIONS[`level${level}`]) {
+        alert("Data for this level is still being updated. Check back soon!");
+        return;
+    }
+
     const qData = RAMADAN_QUESTIONS[`level${level}`][index];
     const totalQuestions = RAMADAN_QUESTIONS[`level${level}`].length;
 
-    if(selected === qData.a) {
+    // The Logic: Only compare if qData actually exists
+    if (qData && selected === qData.a) {
         alert("Correct! " + (qData.e || ""));
         
-        if(index + 1 < totalQuestions) {
-            // Load next question
+        if (index + 1 < totalQuestions) {
             loadQuestion(level, index + 1);
         } else {
-            // Level Finished
             localStorage.setItem(`lvl_${level}`, 'true');
             
-            if(level === 31) {
+            if (level === 31) {
                 alert("MABROOK! You have passed the Grand Finale!");
-                showCertificate(); // Show the reward!
+                showCertificate();
             } else {
                 alert("Day " + level + " Completed!");
                 renderRamadanGrid();
             }
+            updateSidebarLinks(); // Check if review link should appear
         }
     } else {
+        // This only triggers if the answer is actually wrong
         alert("Incorrect. Think carefully and try again!");
     }
 }
