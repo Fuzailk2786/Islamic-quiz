@@ -285,8 +285,8 @@ function loadQuestion(level, index) {
 function checkAnswer(level, index, selected) {
     const qData = window.RAMADAN_QUESTIONS[`level${level}`][index];
     
-    // Check if correct
-    if (selected === qData.a) {
+    // Use .trim() to remove invisible spaces that cause "Incorrect" errors
+    if (selected.trim() === qData.a.trim()) {
         alert("Correct! ✨\n\n" + (qData.e || ""));
         
         const nextIndex = index + 1;
@@ -304,7 +304,6 @@ function checkAnswer(level, index, selected) {
             updateSidebarLinks();
         }
     } else {
-        // Only shows if they actually picked the wrong option
         alert("Incorrect. Think carefully and try again! 🤔");
     }
 }
