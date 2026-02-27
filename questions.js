@@ -1022,6 +1022,6 @@ window.RAMADAN_QUESTIONS = {
             a: "To attain Taqwa (God-consciousness)", 
             e: "The ultimate goal is spiritual growth and mindfulness of Allah.",
             eh: "Rozon ka sabse bada maqsad insaan ke andar Taqwa paida karna hai."
-        }
+        },
     ],
 };
