@@ -1,4 +1,4 @@
-const RAMADAN_QUESTIONS = {
+var RAMADAN_QUESTIONS = {
     // ASHRA OF MERCY (Days 1-10)
     level1: [
         { q: "What is the primary purpose of fasting (Sawm)?", o: ["To lose weight", "To gain Taqwa (God-consciousness)", "To save money", "To sleep more"], a: "To gain Taqwa", e: "Quran 2:183 mentions Taqwa as the goal." },
