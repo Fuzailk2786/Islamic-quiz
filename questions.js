@@ -1024,3 +1024,4 @@ window.RAMADAN_QUESTIONS = {
             eh: "Rozon ka sabse bada maqsad insaan ke andar Taqwa paida karna hai."
         }
     ]
+};
