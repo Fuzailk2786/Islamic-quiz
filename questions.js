@@ -1358,49 +1358,49 @@ level9: [
     ],
     level30: [
         { 
-            q: "What is the main purpose of Zakat al-Fitr?", 
-            qh: "Zakat-al-Fitr (Fitrana) dene ka asli maksad kya hai?",
-            o: ["To build mosques", "To feed the poor", "To buy new clothes", "To travel"], 
-            oh: ["Masjid banana", "Gareebon ko khana khilana", "Naye kapde kharidna", "Safar karna"],
-            a: "To feed the poor", 
-            e: "It ensures the poor can also celebrate Eid.",
-            eh: "Taki gareeb aur mohtaj log bhi Eid ki khushiyon mein shamil ho sakein."
+            q: "On which odd nights of the last 10 days should we look for Laylatul Qadr?", 
+            qh: "Ramadan ke aakhri 10 dinon ki kaunsi raaton mein Laylatul Qadr ko talash karna chahiye?",
+            o: ["Only 27th", "21, 23, 25, 27, 29", "Every night", "Only 29th"], 
+            oh: ["Sirf 27vein ko", "21, 23, 25, 27, 29", "Har raat", "Sirf 29vein ko"],
+            a: "21, 23, 25, 27, 29", 
+            e: "Prophet Muhammad (PBUH) told us to seek it in the odd nights of the last ten days.",
+            eh: "Huzoor (SAW) ne farmaya ke Laylatul Qadr ko aakhri ashre ki taak raaton mein talash karo."
         },
         { 
-            q: "What should we do on the night of Eid?", 
-            qh: "Eid ki raat (Chand Raat) ko kya karna chahiye?",
-            o: ["Sleep early", "Worship and make Dua", "Only party", "Watch movies"], 
-            oh: ["Jaldi sona", "Ibadat aur Dua karna", "Sirf party", "Movies dekhna"],
-            a: "Worship and make Dua", 
-            e: "The nights of the two Eids are times when Duas are accepted.",
-            eh: "Dono Eidon ki raatein duaon ki qubooliyat ki raatein hain."
+            q: "What is the Sunnah act before going for Eid-ul-Fitr prayer?", 
+            qh: "Eid-ul-Fitr ki namaz ke liye jane se pehle kya karna Sunnat hai?",
+            o: ["Sleeping", "Eating something sweet (Dates)", "Fasting", "Working"], 
+            oh: ["Sona", "Kuch meetha khana (Khajoor)", "Roza rakhna", "Kaam karna"],
+            a: "Eating something sweet (Dates)", 
+            e: "It is Sunnah to eat an odd number of dates before the Eid prayer.",
+            eh: "Eid ki namaz se pehle taak (odd) tadad mein khajoor khana Sunnat hai."
         },
         { 
-            q: "How many Takbirs are in the first Rakat of the Eid prayer (Hanafi)?", 
-            qh: "Eid ki namaz ki pehli rakat mein kitni zaid (extra) takbeerein hoti hain?",
-            o: ["3", "7", "6", "12"], 
-            oh: ["3", "7", "6", "12"],
-            a: "3", 
-            e: "In addition to the opening Takbir, there are 3 extra Takbirs.",
-            eh: "Shuru ki takbeer ke ilawa pehli rakat mein 3 extra takbeerein hoti hain."
+            q: "What is the reward for fasting the 6 days of Shawwal after Ramadan?", 
+            qh: "Ramadan ke baad Shawwal ke 6 roze rakhne ka sawab kya hai?",
+            o: ["Like fasting a week", "Like fasting a month", "Like fasting a whole year", "No extra reward"], 
+            oh: ["Ek hafte ke barabar", "Ek mahine ke barabar", "Poore saal ke rozon ke barabar", "Koi izafi sawab nahi"],
+            a: "Like fasting a whole year", 
+            e: "Fasting Ramadan plus six days of Shawwal is like fasting the entire year.",
+            eh: "Ramadan aur phir Shawwal ke 6 roze rakhna poore saal ke rozon ke barabar hai."
         },
         { 
-            q: "Which Prophet is mentioned the most in the Quran?", 
-            qh: "Quran-e-Majeed mein kis Nabi ka naam sabse zyada baar aaya hai?",
-            o: ["Prophet Muhammad", "Prophet Ibrahim", "Prophet Musa", "Prophet Isa"], 
-            oh: ["Hazrat Muhammad", "Hazrat Ibrahim", "Hazrat Musa (A.S)", "Hazrat Isa"],
-            a: "Prophet Musa", 
-            e: "Musa (AS) is mentioned 136 times.",
-            eh: "Hazrat Musa (A.S) ka zikr Quran mein 136 martaba aaya hai."
+            q: "Which month follows Ramadan in the Islamic calendar?", 
+            qh: "Islami calendar mein Ramadan ke baad kaunsa mahina aata hai?",
+            o: ["Shawwal", "Dhul-Qi'dah", "Rajab", "Muharram"], 
+            oh: ["Shawwal", "Dhul-Qi'dah", "Rajab", "Muharram"],
+            a: "Shawwal", 
+            e: "The month of Shawwal begins with the celebration of Eid-ul-Fitr.",
+            eh: "Ramadan ke khatam hote hi Shawwal ka mahina shuru hota hai."
         },
         { 
-            q: "What is the greeting of the believers in Jannah?", 
-            qh: "Jannat mein rehne walon ka aapas mein salaam kya hoga?",
-            o: ["Hello", "Salam", "Hi", "Welcome"], 
-            oh: ["Hello", "Salam (Peace)", "Hi", "Welcome"],
-            a: "Salam", 
-            e: "Peace is the greeting of Paradise.",
-            eh: "Jannat mein rehne wale ek dusre ko 'Salam' keh kar pukaarenge."
+            q: "What is the Takbir recited on the way to Eid prayer?", 
+            qh: "Eid ki namaz ke raste mein kaunsi Takbir padhi jati hai?",
+            o: ["SubhanAllah", "Alhamdulillah", "Allahu Akbar, Allahu Akbar...", "Astaghfirullah"], 
+            oh: ["SubhanAllah", "Alhamdulillah", "Allahu Akbar, Allahu Akbar...", "Astaghfirullah"],
+            a: "Allahu Akbar, Allahu Akbar...", 
+            e: "Reciting the Takbirat is a beautiful Sunnah during the days of Eid.",
+            eh: "Eid ke din raste mein buland awaaz se Takbirat padhna Sunnat hai."
         }
     ],
     level31: [
@@ -1496,6 +1496,7 @@ level9: [
         },
     ],
 };
+
 
 
 
