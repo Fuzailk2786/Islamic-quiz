@@ -122,6 +122,81 @@
     
 
     <script>
+        const RAMADAN_QUESTIONS = {
+    // ASHRA OF MERCY (Days 1-10)
+    level1: [
+        { q: "What is the primary purpose of fasting (Sawm)?", o: ["To lose weight", "To gain Taqwa (God-consciousness)", "To save money", "To sleep more"], a: "To gain Taqwa", e: "Quran 2:183 mentions Taqwa as the goal." },
+        { q: "In which month was the Quran first revealed?", o: ["Rajab", "Ramadan", "Shawwal", "Dhul-Hijjah"], a: "Ramadan", e: "The Quran was sent down in the month of Ramadan." },
+        { q: "What is the pre-dawn meal called?", o: ["Iftar", "Suhoor", "Walima", "Aqiqah"], a: "Suhoor", e: "Suhoor is a sunnah meal before the fast begins." },
+        { q: "Fasting is one of the ___ pillars of Islam.", o: ["Three", "Four", "Five", "Six"], a: "Five", e: "Sawm is the 4th pillar of Islam." },
+        { q: "Who is exempt from fasting?", o: ["Healthy adults", "The sick and travelers", "Wealthy people", "Students"], a: "The sick and travelers", e: "Allah has granted ease for those in difficult conditions." }
+    ],
+    level2: [
+        { q: "What is the meal to break the fast called?", o: ["Lunch", "Suhoor", "Iftar", "Brunch"], a: "Iftar", e: "Iftar is the meal eaten at sunset." },
+        { q: "Which door of Jannah is reserved for those who fast?", o: ["Ar-Rayyan", "Al-Baab", "Al-Firdaus", "Al-Iman"], a: "Ar-Rayyan", e: "Ar-Rayyan is the special gate for the fasting people." },
+        { q: "What should one ideally break their fast with?", o: ["Water & Dates", "Bread", "Meat", "Sweets"], a: "Water & Dates", e: "Breaking fast with dates is the Sunnah of the Prophet (PBUH)." },
+        { q: "What is the Arabic word for fasting?", o: ["Salah", "Zakat", "Sawm", "Hajj"], a: "Sawm", e: "Sawm literally means 'to refrain'." },
+        { q: "When does the fast end?", o: ["Asr time", "Maghrib time", "Isha time", "Midnight"], a: "Maghrib time", e: "The fast ends exactly at sunset (Maghrib)." }
+    ],
+    level3: [
+        { q: "Which angel brought the revelation to Prophet Muhammad (PBUH)?", o: ["Mikail", "Israil", "Jibreel", "Izrail"], a: "Jibreel", e: "Angel Jibreel (Gabriel) brought the Quranic verses." },
+        { q: "How many days does a lunar month usually have?", o: ["28 or 29", "29 or 30", "30 or 31", "31 or 32"], a: "29 or 30", e: "The Islamic calendar is based on the moon's cycle." },
+        { q: "Does intentionally vomiting break the fast?", o: ["No", "Only if it's a lot", "Yes", "Depends on the day"], a: "Yes", e: "Intentionally inducing vomit breaks the fast." },
+        { q: "What is the special night prayer in Ramadan?", o: ["Tahajjud", "Taraweeh", "Witir", "Ishraq"], a: "Taraweeh", e: "Taraweeh is performed after Isha in Ramadan." },
+        { q: "Is 'Ghibah' (backbiting) allowed while fasting?", o: ["Yes", "Only if true", "No, it reduces reward", "Sometimes"], a: "No, it reduces reward", e: "Sins of the tongue damage the quality of the fast." }
+    ],
+    level4: [
+        { q: "What are the first 10 days of Ramadan known as?", o: ["Ashra of Mercy", "Ashra of Forgiveness", "Ashra of Protection", "Ashra of Eid"], a: "Ashra of Mercy", e: "The first 10 days focus on seeking Allah's Rahmah." },
+        { q: "Which battle took place during Ramadan?", o: ["Battle of Uhud", "Battle of Badr", "Battle of Khandaq", "Battle of Khaibar"], a: "Battle of Badr", e: "The great Battle of Badr happened on the 17th of Ramadan." },
+        { q: "What is 'Niyyah'?", o: ["Charity", "Prayer", "Intention", "Fasting"], a: "Intention", e: "No act of worship is valid without Niyyah." },
+        { q: "Can you swallow your own saliva while fasting?", o: ["No", "Yes", "Only if thirsty", "Only after Zuhr"], a: "Yes", e: "Swallowing saliva is a natural action and does not break the fast." },
+        { q: "What is the penalty for breaking a fast intentionally?", o: ["1 day extra", "Kaffarah (60 days fasting)", "Giving a gift", "No penalty"], a: "Kaffarah (60 days fasting)", e: "The expiation for a broken fast is 60 consecutive days of fasting or feeding 60 poor people." }
+    ],
+    level5: [
+        { q: "Which Prophet is mentioned the most in the Quran?", o: ["Prophet Muhammad", "Prophet Musa", "Prophet Ibrahim", "Prophet Adam"], a: "Prophet Musa", e: "Prophet Musa (AS) is mentioned 136 times." },
+        { q: "What is the 'Miswak'?", o: ["A prayer mat", "A natural tooth-stick", "A type of date", "A scent"], a: "A natural tooth-stick", e: "Using the Miswak is highly recommended and Sunnah." },
+        { q: "What is the charity given at the end of Ramadan?", o: ["Sadaqah", "Zakat al-Fitr", "Waqf", "Hiba"], a: "Zakat al-Fitr", e: "Zakat al-Fitr must be given before the Eid prayer." },
+        { q: "Is brushing teeth allowed while fasting?", o: ["No", "Yes, if no paste is swallowed", "Only at night", "Never"], a: "Yes, if no paste is swallowed", e: "It is allowed, but one must be careful not to swallow anything." },
+        { q: "Which surah is called the 'Heart of the Quran'?", o: ["Surah Fatiha", "Surah Yaseen", "Surah Ikhlas", "Surah Mulk"], a: "Surah Yaseen", e: "Prophet (PBUH) described Yaseen as the heart of the Quran." }
+    ],
+    // DAYS 6-10 (Adding more questions...)
+    level6: [
+        { q: "Which city was the Prophet (PBUH) born in?", o: ["Madinah", "Mecca", "Taif", "Jerusalem"], a: "Mecca", e: "He was born in Mecca in the Year of the Elephant." },
+        { q: "What does 'Ramadan' literally mean?", o: ["Fasting", "Scorching heat", "Mercy", "Night"], a: "Scorching heat", e: "It comes from 'Ramad', referring to the heat of the sun on the sand." },
+        { q: "Which surah doesn't start with Bismillah?", o: ["Surah Kahf", "Surah Tawbah", "Surah Rahman", "Surah Naml"], a: "Surah Tawbah", e: "Surah At-Tawbah is the only one without the opening Bismillah." },
+        { q: "Who was the first woman to embrace Islam?", o: ["Aisha (RA)", "Fatima (RA)", "Khadija (RA)", "Sawda (RA)"], a: "Khadija (RA)", e: "The Prophet's first wife, Khadija, was the first convert." },
+        { q: "What is the reward for an Umrah performed in Ramadan?", o: ["Equal to 10 Hajj", "Equal to Hajj with the Prophet", "Double the reward", "No special reward"], a: "Equal to Hajj with the Prophet", e: "The Prophet (PBUH) said Umrah in Ramadan is like Hajj with him." }
+    ],
+    level7: [
+        { q: "What is the language of the Quran?", o: ["Urdu", "Persian", "Arabic", "Hebrew"], a: "Arabic", e: "The Quran was revealed in the Arabic language." },
+        { q: "What is the name of the white animal the Prophet (PBUH) rode to the heavens?", o: ["Buraq", "Camel", "Falcon", "Eagle"], a: "Buraq", e: "The Buraq carried him during the Night Journey (Isra)." },
+        { q: "How many times a day do Muslims pray?", o: ["3", "5", "7", "4"], a: "5", e: "The five daily prayers are a pillar of Islam." },
+        { q: "Which direction do Muslims face during prayer?", o: ["East", "West", "The Kaaba", "North"], a: "The Kaaba", e: "The Qibla is the direction of the Holy Kaaba in Mecca." },
+        { q: "Which metal is forbidden for Muslim men to wear?", o: ["Silver", "Iron", "Gold", "Platinum"], a: "Gold", e: "Gold and pure silk are forbidden for men but allowed for women." }
+    ],
+    level8: [
+        { q: "Which uncle of the Prophet (PBUH) was known as 'Lion of Allah'?", o: ["Abu Talib", "Abbas", "Hamza", "Abu Lahab"], a: "Hamza", e: "Hamza (RA) was a brave warrior and martyr." },
+        { q: "How many Sajdahs (prostrations) are in each Rakat of prayer?", o: ["1", "2", "3", "4"], a: "2", e: "Every Rakat has two Sajdahs." },
+        { q: "What is the call to prayer called?", o: ["Iqamah", "Adhan", "Dua", "Surah"], a: "Adhan", e: "The Adhan notifies believers that the time for prayer has started." },
+        { q: "Who was the first Muazzin (caller to prayer)?", o: ["Abu Bakr", "Umar", "Bilal ibn Rabah", "Uthman"], a: "Bilal ibn Rabah", e: "Bilal (RA) was chosen by the Prophet for his beautiful voice." },
+        { q: "Which Prophet built the Ark?", o: ["Prophet Ibrahim", "Prophet Nuh", "Prophet Salih", "Prophet Hud"], a: "Prophet Nuh", e: "Prophet Nuh (Noah) built the Ark to survive the flood." }
+    ],
+    level9: [
+        { q: "What is the name of the fountain in Jannah?", o: ["Zamzam", "Kauthar", "Salsabil", "Tasnim"], a: "Kauthar", e: "Surah Al-Kauthar mentions this special river/fountain." },
+        { q: "Which Prophet could talk to animals and djinns?", o: ["Prophet Yusuf", "Prophet Sulaiman", "Prophet Dawud", "Prophet Yunus"], a: "Prophet Sulaiman", e: "Allah gave Sulaiman (AS) power over animals and djinns." },
+        { q: "How many months are in the Islamic calendar?", o: ["10", "11", "12", "13"], a: "12", e: "The Islamic year has 12 lunar months." },
+        { q: "What is the first month of the Islamic calendar?", o: ["Ramadan", "Muharram", "Safar", "Dhul-Hijjah"], a: "Muharram", e: "The Hijri year begins with Muharram." },
+        { q: "Who was the first Caliph of Islam?", o: ["Umar (RA)", "Ali (RA)", "Abu Bakr (RA)", "Uthman (RA)"], a: "Abu Bakr (RA)", e: "Abu Bakr As-Siddiq was the first leader after the Prophet (PBUH)." }
+    ],
+    level10: [
+        { q: "The first 10 days of Ramadan are the days of...?", o: ["Mercy", "Forgiveness", "Protection", "Gifts"], a: "Mercy", e: "Today marks the end of the Ashra of Mercy (Rahmah)." },
+        { q: "Which Prophet was swallowed by a whale?", o: ["Prophet Musa", "Prophet Yunus", "Prophet Isa", "Prophet Yahya"], a: "Prophet Yunus", e: "Yunus (AS) remained in the whale's belly while praying to Allah." },
+        { q: "What is the tallest mountain mentioned in the Quran?", o: ["Mount Everest", "Mount Sinai (Tur)", "Mount Fuji", "Mount Uhud"], a: "Mount Sinai (Tur)", e: "Mount Sinai is where Allah spoke to Prophet Musa." },
+        { q: "How many Sajdahs are there in the Quran?", o: ["10", "12", "14", "15"], a: "14", e: "There are 14 or 15 points in the Quran where prostration is required." },
+        { q: "Which companion was known as 'As-Siddiq' (The Truthful)?", o: ["Umar", "Ali", "Abu Bakr", "Khalid"], a: "Abu Bakr", e: "The Prophet (PBUH) gave this title to Abu Bakr (RA)." }
+    ],
+    // [Days 11-31 would follow the same pattern...]
+};
         // --- DATA ---
         const DUA_DB = [
             { t: "Before Eating", a: "بِسْمِ اللَّهِ", tr: "In the name of Allah" },
