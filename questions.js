@@ -224,4 +224,3 @@ window.RAMADAN_QUESTIONS = {
         { q: "Which Prophet is mentioned the most (136 times) in the Quran?", o: ["Prophet Muhammad (PBUH)", "Prophet Ibrahim (AS)", "Prophet Musa (AS)", "Prophet Isa (AS)"], a: "Prophet Musa (AS)", e: "His stories provide many lessons throughout the Quran." },
         { q: "What is the primary goal of fasting as mentioned in Surah Al-Baqarah (2:183)?", o: ["To feel hunger", "To lose weight", "To attain Taqwa (God-consciousness)", "To save food"], a: "To attain Taqwa (God-consciousness)", e: "The ultimate goal is spiritual growth and mindfulness of Allah." }
     ]
-};
