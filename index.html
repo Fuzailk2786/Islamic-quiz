@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-    <link rel="icon" href="data:,">    
-    <script src="questions.js"></script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Islamic Questz - 2026</title>
@@ -188,9 +184,12 @@
         }
 
         function checkExistingLogin() {
-            const saved = localStorage.getItem('iq_user');
-            if(saved) loginUser(JSON.parse(saved));
-        }
+    const saved = localStorage.getItem('iq_user');
+    if(saved) {
+        loginUser(JSON.parse(saved));
+        updateSidebarLinks(); // ADD THIS LINE so the review link appears on refresh
+    }
+}
 
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
 
@@ -409,17 +408,21 @@ function printCertificate() {
         function showReview() {
     showScreen('content');
     const body = document.getElementById('dynamic-body');
-    let html = '<h2>Knowledge Review</h2><p>Here are all the correct answers from your 30-day journey:</p>';
+    if (typeof RAMADAN_QUESTIONS === 'undefined') return alert("Data not loaded.");
+
+    let html = '<h2>Knowledge Review</h2><p>Correct answers from your journey:</p>';
     
     for (let i = 1; i <= 30; i++) {
         const level = RAMADAN_QUESTIONS[`level${i}`];
-        html += `<details style="margin-bottom:10px; padding:10px; background:var(--soft-gold); border-radius:8px;">
+        if(!level) continue; // Skip if level doesn't exist
+
+        html += `<details style="margin-bottom:10px; padding:10px; background:var(--soft-gold); border-radius:8px; color: #000;">
                     <summary style="font-weight:600; cursor:pointer;">Day ${i} Questions</summary>`;
         level.forEach(q => {
             html += `<p style="border-left:3px solid var(--emerald); padding-left:10px; margin-top:10px;">
                         <strong>Q: ${q.q}</strong><br>
                         <span style="color:green;">Ans: ${q.a}</span><br>
-                        <small>${q.e}</small>
+                        <small style="color: #666;">${q.e || ""}</small>
                      </p>`;
         });
         html += `</details>`;
