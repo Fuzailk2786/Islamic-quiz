@@ -125,22 +125,22 @@
     </div>
 
     
-<script src="questions.js"></script>
+        <script src="questions.js"></script>
 
-<script>
-    // --- DATA ---
+        <script>
+    // 1. DATA (DUA and HADITH ONLY)
         const DUA_DB = [
-            { t: "Before Eating", a: "بِسْمِ اللَّهِ", tr: "In the name of Allah" },
-            { t: "After Eating", a: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا", tr: "Praise be to Allah who fed us" },
-            { t: "Before Sleeping", a: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا", tr: "In Your name O Allah I die and live" }
-        ];
+        { t: "Before Eating", a: "بِسْمِ اللَّهِ", tr: "In the name of Allah" },
+        { t: "After Eating", a: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا", tr: "Praise be to Allah who fed us" },
+        { t: "Before Sleeping", a: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا", tr: "In Your name O Allah I die and live" }
+    ];
 
-        const HADITH_LIST = [
-            "The best among you are those who learn the Quran and teach it.",
-            "Cleanliness is half of faith.",
-            "A good word is a charity.",
-            "He who does not show mercy to others will not be shown mercy."
-        ];
+    const HADITH_LIST = [
+        "The best among you are those who learn the Quran and teach it.",
+        "Cleanliness is half of faith.",
+        "A good word is a charity.",
+        "He who does not show mercy to others will not be shown mercy."
+    ];
 
         // --- CORE ENGINE ---
       window.addEventListener('load', () => {
@@ -267,46 +267,37 @@
             });
         }
 
-      function checkAnswer(level, index, selected) {
-    // 1. Check if the database or the level exists
-    if (typeof RAMADAN_QUESTIONS === 'undefined' || !RAMADAN_QUESTIONS[`level${level}`]) {
-        console.error("Questions database not found.");
-        return;
-    }
-
-    const qData = RAMADAN_QUESTIONS[`level${level}`][index];
-
-    // 2. Safety: If qData is missing, stop here to avoid the "Incorrect" popup
-    if (!qData) {
-        console.error("Question not found at index: " + index);
-        return;
-    }
-
-    const totalQuestions = RAMADAN_QUESTIONS[`level${level}`].length;
-
-    // 3. Only show "Correct" or "Incorrect" if we have valid data
-    if (selected === qData.a) {
-        alert("Correct! " + (qData.e || ""));
-        
-        if (index + 1 < totalQuestions) {
-            loadQuestion(level, index + 1);
-        } else {
-            localStorage.setItem(`lvl_${level}`, 'true');
-            
-            if (level === 31) {
-                alert("MABROOK! You have passed the Grand Finale!");
-                showCertificate();
-            } else {
-                alert("Day " + level + " Completed!");
-                renderRamadanGrid();
-            }
-            if (typeof updateSidebarLinks === 'function') updateSidebarLinks();
+       function checkAnswer(level, index, selected) {
+        if (typeof RAMADAN_QUESTIONS === 'undefined' || !RAMADAN_QUESTIONS[`level${level}`]) {
+            console.error("Questions not loaded.");
+            return;
         }
-    } else {
-        // This ONLY runs if the user actually clicked the wrong answer
-        alert("Incorrect. Think carefully and try again!");
+
+        const qData = RAMADAN_QUESTIONS[`level${level}`][index];
+        if (!qData) return; // Silent exit if no data
+
+        const totalQuestions = RAMADAN_QUESTIONS[`level${level}`].length;
+
+        if (selected === qData.a) {
+            alert("Correct! " + (qData.e || ""));
+            if (index + 1 < totalQuestions) {
+                loadQuestion(level, index + 1);
+            } else {
+                localStorage.setItem(`lvl_${level}`, 'true');
+                if (level === 31) {
+                    alert("MABROOK! You have passed the Grand Finale!");
+                    showCertificate();
+                } else {
+                    alert("Day " + level + " Completed!");
+                    renderRamadanGrid();
+                }
+                if (typeof updateSidebarLinks === 'function') updateSidebarLinks();
+            }
+        } else {
+            alert("Incorrect. Think carefully and try again!");
+        }
     }
-}
+
 
         function showDuas() {
             showScreen('content');
