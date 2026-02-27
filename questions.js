@@ -3,13 +3,50 @@ window.RAMADAN_QUESTIONS = {
         { 
             q: "What is the primary purpose of fasting (Sawm)?", 
             qh: "Roza (Sawm) rakhne ka asli maqsad kya hai?",
-            o: ["To lose weight", "To gain Taqwa", "To save money", "To sleep more"], 
+            o: ["To lose weight", "To gain Taqwa (God-consciousness)", "To save money", "To sleep more"], 
             oh: ["Wazan kam karna", "Taqwa hasil karna", "Paise bachana", "Zyada sona"],
-            a: "To gain Taqwa", 
+            a: "To gain Taqwa (God-consciousness)", 
             e: "Quran 2:183 mentions Taqwa as the goal.",
             eh: "Quran ki Ayat 2:183 ke mutabiq Taqwa hi asli maqsad hai."
         },
+        { 
+            q: "In which month was the Quran first revealed?", 
+            qh: "Quran sabse pehle kis mahine mein nazil hua tha?",
+            o: ["Rajab", "Ramadan", "Shawwal", "Dhul-Hijjah"], 
+            oh: ["Rajab", "Ramadan", "Shawwal", "Dhul-Hijjah"],
+            a: "Ramadan", 
+            e: "The Quran was sent down in the month of Ramadan.",
+            eh: "Quran-e-Pak Ramadan ke mubarak mahine mein utara gaya."
+        },
+        { 
+            q: "What is the pre-dawn meal called?", 
+            qh: "Subah saadiq se pehle khaye jaane wale khane ko kya kehte hain?",
+            o: ["Iftar", "Suhoor", "Walima", "Aqiqah"], 
+            oh: ["Iftar", "Suhoor (Sehri)", "Walima", "Aqiqah"],
+            a: "Suhoor", 
+            e: "Suhoor is a sunnah meal before the fast begins.",
+            eh: "Sehri karna sunnat hai aur ise roza shuru hone se pehle khaya jata hai."
+        },
+        { 
+            q: "Fasting is one of the ___ pillars of Islam.", 
+            qh: "Roza Islam ke ___ sutoon (pillars) mein se ek hai.",
+            o: ["Three", "Four", "Five", "Six"], 
+            oh: ["Teen", "Chaar", "Paanch", "Chey"],
+            a: "Five", 
+            e: "Sawm is the 4th pillar of Islam.",
+            eh: "Roza Islam ka chautha (4th) rukan hai."
+        },
+        { 
+            q: "Who is exempt from fasting?", 
+            qh: "Roza na rakhne ki ijazat kise di gayi hai?",
+            o: ["Healthy adults", "The sick and travelers", "Wealthy people", "Students"], 
+            oh: ["Sehatmand baaligh", "Bimar aur musafir", "Ameer log", "Students"],
+            a: "The sick and travelers", 
+            e: "Allah has granted ease for those in difficult conditions.",
+            eh: "Allah ne bimar aur safar karne walon ke liye aasani farmayi hai."
+        }
     ],
+    
     level2: [
         { q: "What is the meal to break the fast called?", o: ["Lunch", "Suhoor", "Iftar", "Brunch"], a: "Iftar", e: "Iftar is the meal eaten at sunset." },
         { q: "Which door of Jannah is reserved for those who fast?", o: ["Ar-Rayyan", "Al-Baab", "Al-Firdaus", "Al-Iman"], a: "Ar-Rayyan", e: "Ar-Rayyan is the special gate for the fasting people." },
