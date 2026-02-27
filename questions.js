@@ -1,11 +1,14 @@
 window.RAMADAN_QUESTIONS = {
-    // ASHRA OF MERCY (Days 1-10)
     level1: [
-        { q: "Which night is described as being 'better than a thousand months'?", o: ["Friday Night", "The 15th of Shaban", "Laylatul Qadr", "The Night of Eid"], a: "Laylatul Qadr", e: "Worship on this night equals more than 83 years of worship." },
-        { q: "In which month was the Quran first revealed?", o: ["Rajab", "Ramadan", "Shawwal", "Dhul-Hijjah"], a: "Ramadan", e: "The Quran was sent down in the month of Ramadan." },
-        { q: "What is the pre-dawn meal called?", o: ["Iftar", "Suhoor", "Walima", "Aqiqah"], a: "Suhoor", e: "Suhoor is a sunnah meal before the fast begins." },
-        { q: "Fasting is one of the ___ pillars of Islam.", o: ["Three", "Four", "Five", "Six"], a: "Five", e: "Sawm is the 4th pillar of Islam." },
-        { q: "Who is exempt from fasting?", o: ["Healthy adults", "The sick and travelers", "Wealthy people", "Students"], a: "The sick and travelers", e: "Allah has granted ease for those in difficult conditions." }
+        { 
+            q: "What is the primary purpose of fasting (Sawm)?", 
+            qh: "Roza (Sawm) rakhne ka asli maqsad kya hai?",
+            o: ["To lose weight", "To gain Taqwa", "To save money", "To sleep more"], 
+            oh: ["Wazan kam karna", "Taqwa hasil karna", "Paise bachana", "Zyada sona"],
+            a: "To gain Taqwa", 
+            e: "Quran 2:183 mentions Taqwa as the goal.",
+            eh: "Quran ki Ayat 2:183 ke mutabiq Taqwa hi asli maqsad hai."
+        },
     ],
     level2: [
         { q: "What is the meal to break the fast called?", o: ["Lunch", "Suhoor", "Iftar", "Brunch"], a: "Iftar", e: "Iftar is the meal eaten at sunset." },
