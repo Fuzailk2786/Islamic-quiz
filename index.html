@@ -261,52 +261,66 @@
         }
 
         function loadQuestion(level, index) {
-            const qData = window.RAMADAN_QUESTIONS[`level${level}`][index];
-            const area = document.getElementById('quiz-area');
-            if (!qData) return;
+    const qData = window.RAMADAN_QUESTIONS[`level${level}`][index];
+    const area = document.getElementById('quiz-area');
+    if (!qData) return;
 
-            area.innerHTML = `
-                <p style="color:var(--gold); font-weight:600;">Question ${index + 1} of ${window.RAMADAN_QUESTIONS[`level${level}`].length}</p>
-                <h4 style="margin-bottom:20px;">${qData.q}</h4>
-                <div id="options-box"></div>
-            `;
+    // Display English Question with Hinglish below it
+    area.innerHTML = `
+        <p style="color:var(--gold); font-weight:600;">Question ${index + 1} of ${window.RAMADAN_QUESTIONS[`level${level}`].length}</p>
+        
+        <div style="margin-bottom:20px;">
+            <h4 style="margin-bottom:5px;">${qData.q}</h4>
+            <p style="margin:0; font-style:italic; color:var(--emerald); font-size:0.9rem;">(${qData.qh || ""})</p>
+        </div>
 
-            qData.o.forEach(opt => {
-                const b = document.createElement('button');
-                b.className = 'main-btn';
-                b.style.width = "100%";
-                b.style.marginBottom = "10px";
-                b.style.textAlign = "left";
-                b.innerText = opt;
-                b.onclick = (e) => {
-                    e.preventDefault();
-                    checkAnswer(level, index, opt);
-                };
-                document.getElementById('options-box').appendChild(b);
-            });
-        }
+        <div id="options-box"></div>
+    `;
+
+    qData.o.forEach((opt, i) => {
+        const b = document.createElement('button');
+        b.className = 'main-btn';
+        b.style.width = "100%";
+        b.style.marginBottom = "10px";
+        b.style.textAlign = "left";
+        
+        // Show English option and Hinglish option in brackets
+        const hinglishOpt = qData.oh ? ` (${qData.oh[i]})` : "";
+        b.innerText = opt + hinglishOpt;
+        
+        b.onclick = (e) => {
+            e.preventDefault();
+            checkAnswer(level, index, opt);
+        };
+        document.getElementById('options-box').appendChild(b);
+    });
+}
 
         function checkAnswer(level, index, selected) {
-            const qData = window.RAMADAN_QUESTIONS[`level${level}`][index];
-            if (selected.trim() === qData.a.trim()) {
-                showPopup("Correct! ✨", qData.e || "Well done!", "🌙", () => {
-                    const nextIndex = index + 1;
-                    if (nextIndex < window.RAMADAN_QUESTIONS[`level${level}`].length) {
-                        loadQuestion(level, nextIndex);
-                    } else {
-                        localStorage.setItem(`lvl_${level}`, 'true');
-                        if (level === 31) {
-                            showPopup("MABROOK!", "You have passed the Grand Finale!", "🏆", () => showCertificate());
-                        } else {
-                            showPopup("Day Completed!", `Day ${level} is finished.`, "⭐", () => renderRamadanGrid());
-                        }
-                        updateSidebarLinks();
-                    }
-                });
+    const qData = window.RAMADAN_QUESTIONS[`level${level}`][index];
+    
+    if (selected.trim() === qData.a.trim()) {
+        // Create a combined explanation message
+        const explanation = qData.e + (qData.eh ? `\n\n(${qData.eh})` : "");
+        
+        showPopup("Correct! ✨", explanation, "🌙", () => {
+            const nextIndex = index + 1;
+            if (nextIndex < window.RAMADAN_QUESTIONS[`level${level}`].length) {
+                loadQuestion(level, nextIndex);
             } else {
-                showPopup("Try Again", "Think carefully and try again! 🤔", "❌");
+                localStorage.setItem(`lvl_${level}`, 'true');
+                if (level === 31) {
+                    showPopup("MABROOK!", "You have passed the Grand Finale!", "🏆", () => showCertificate());
+                } else {
+                    showPopup("Day Completed!", `Day ${level} is finished.`, "⭐", () => renderRamadanGrid());
+                }
+                updateSidebarLinks();
             }
-        }
+        });
+    } else {
+        showPopup("Try Again", "Think carefully and try again! / Dobara sochein! 🤔", "❌");
+    }
+}
 
         function showDuas() {
             showScreen('content');
