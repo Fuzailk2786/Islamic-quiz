@@ -368,6 +368,478 @@ window.RAMADAN_QUESTIONS = {
             eh: "Hazrat Nuh (A.S) ne Allah ke hukum se Toofaan se bachne ke liye Kashti banayi thi."
         }
     ],
+        
+level9: [
+        { 
+            q: "What is the name of the fountain in Jannah?", 
+            qh: "Jannat mein maujood Hauz (fountain/river) ka naam kya hai?",
+            o: ["Zamzam", "Kauthar", "Salsabil", "Tasnim"], 
+            oh: ["Zamzam", "Kauthar", "Salsabil", "Tasnim"],
+            a: "Kauthar", 
+            e: "Surah Al-Kauthar mentions this special river/fountain.",
+            eh: "Surah Al-Kauthar mein is khaas Hauz ka zikr aaya hai."
+        },
+        { 
+            q: "Which Prophet could talk to animals and djinns?", 
+            qh: "Kaunse Nabi jaanwaron aur jinnat se baat kar sakte the?",
+            o: ["Prophet Yusuf", "Prophet Sulaiman", "Prophet Dawud", "Prophet Yunus"], 
+            oh: ["Hazrat Yusuf", "Hazrat Sulaiman", "Hazrat Dawud", "Hazrat Yunus"],
+            a: "Prophet Sulaiman", 
+            e: "Allah gave Sulaiman (AS) power over animals and djinns.",
+            eh: "Allah ne Hazrat Sulaiman (A.S) ko parindon aur jinnat par hukoomat di thi."
+        },
+        { 
+            q: "How many months are in the Islamic calendar?", 
+            qh: "Islami calendar (Hijri) mein kitne mahine hote hain?",
+            o: ["10", "11", "12", "13"], 
+            oh: ["10", "11", "12", "13"],
+            a: "12", 
+            e: "The Islamic year has 12 lunar months.",
+            eh: "Islami saal mein 12 chand ke mahine (lunar months) hote hain."
+        },
+        { 
+            q: "What is the first month of the Islamic calendar?", 
+            qh: "Islami saal ka pehla mahina kaunsa hota hai?",
+            o: ["Ramadan", "Muharram", "Safar", "Dhul-Hijjah"], 
+            oh: ["Ramadan", "Muharram", "Safar", "Dhul-Hijjah"],
+            a: "Muharram", 
+            e: "The Hijri year begins with Muharram.",
+            eh: "Hijri saal ki shuruat Muharram-ul-Haram se hoti hai."
+        },
+        { 
+            q: "Who was the first Caliph of Islam?", 
+            qh: "Islam ke pehle Khalifa (Caliph) kaun the?",
+            o: ["Umar (RA)", "Ali (RA)", "Abu Bakr (RA)", "Uthman (RA)"], 
+            oh: ["Hazrat Umar", "Hazrat Ali", "Hazrat Abu Bakr", "Hazrat Uthman"],
+            a: "Abu Bakr (RA)", 
+            e: "Abu Bakr As-Siddiq was the first leader after the Prophet (PBUH).",
+            eh: "Nabi (SAW) ke parda farmane ke baad Hazrat Abu Bakr Siddique (R.A) pehle leader bane."
+        }
+    ],
+    level10: [
+        { 
+            q: "The first 10 days of Ramadan are the days of...?", 
+            qh: "Ramadan ke pehle 10 din kis cheez ke hote hain?",
+            o: ["Mercy", "Forgiveness", "Protection", "Gifts"], 
+            oh: ["Rahmat (Mercy)", "Maghfirat (Forgiveness)", "Najaat (Protection)", "Tohfe (Gifts)"],
+            a: "Mercy", 
+            e: "Today marks the end of the Ashra of Mercy (Rahmah).",
+            eh: "Aaj 'Ashra-e-Rahmat' ka aakhri din hai."
+        },
+        { 
+            q: "Which Prophet was swallowed by a whale?", 
+            qh: "Kis Nabi ko machli (whale) ne nigal liya tha?",
+            o: ["Prophet Musa", "Prophet Yunus", "Prophet Isa", "Prophet Yahya"], 
+            oh: ["Hazrat Musa", "Hazrat Yunus", "Hazrat Isa", "Hazrat Yahya"],
+            a: "Prophet Yunus", 
+            e: "Yunus (AS) remained in the whale's belly while praying to Allah.",
+            eh: "Hazrat Yunus (A.S) machli ke pait mein reh kar Allah ki tasbeeh karte rahe."
+        },
+        { 
+            q: "What is the tallest mountain mentioned in the Quran?", 
+            qh: "Quran mein kis pahad (mountain) ka zikr aaya hai jahan Musa (AS) Allah se baat karte the?",
+            o: ["Mount Everest", "Mount Sinai (Tur)", "Mount Fuji", "Mount Uhud"], 
+            oh: ["Everest", "Koh-e-Toor (Mount Sinai)", "Mount Fuji", "Koh-e-Uhud"],
+            a: "Mount Sinai (Tur)", 
+            e: "Mount Sinai is where Allah spoke to Prophet Musa.",
+            eh: "Koh-e-Toor wo jagah hai jahan Allah ne Hazrat Musa (A.S) se kalaam kiya tha."
+        },
+        { 
+            q: "How many Sajdahs are there in the Quran?", 
+            qh: "Quran-e-Majeed mein kul kitne Sajda-e-Tilawat hain?",
+            o: ["10", "12", "14", "15"], 
+            oh: ["10", "12", "14", "15"],
+            a: "14", 
+            e: "There are 14 or 15 points in the Quran where prostration is required.",
+            eh: "Quran mein 14 ya 15 aisi aayatein hain jinhe padhne par sajda wajib hota hai."
+        },
+        { 
+            q: "Which companion was known as 'As-Siddiq' (The Truthful)?", 
+            qh: "Kis Sahabi ko 'As-Siddiq' (Sach bolne wala) ka khitab mila?",
+            o: ["Umar", "Ali", "Abu Bakr", "Khalid"], 
+            oh: ["Hazrat Umar", "Hazrat Ali", "Hazrat Abu Bakr", "Hazrat Khalid"],
+            a: "Abu Bakr", 
+            e: "The Prophet (PBUH) gave this title to Abu Bakr (RA).",
+            eh: "Nabi (SAW) ne Hazrat Abu Bakr (R.A) ko unki sacchayi ki wajah se ye naam diya."
+        }
+    ],
+    level11: [
+        { 
+            q: "What is the second 10 days of Ramadan called?", 
+            qh: "Ramadan ke dusre 10 dinon ko kya kaha jata hai?",
+            o: ["Ashra of Mercy", "Ashra of Forgiveness", "Ashra of Safety", "Ashra of Knowledge"], 
+            oh: ["Rahmat ka Ashra", "Maghfirat (Forgiveness) ka Ashra", "Najaat ka Ashra", "Ilm ka Ashra"],
+            a: "Ashra of Forgiveness", 
+            e: "The middle 10 days are for seeking Allah's Maghfirah (Forgiveness).",
+            eh: "Ramadan ke darmiyani 10 din Allah se gunahon ki mafi mangne ke liye hain."
+        },
+        { 
+            q: "Which Prophet was known for his extreme patience during illness?", 
+            qh: "Kaunse Nabi apni bimari mein sabr (patience) ke liye mashhoor hain?",
+            o: ["Prophet Ayub", "Prophet Yusuf", "Prophet Musa", "Prophet Isa"], 
+            oh: ["Hazrat Ayub", "Hazrat Yusuf", "Hazrat Musa", "Hazrat Isa"],
+            a: "Prophet Ayub", 
+            e: "Prophet Ayub (AS) remained patient through years of hardship.",
+            eh: "Hazrat Ayub (A.S) ne sakht bimari mein bhi Allah ka shukr ada kiya aur sabr dikhaya."
+        },
+        { 
+            q: "What is the meaning of 'Astaghfirullah'?", 
+            qh: "'Astaghfirullah' kehne ka kya matlab hai?",
+            o: ["Allah is Great", "Praise be to Allah", "I seek forgiveness from Allah", "Allah is One"], 
+            oh: ["Allah bada hai", "Allah ki tareef", "Main Allah se mafi mangta hoon", "Allah ek hai"],
+            a: "I seek forgiveness from Allah", 
+            e: "This is the best dhikr for the second Ashra.",
+            eh: "Maghfirat ke ashre mein ye sabse behtareen zikr hai."
+        },
+        { 
+            q: "Which surah is named after a fruit?", 
+            qh: "Kaunsi Surah ka naam ek phal (fruit) par rakha gaya hai?",
+            o: ["Surah Baqarah", "Surah Tin", "Surah Mulk", "Surah Nahl"], 
+            oh: ["Surah Baqarah", "Surah At-Tin (Injeer)", "Surah Mulk", "Surah Nahl"],
+            a: "Surah Tin", 
+            e: "Surah At-Tin refers to the Fig.",
+            eh: "Surah At-Tin ka matlab Injeer (Fig) hota hai."
+        },
+        { 
+            q: "How many angels are mentioned by name in the Quran?", 
+            qh: "Quran mein kitne Farishton (Angels) ka naam zikr kiya gaya hai?",
+            o: ["4", "8", "Many", "None"], 
+            oh: ["4", "8", "Bahut saare (Many)", "Ek bhi nahi"],
+            a: "Many", 
+            e: "While many are mentioned, Jibreel, Mikail, Malik, and Harut/Marut are among the most prominent.",
+            eh: "Quran mein Jibreel, Mikail aur Malik jaise kai farishton ke naam aaye hain."
+        }
+    ],
+    level12: [
+        { 
+            q: "Who was the father of Prophet Yusuf (AS)?", 
+            qh: "Hazrat Yusuf (A.S) ke walid (father) ka naam kya tha?",
+            o: ["Prophet Ibrahim", "Prophet Yaqub", "Prophet Ishaq", "Prophet Ismail"], 
+            oh: ["Hazrat Ibrahim", "Hazrat Yaqub", "Hazrat Ishaq", "Hazrat Ismail"],
+            a: "Prophet Yaqub", 
+            e: "Prophet Yaqub (AS) loved his son Yusuf dearly.",
+            eh: "Hazrat Yaqub (A.S) apne bete Yusuf (A.S) se bahut zyada mohabbat karte the."
+        },
+        { 
+            q: "What is the name of the gatekeeper of Jannah?", 
+            qh: "Jannat ke pehredaar (gatekeeper) farishte ka naam kya hai?",
+            o: ["Malik", "Ridwan", "Jibreel", "Israil"], 
+            oh: ["Malik", "Ridwan", "Jibreel", "Israil"],
+            a: "Ridwan", 
+            e: "Ridwan is the angel in charge of Paradise.",
+            eh: "Hazrat Ridwan (A.S) Jannat ke darogha (in-charge) hain."
+        },
+        { 
+            q: "What is the name of the gatekeeper of Jahannam?", 
+            qh: "Dozakh (Hell) ke in-charge farishte ka naam kya hai?",
+            o: ["Malik", "Ridwan", "Mikail", "Izrail"], 
+            oh: ["Malik", "Ridwan", "Mikail", "Izrail"],
+            a: "Malik", 
+            e: "Angel Malik is the guardian of the Hellfire.",
+            eh: "Hazrat Malik (A.S) Jahannam ke pehredaar hain."
+        },
+        { 
+            q: "How many daughters did Prophet Muhammad (PBUH) have?", 
+            qh: "Huzoor (SAW) ki kitni betiyan (daughters) thin?",
+            o: ["2", "3", "4", "1"], 
+            oh: ["2", "3", "4", "1"],
+            a: "4", 
+            e: "Their names were Zainab, Ruqayyiah, Umm Kulthum, and Fatima.",
+            eh: "Unke naam Zainab, Ruqayyiah, Umm Kulthum aur Fatima (R.A) hain."
+        },
+        { 
+            q: "Which companion was known as 'Dhun-Nurayn' (Possessor of two lights)?", 
+            qh: "Kis Sahabi ko 'Dhun-Nurayn' (Do nooron wala) kaha jata hai?",
+            o: ["Abu Bakr", "Umar", "Uthman", "Ali"], 
+            oh: ["Hazrat Abu Bakr", "Hazrat Umar", "Hazrat Uthman", "Hazrat Ali"],
+            a: "Uthman", 
+            e: "Uthman (RA) married two of the Prophet's daughters.",
+            eh: "Hazrat Uthman (R.A) ke nikah mein Nabi (SAW) ki do betiyan aayi thin."
+        }
+    ],
+    level13: [
+        { 
+            q: "Which Prophet was thrown into a fire by Nimrod?", 
+            qh: "Namrud ne kis Nabi ko aag mein dala tha?",
+            o: ["Prophet Musa", "Prophet Ibrahim", "Prophet Lut", "Prophet Salih"], 
+            oh: ["Hazrat Musa", "Hazrat Ibrahim", "Hazrat Lut", "Hazrat Salih"],
+            a: "Prophet Ibrahim", 
+            e: "Allah commanded the fire to be 'cool and safe' for Ibrahim (AS).",
+            eh: "Allah ne aag ko Hazrat Ibrahim (A.S) ke liye thanda aur salaamati wala banne ka hukum diya."
+        },
+        { 
+            q: "What is the longest Surah in the Quran?", 
+            qh: "Quran-e-Pak ki sabse badi (longest) Surah kaunsi hai?",
+            o: ["Surah Al-Imran", "Surah Al-Baqarah", "Surah Nisa", "Surah Maida"], 
+            oh: ["Surah Al-Imran", "Surah Al-Baqarah", "Surah Nisa", "Surah Maida"],
+            a: "Surah Al-Baqarah", 
+            e: "It contains 286 verses.",
+            eh: "Is Surah mein kul 286 aayatein hain."
+        },
+        { 
+            q: "What is the shortest Surah in the Quran?", 
+            qh: "Quran-e-Majeed ki sabse choti (shortest) Surah kaunsi hai?",
+            o: ["Surah Ikhlas", "Surah Kauthar", "Surah Asr", "Surah Nas"], 
+            oh: ["Surah Ikhlas", "Surah Al-Kauthar", "Surah Al-Asr", "Surah An-Nas"],
+            a: "Surah Kauthar", 
+            e: "It has only 3 verses.",
+            eh: "Is Surah mein sirf 3 aayatein hain."
+        },
+        { 
+            q: "Which Prophet was given a beautiful voice that made mountains pray with him?", 
+            qh: "Kis Nabi ko itni khoobsurat awaaz mili thi ke pahad bhi unke sath tasbeeh karte the?",
+            o: ["Prophet Dawud", "Prophet Sulaiman", "Prophet Yahya", "Prophet Zakariyya"], 
+            oh: ["Hazrat Dawud", "Hazrat Sulaiman", "Hazrat Yahya", "Hazrat Zakariyya"],
+            a: "Prophet Dawud", 
+            e: "The Zabur was revealed to Prophet Dawud (AS).",
+            eh: "Hazrat Dawud (A.S) par 'Zabur' kitab nazil hui thi."
+        },
+        { 
+            q: "What is the Arabic word for 'The Migration' to Madinah?", 
+            qh: "Makkah se Madinah jane (Migration) ko Arabi mein kya kehte hain?",
+            o: ["Hajj", "Hijrah", "Jihad", "Ziyarat"], 
+            oh: ["Hajj", "Hijrat (Hijrah)", "Jihad", "Ziyarat"],
+            a: "Hijrah", 
+            e: "The Islamic calendar begins from the year of the Hijrah.",
+            eh: "Islami saal ki tareekh (date) Hijrat ke saal se shuru hoti hai."
+        }
+    ],
+    
+        level14: [
+        { 
+            q: "Which Prophet was born without a father?", 
+            qh: "Kaunse Nabi bina baap (father) ke paida hue the?",
+            o: ["Prophet Adam", "Prophet Isa", "Prophet Idris", "Prophet Shuaib"], 
+            oh: ["Hazrat Adam", "Hazrat Isa (A.S)", "Hazrat Idris", "Hazrat Shuaib"],
+            a: "Prophet Isa", 
+            e: "Prophet Isa (Jesus) was born to Maryam (AS) by a miracle.",
+            eh: "Hazrat Isa (A.S) ki paidaish Hazrat Maryam ke ghar ek maujize (miracle) ke taur par hui thi."
+        },
+        { 
+            q: "Who was the first person to call the Adhan in Islam?", 
+            qh: "Islam mein sabse pehle Azan kisne di thi?",
+            o: ["Abu Bakr", "Bilal ibn Rabah", "Umar ibn Khattab", "Zaid bin Harithah"], 
+            oh: ["Hazrat Abu Bakr", "Hazrat Bilal ibn Rabah", "Hazrat Umar", "Hazrat Zaid"],
+            a: "Bilal ibn Rabah", 
+            e: "Bilal (RA) was the first Muazzin.",
+            eh: "Hazrat Bilal (R.A) Islam ke pehle Muazzin (Azan dene wale) hain."
+        },
+        { 
+            q: "What is 'Sadaqah Jariyah'?", 
+            qh: "'Sadaqah Jariyah' ka kya matlab hai?",
+            o: ["Mandatory charity", "Continuous charity", "Secret charity", "Food charity"], 
+            oh: ["Farz khairat", "Hamesha jari rehne wala sawab", "Chupa kar dena", "Khane ki khairat"],
+            a: "Continuous charity", 
+            e: "Charity that keeps benefiting people even after the giver dies.",
+            eh: "Aisi khairat jiska fayda aur sawab marne ke baad bhi milta rehta hai."
+        },
+        { 
+            q: "In which city is the Al-Aqsa Mosque located?", 
+            qh: "Masjid-e-Aqsa kis shehar mein maujood hai?",
+            o: ["Mecca", "Madinah", "Jerusalem", "Cairo"], 
+            oh: ["Makkah", "Madinah", "Jerusalem (Bait-ul-Muqaddas)", "Cairo"],
+            a: "Jerusalem", 
+            e: "It was the first Qibla for Muslims.",
+            eh: "Masjid-e-Aqsa Musalmanon ka pehla Qibla tha."
+        },
+        { 
+            q: "Which month comes after Ramadan?", 
+            qh: "Ramadan ke khatam hote hi kaunsa mahina shuru hota hai?",
+            o: ["Shaban", "Shawwal", "Muharram", "Rajab"], 
+            oh: ["Shaban", "Shawwal", "Muharram", "Rajab"],
+            a: "Shawwal", 
+            e: "Eid-ul-Fitr is on the 1st of Shawwal.",
+            eh: "Shawwal ki pehli tareekh ko Eid-ul-Fitr manayi jati hai."
+        }
+    ],
+    level15: [
+        { 
+            q: "Which Prophet was known for interpreting dreams?", 
+            qh: "Kaunse Nabi khwabon (dreams) ki tabeer batane ke liye mashhoor the?",
+            o: ["Prophet Yusuf", "Prophet Musa", "Prophet Ibrahim", "Prophet Adam"], 
+            oh: ["Hazrat Yusuf (A.S)", "Hazrat Musa", "Hazrat Ibrahim", "Hazrat Adam"],
+            a: "Prophet Yusuf", 
+            e: "Yusuf (AS) interpreted the King's dream in Egypt.",
+            eh: "Hazrat Yusuf (A.S) ne Misr ke Badshah ke khwab ki tabeer batayi thi."
+        },
+        { 
+            q: "How many years did the Quran take to be fully revealed?", 
+            qh: "Quran-e-Pak ko poora nazil hone mein kitne saal lage?",
+            o: ["10 years", "13 years", "23 years", "40 years"], 
+            oh: ["10 saal", "13 saal", "23 saal", "40 saal"],
+            a: "23 years", 
+            e: "Revelations happened over 13 years in Mecca and 10 in Madinah.",
+            eh: "Quran thoda-thoda karke 23 saal ke arse (period) mein nazil hua."
+        },
+        { 
+            q: "What is the meaning of 'Al-Fatiha'?", 
+            qh: "Surah 'Al-Fatiha' ka kya matlab hai?",
+            o: ["The Ending", "The Opening", "The Prayer", "The Book"], 
+            oh: ["Khatm hona", "Shuruat / Opening", "Dua", "Kitab"],
+            a: "The Opening", 
+            e: "It is the first Surah of the Quran.",
+            eh: "Ye Quran ki sabse pehli Surah hai, isliye ise 'The Opening' kehte hain."
+        },
+        { 
+            q: "Which metal did Prophet Dawud (AS) have the miracle of softening with his hands?", 
+            qh: "Kaunsi dhatu (metal) Hazrat Dawud (A.S) ke hathon mein mom ki tarah naram ho jati thi?",
+            o: ["Gold", "Silver", "Iron", "Copper"], 
+            oh: ["Sona", "Chandi", "Loha (Iron)", "Tamba"],
+            a: "Iron", 
+            e: "Allah made iron like wax for him to make armor.",
+            eh: "Allah ne Hazrat Dawud (A.S) ke liye lohe ko naram kar diya tha taaki wo zira (armor) bana sakein."
+        },
+        { 
+            q: "What is the collective name for the four books revealed by Allah?", 
+            qh: "Allah ki taraf se nazil ki gayi charon kitabon ko kya kaha jata hai?",
+            o: ["The Sunnah", "The Kutub", "The Hadith", "The Fiqh"], 
+            oh: ["Sunnah", "Asmani Kutub", "Hadith", "Fiqh"],
+            a: "The Kutub", 
+            e: "They are the Torah, Psalms, Gospel, and Quran.",
+            eh: "Inme Taurat, Zabur, Injeel aur Quran-e-Majeed shamil hain."
+        }
+    ],
+    level16: [
+        { 
+            q: "Who was the mother of Prophet Ismail (AS)?", 
+            qh: "Hazrat Ismail (A.S) ki walida (mother) ka naam kya tha?",
+            o: ["Sarah", "Hajar", "Asiya", "Maryam"], 
+            oh: ["Hazrat Sarah", "Hazrat Hajar (A.S)", "Hazrat Asiya", "Hazrat Maryam"],
+            a: "Hajar", 
+            e: "Hajar (AS) ran between Safa and Marwa seeking water.",
+            eh: "Hazrat Hajar (A.S) paani ki talaash mein Safa aur Marwa ke beech daudi thin."
+        },
+        { 
+            q: "What is the name of the well that sprang for Hajar and Ismail?", 
+            qh: "Hazrat Hajar aur Ismail (A.S) ke liye nikalne wale kuen (well) ka naam kya hai?",
+            o: ["Al-Kauthar", "Zamzam", "Salsabil", "Tasnim"], 
+            oh: ["Al-Kauthar", "Zamzam", "Salsabil", "Tasnim"],
+            a: "Zamzam", 
+            e: "The Zamzam well still provides water today.",
+            eh: "Zamzam ka kuan Makkah mein aaj bhi logon ko paani faraham kar raha hai."
+        },
+        { 
+            q: "Which Prophet was sent to the people of Thamud?", 
+            qh: "Hazrat Salih (A.S) ko kis qaum ki taraf bheja gaya tha?",
+            o: ["Prophet Salih", "Prophet Hud", "Prophet Shuaib", "Prophet Lut"], 
+            oh: ["Hazrat Salih", "Hazrat Hud", "Hazrat Shuaib", "Hazrat Lut"],
+            a: "Prophet Salih", 
+            e: "His miracle was a She-Camel.",
+            eh: "Hazrat Salih (A.S) ki qaum ka naam Thamud tha aur unka maujiza ek oontni thi."
+        },
+        { 
+            q: "What is the 'Sirat'?", 
+            qh: "'Pul-e-Sirat' kya hai?",
+            o: ["A prayer", "A bridge over Hellfire", "A type of fasting", "A book"], 
+            oh: ["Ek Dua", "Jahannam ke upar ka rasta (Bridge)", "Roze ki kism", "Ek kitab"],
+            a: "A bridge over Hellfire", 
+            e: "Every person must cross it on the Day of Judgment.",
+            eh: "Qayamat ke din har insaan ko is raste se guzarna hoga."
+        },
+        { 
+            q: "How many times is 'Bismillah' mentioned in the Quran?", 
+            qh: "Quran-e-Pak mein 'Bismillah' kitni baar aaya hai?",
+            o: ["113", "114", "115", "110"], 
+            oh: ["113", "114", "115", "110"],
+            a: "114", 
+            e: "Though Surah Tawbah lacks it, Surah Naml mentions it twice.",
+            eh: "Surah Tawbah ke shuru mein Bismillah nahi hai, lekin Surah Naml mein ye do baar aaya hai, isliye total 114 hai."
+        }
+    ],
+    level17: [
+        { 
+            q: "Which companion was nicknamed 'Al-Faruq'?", 
+            qh: "Kis Sahabi ko 'Al-Faruq' ka khitab mila?",
+            o: ["Abu Bakr", "Umar", "Uthman", "Ali"], 
+            oh: ["Hazrat Abu Bakr", "Hazrat Umar (R.A)", "Hazrat Uthman", "Hazrat Ali"],
+            a: "Umar", 
+            e: "Al-Faruq means 'The one who distinguishes between right and wrong'.",
+            eh: "Al-Faruq ka matlab hai 'Haq aur batil (sach aur jhoot) mein farq karne wala'."
+        },
+        { 
+            q: "What is the literal meaning of 'Islam'?", 
+            qh: "Lafz 'Islam' ka asli matlab kya hai?",
+            o: ["Fasting", "Submission to Allah", "Success", "Prayer"], 
+            oh: ["Roza", "Allah ke aage jhuk jana (Submission)", "Kamyabi", "Namaz"],
+            a: "Submission to Allah", 
+            e: "It also shares the root word for 'Peace'.",
+            eh: "Islam ka matlab Allah ki farmabardari karna aur aman (peace) hai."
+        },
+        { 
+            q: "Which Prophet was known as 'Khalilullah' (Friend of Allah)?", 
+            qh: "Kis Nabi ko 'Khalilullah' (Allah ka dost) kaha jata hai?",
+            o: ["Prophet Musa", "Prophet Ibrahim", "Prophet Muhammad", "Prophet Isa"], 
+            oh: ["Hazrat Musa", "Hazrat Ibrahim (A.S)", "Hazrat Muhammad", "Hazrat Isa"],
+            a: "Prophet Ibrahim", 
+            e: "Prophet Ibrahim (AS) held this high status.",
+            eh: "Hazrat Ibrahim (A.S) ko Allah ne apna dost (Khalil) banaya tha."
+        },
+        { 
+            q: "How many Sajdahs (prostrations) are in the 5 daily obligatory prayers combined?", 
+            qh: "Din bhar ki 5 farz namazon mein kul kitne sajde hote hain?",
+            o: ["17", "20", "34", "10"], 
+            oh: ["17", "20", "34", "10"],
+            a: "34", 
+            e: "There are 17 Rakats total, and each Rakat has 2 Sajdahs.",
+            eh: "5 waqt ki farz namazon mein 17 rakatein hoti hain, aur har rakat mein 2 sajde (17 x 2 = 34)."
+        },
+        { 
+            q: "Which wife of the Prophet (PBUH) was the daughter of Abu Bakr (RA)?", 
+            qh: "Huzoor (SAW) ki kaunsi biwi Hazrat Abu Bakr (R.A) ki beti thin?",
+            o: ["Khadija", "Aisha", "Hafsa", "Zainab"], 
+            oh: ["Hazrat Khadija", "Hazrat Aisha (R.A)", "Hazrat Hafsa", "Hazrat Zainab"],
+            a: "Aisha", 
+            e: "Aisha (RA) was a great scholar of Islam.",
+            eh: "Hazrat Aisha (R.A) Islam ki bahut badi aalima thin."
+        }
+    ],
+    level18: [
+        { 
+            q: "What is the name of the Prophet's (PBUH) father?", 
+            qh: "Nabi-e-Kareem (SAW) ke walid (father) ka naam kya tha?",
+            o: ["Abu Talib", "Abdullah", "Abdul Muttalib", "Abbas"], 
+            oh: ["Abu Talib", "Hazrat Abdullah", "Abdul Muttalib", "Abbas"],
+            a: "Abdullah", 
+            e: "Abdullah passed away before the Prophet (PBUH) was born.",
+            eh: "Hazrat Abdullah Aap (SAW) ki paidaish se pehle hi inteqal kar gaye the."
+        },
+        { 
+            q: "What is the name of the Prophet's (PBUH) mother?", 
+            qh: "Huzoor (SAW) ki walida (mother) ka naam kya tha?",
+            o: ["Halima", "Aminah", "Fatima", "Safiyya"], 
+            oh: ["Hazrat Halima", "Hazrat Aminah", "Hazrat Fatima", "Hazrat Safiyya"],
+            a: "Aminah", 
+            e: "Aminah passed away when he was 6 years old.",
+            eh: "Jab Aap (SAW) 6 saal ke the, tab Hazrat Aminah ka inteqal hua."
+        },
+        { 
+            q: "Who raised the Prophet (PBUH) after his mother and grandfather died?", 
+            qh: "Walida aur Dada ke inteqal ke baad, Aap (SAW) ki parwarish kisne ki?",
+            o: ["Abu Bakr", "Abu Talib", "Hamza", "Umar"], 
+            oh: ["Hazrat Abu Bakr", "Hazrat Abu Talib", "Hazrat Hamza", "Hazrat Umar"],
+            a: "Abu Talib", 
+            e: "His uncle Abu Talib protected him for many years.",
+            eh: "Aap (SAW) ke chacha Abu Talib ne kaafi saalon tak Aap ki hifazat ki."
+        },
+        { 
+            q: "Which Prophet could control the wind?", 
+            qh: "Kaunse Nabi hawa (wind) ko control kar sakte the?",
+            o: ["Prophet Sulaiman", "Prophet Dawud", "Prophet Musa", "Prophet Nuh"], 
+            oh: ["Hazrat Sulaiman (A.S)", "Hazrat Dawud", "Hazrat Musa", "Hazrat Nuh"],
+            a: "Prophet Sulaiman", 
+            e: "Allah gave him command over the wind and the djinns.",
+            eh: "Allah ne Hazrat Sulaiman (A.S) ko hawaon aur jinnat par ikhtiyar diya tha."
+        },
+        { 
+            q: "What is the reward for praying in Masjid al-Haram?", 
+            qh: "Masjid-al-Haram (Makkah) mein ek namaz padhne ka sawab kitna hai?",
+            o: ["1,000 prayers", "10,000 prayers", "100,000 prayers", "Unlimited"], 
+            oh: ["1,000 namaz", "10,000 namaz", "1,00,000 (Ek Lakh) namaz", "Unlimited"],
+            a: "100,000 prayers", 
+            e: "The reward is immense in the Sacred Mosque of Mecca.",
+            eh: "Makkah ki Masjid-al-Haram mein ek namaz ka sawab 1 lakh namazon ke barabar hai."
+        }
+    ],
     level19: [
         { 
             q: "Which Prophet stayed in the belly of a whale?", 
@@ -1025,4 +1497,5 @@ window.RAMADAN_QUESTIONS = {
         },
     ],
 };
+
 
