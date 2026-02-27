@@ -66,6 +66,15 @@
         <div style="color: white; letter-spacing: 2px;">ISLAMIC QUESTZ</div>
     </div>
 
+    <div id="app-modal" class="hidden" style="position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px;">
+        <div style="background: var(--card-bg); width: 100%; max-width: 400px; border-radius: 20px; padding: 25px; text-align: center; border: 2px solid var(--gold); box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+            <div id="modal-icon" style="font-size: 3rem; margin-bottom: 10px;"></div>
+            <h3 id="modal-title" style="font-family: 'Cinzel'; margin-top: 0; color: var(--emerald);"></h3>
+            <p id="modal-message" style="margin-bottom: 25px; line-height: 1.5; color: var(--text-main);"></p>
+            <button id="modal-btn" class="main-btn" style="width: 100%; background: var(--emerald); color: white; border: none;">Continue</button>
+        </div>
+    </div>
+
     <button id="menu-btn" class="hidden" onclick="toggleMenu()">☰</button>
     
     <nav id="sidebar">
@@ -120,47 +129,52 @@
         </div>
     </div>
 
-    
-        <script src="questions.js"></script>
+    <script src="questions.js"></script>
 
-        <script>
-    // 1. DATA (DUA and HADITH ONLY)
+    <script>
         const DUA_DB = [
-        { t: "Before Eating", a: "بِسْمِ اللَّهِ", tr: "In the name of Allah" },
-        { t: "After Eating", a: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا", tr: "Praise be to Allah who fed us" },
-        { t: "Before Sleeping", a: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا", tr: "In Your name O Allah I die and live" }
-    ];
+            { t: "Before Eating", a: "بِسْمِ اللَّهِ", tr: "In the name of Allah" },
+            { t: "After Eating", a: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا", tr: "Praise be to Allah who fed us" },
+            { t: "Before Sleeping", a: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا", tr: "In Your name O Allah I die and live" }
+        ];
 
-    const HADITH_LIST = [
-        "The best among you are those who learn the Quran and teach it.",
-        "Cleanliness is half of faith.",
-        "A good word is a charity.",
-        "He who does not show mercy to others will not be shown mercy."
-    ];
+        const HADITH_LIST = [
+            "The best among you are those who learn the Quran and teach it.",
+            "Cleanliness is half of faith.",
+            "A good word is a charity.",
+            "He who does not show mercy to others will not be shown mercy."
+        ];
 
-        // --- CORE ENGINE ---
-      window.addEventListener('load', () => {
-    console.log("App loaded. Starting timer...");
-    
-    // Safety Force-Hide: This hides the screen even if other code crashes
-    setTimeout(() => {
-        const overlay = document.getElementById('bismillah-overlay');
-        const main = document.getElementById('main-container');
-        
-        if (overlay) {
-            overlay.style.opacity = '0';
-            // Important: We set pointer-events to none immediately
-            overlay.style.pointerEvents = 'none'; 
+        // --- CUSTOM MODAL POPUP ENGINE ---
+        function showPopup(title, message, icon, callback) {
+            const modal = document.getElementById('app-modal');
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-message').innerText = message;
+            document.getElementById('modal-icon').innerText = icon;
             
-            setTimeout(() => {
-                overlay.classList.add('hidden');
-                if (main) main.classList.remove('hidden');
-                console.log("Overlay hidden, showing main container.");
-                checkExistingLogin();
-            }, 800);
+            modal.classList.remove('hidden');
+            
+            document.getElementById('modal-btn').onclick = () => {
+                modal.classList.add('hidden');
+                if (callback) callback();
+            };
         }
-    }, 2500);
-});
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const overlay = document.getElementById('bismillah-overlay');
+                const main = document.getElementById('main-container');
+                if (overlay) {
+                    overlay.style.opacity = '0';
+                    overlay.style.pointerEvents = 'none'; 
+                    setTimeout(() => {
+                        overlay.classList.add('hidden');
+                        if (main) main.classList.remove('hidden');
+                        checkExistingLogin();
+                    }, 800);
+                }
+            }, 2500);
+        });
 
         function handleAuth(type) {
             let user = { name: "", avatar: "" };
@@ -168,7 +182,10 @@
                 user.name = "Guest_" + Math.floor(Math.random() * 9000);
             } else {
                 const val = document.getElementById('auth-email').value;
-                if(!val.includes('@')) return alert("Valid email required");
+                if(!val.includes('@')) {
+                    showPopup("Input Error", "A valid email is required to register.", "📧");
+                    return;
+                }
                 user.name = val.split('@')[0];
             }
             localStorage.setItem('iq_user', JSON.stringify(user));
@@ -184,12 +201,12 @@
         }
 
         function checkExistingLogin() {
-    const saved = localStorage.getItem('iq_user');
-    if(saved) {
-        loginUser(JSON.parse(saved));
-        updateSidebarLinks(); // ADD THIS LINE so the review link appears on refresh
-    }
-}
+            const saved = localStorage.getItem('iq_user');
+            if(saved) {
+                loginUser(JSON.parse(saved));
+                updateSidebarLinks();
+            }
+        }
 
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
 
@@ -201,113 +218,95 @@
                 renderRamadanGrid();
                 document.getElementById('screen-content').classList.remove('hidden');
             } else if (id === 'regular-grid') {
-                // Future Learning Logic
                 document.getElementById('screen-content').classList.remove('hidden');
                 document.getElementById('dynamic-body').innerHTML = "<h2>Learning Pathways</h2><p>Coming Soon!</p>";
             } else {
                 document.getElementById('screen-' + id).classList.remove('hidden');
             }
-            
             if(document.getElementById('sidebar').classList.contains('open')) toggleMenu();
         }
 
-        // --- RAMADAN LOGIC ---
-        // --- RAMADAN LOGIC ---
-function renderRamadanGrid() {
-    const container = document.getElementById('dynamic-body');
-    container.innerHTML = '<h2>Ramadan Challenge 2026</h2><div class="level-grid" id="grid"></div>';
-    
-    // Ramadan 2026 starts approx Feb 18
-    const ramadanStart = new Date('2026-02-18');
-    const today = new Date();
-    const diff = Math.floor((today - ramadanStart) / 86400000) + 1;
+        function renderRamadanGrid() {
+            const container = document.getElementById('dynamic-body');
+            container.innerHTML = '<h2>Ramadan Challenge 2026</h2><div class="level-grid" id="grid"></div>';
+            const ramadanStart = new Date('2026-02-18');
+            const today = new Date();
+            const diff = Math.floor((today - ramadanStart) / 86400000) + 1;
 
-    for(let i=1; i<=31; i++) {
-        const btn = document.createElement('button');
-        btn.className = 'lvl';
-        btn.innerText = i === 31 ? "EID" : i;
-        
-        // Logical unlock: Only allow days that have passed
-        if(i > diff && i !== 31) { 
-            btn.classList.add('locked');
-            btn.onclick = () => alert("This challenge unlocks on Day " + i);
-        } else {
-            if(localStorage.getItem('lvl_'+i)) btn.classList.add('completed');
-            btn.onclick = () => i === 31 ? startEidQuiz() : startRamadanLevel(i);
-        }
-        document.getElementById('grid').appendChild(btn);
-    }
-}
-
-function startRamadanLevel(levelNum) {
-    // GUARD 1: Ensure data exists
-    if (typeof window.RAMADAN_QUESTIONS === 'undefined') {
-        return alert("Loading questions... please wait a moment and try again.");
-    }
-    const questions = window.RAMADAN_QUESTIONS[`level${levelNum}`];
-    if (!questions) return alert("Content for Day " + levelNum + " is coming soon!");
-
-    const body = document.getElementById('dynamic-body');
-    body.innerHTML = `<h3 id="quiz-title">Day ${levelNum}</h3><div id="quiz-area"></div>`;
-    loadQuestion(levelNum, 0);
-}
-
-function loadQuestion(level, index) {
-    const qData = window.RAMADAN_QUESTIONS[`level${level}`][index];
-    const area = document.getElementById('quiz-area');
-    
-    // GUARD 2: Prevent rendering if data is corrupted
-    if (!qData) return;
-
-    area.innerHTML = `
-        <p style="color:var(--gold); font-weight:600;">Question ${index + 1} of ${window.RAMADAN_QUESTIONS[`level${level}`].length}</p>
-        <h4 style="margin-bottom:20px;">${qData.q}</h4>
-        <div id="options-box"></div>
-    `;
-
-    qData.o.forEach(opt => {
-        const b = document.createElement('button');
-        b.className = 'main-btn';
-        b.style.width = "100%";
-        b.style.marginBottom = "10px";
-        b.style.textAlign = "left";
-        b.innerText = opt;
-        
-        // GUARD 3: Only check answer on explicit user click
-        b.onclick = (e) => {
-            e.preventDefault();
-            checkAnswer(level, index, opt);
-        };
-        document.getElementById('options-box').appendChild(b);
-    });
-}
-
-function checkAnswer(level, index, selected) {
-    const qData = window.RAMADAN_QUESTIONS[`level${level}`][index];
-    
-    // Use .trim() to remove invisible spaces that cause "Incorrect" errors
-    if (selected.trim() === qData.a.trim()) {
-        alert("Correct! ✨\n\n" + (qData.e || ""));
-        
-        const nextIndex = index + 1;
-        if (nextIndex < window.RAMADAN_QUESTIONS[`level${level}`].length) {
-            loadQuestion(level, nextIndex);
-        } else {
-            localStorage.setItem(`lvl_${level}`, 'true');
-            if (level === 31) {
-                alert("MABROOK! You have passed the Grand Finale!");
-                showCertificate();
-            } else {
-                alert("Day " + level + " Completed!");
-                renderRamadanGrid();
+            for(let i=1; i<=31; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'lvl';
+                btn.innerText = i === 31 ? "EID" : i;
+                if(i > diff && i !== 31) { 
+                    btn.classList.add('locked');
+                    btn.onclick = () => showPopup("Locked", "This challenge unlocks on Day " + i, "🔒");
+                } else {
+                    if(localStorage.getItem('lvl_'+i)) btn.classList.add('completed');
+                    btn.onclick = () => i === 31 ? startEidQuiz() : startRamadanLevel(i);
+                }
+                document.getElementById('grid').appendChild(btn);
             }
-            updateSidebarLinks();
         }
-    } else {
-        alert("Incorrect. Think carefully and try again! 🤔");
-    }
-}
 
+        function startRamadanLevel(levelNum) {
+            if (typeof window.RAMADAN_QUESTIONS === 'undefined') {
+                return showPopup("Loading", "Questions are still loading, please wait.", "⏳");
+            }
+            const questions = window.RAMADAN_QUESTIONS[`level${levelNum}`];
+            if (!questions) return showPopup("Coming Soon", "Content for this day is being prepared.", "📅");
+
+            const body = document.getElementById('dynamic-body');
+            body.innerHTML = `<h3 id="quiz-title">Day ${levelNum}</h3><div id="quiz-area"></div>`;
+            loadQuestion(levelNum, 0);
+        }
+
+        function loadQuestion(level, index) {
+            const qData = window.RAMADAN_QUESTIONS[`level${level}`][index];
+            const area = document.getElementById('quiz-area');
+            if (!qData) return;
+
+            area.innerHTML = `
+                <p style="color:var(--gold); font-weight:600;">Question ${index + 1} of ${window.RAMADAN_QUESTIONS[`level${level}`].length}</p>
+                <h4 style="margin-bottom:20px;">${qData.q}</h4>
+                <div id="options-box"></div>
+            `;
+
+            qData.o.forEach(opt => {
+                const b = document.createElement('button');
+                b.className = 'main-btn';
+                b.style.width = "100%";
+                b.style.marginBottom = "10px";
+                b.style.textAlign = "left";
+                b.innerText = opt;
+                b.onclick = (e) => {
+                    e.preventDefault();
+                    checkAnswer(level, index, opt);
+                };
+                document.getElementById('options-box').appendChild(b);
+            });
+        }
+
+        function checkAnswer(level, index, selected) {
+            const qData = window.RAMADAN_QUESTIONS[`level${level}`][index];
+            if (selected.trim() === qData.a.trim()) {
+                showPopup("Correct! ✨", qData.e || "Well done!", "🌙", () => {
+                    const nextIndex = index + 1;
+                    if (nextIndex < window.RAMADAN_QUESTIONS[`level${level}`].length) {
+                        loadQuestion(level, nextIndex);
+                    } else {
+                        localStorage.setItem(`lvl_${level}`, 'true');
+                        if (level === 31) {
+                            showPopup("MABROOK!", "You have passed the Grand Finale!", "🏆", () => showCertificate());
+                        } else {
+                            showPopup("Day Completed!", `Day ${level} is finished.`, "⭐", () => renderRamadanGrid());
+                        }
+                        updateSidebarLinks();
+                    }
+                });
+            } else {
+                showPopup("Try Again", "Think carefully and try again! 🤔", "❌");
+            }
+        }
 
         function showDuas() {
             showScreen('content');
@@ -325,76 +324,54 @@ function checkAnswer(level, index, selected) {
         }
 
         function startEidQuiz() {
-    // Check if Day 30 is done before letting them even try the Finale
-    if (!localStorage.getItem('lvl_30')) {
-        alert("🔒 The Grand Finale is locked! Please complete all 30 days of Ramadan first.");
-        showScreen('ramadan-grid');
-        return;
-    }
-    
-    alert("Welcome to the Grand Finale! Answer all 10 questions correctly to earn your certificate.");
-    startRamadanLevel(31); // Launches the 10-question set
-}
+            if (!localStorage.getItem('lvl_30')) {
+                showPopup("Grand Finale Locked", "Please complete all 30 days of Ramadan first.", "🔒", () => showScreen('ramadan-grid'));
+                return;
+            }
+            showPopup("Grand Finale", "Answer all 10 questions correctly to earn your certificate.", "🌟", () => startRamadanLevel(31));
+        }
 
-function showCertificate() {
-    // Strict Lock: Check if Level 31 (Grand Finale) is actually marked 'true'
-    const isCompleted = localStorage.getItem('lvl_31');
-    
-    if (!isCompleted) {
-        const body = document.getElementById('dynamic-body');
-        body.innerHTML = `
-            <div style="text-align:center; padding:40px;">
-                <div style="font-size:50px;">🔒</div>
-                <h3>Certificate Locked</h3>
-                <p>You must complete the 10-question Grand Finale on the EID level to unlock your official certificate.</p>
-                <button class="main-btn" onclick="showScreen('ramadan-grid')">Go to Quiz</button>
-            </div>
-        `;
-        showScreen('content');
-        return;
-    }
-
-    // If unlocked, generate the certificate
-    const user = JSON.parse(localStorage.getItem('iq_user')) || { name: "Valued Learner" };
-    const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-
-    const body = document.getElementById('dynamic-body');
-    body.innerHTML = `
-        <div id="certificate-print-area" style="border:15px double var(--gold); padding:30px; text-align:center; background:white; color:#064e3b; position:relative; font-family:'Cinzel', serif;">
-            <div style="border:2px solid var(--emerald); padding:20px;">
-                <h1 style="margin:0; font-size:2.5rem;">CERTIFICATE</h1>
-                <p style="letter-spacing:3px;">OF COMPLETION</p>
-                <hr style="width:50%; border:1px solid var(--gold);">
-                <p>This is to certify that</p>
-                <h2 style="font-size:2rem; text-decoration:underline; margin:10px 0;">${user.name}</h2>
-                <p>has successfully completed the</p>
-                <h3 style="color:var(--emerald)">30-DAY RAMADAN QUEST 2026</h3>
-                <p>Demonstrating excellent knowledge of Islamic history, <br>Quranic studies, and Ramadan traditions.</p>
-                <div style="margin-top:30px; display:flex; justify-content:space-between; align-items:flex-end;">
-                    <div style="text-align:left;">
-                        <small>Date: ${date}</small>
-                    </div>
-                    <div style="text-align:right;">
-                        <img src="https://img.icons8.com/fluency/64/verified-badge.png" width="40"><br>
-                        <small>Islamic Questz Certified</small>
+        function showCertificate() {
+            const isCompleted = localStorage.getItem('lvl_31');
+            if (!isCompleted) {
+                const body = document.getElementById('dynamic-body');
+                body.innerHTML = `<div style="text-align:center; padding:40px;"><div style="font-size:50px;">🔒</div><h3>Certificate Locked</h3><button class="main-btn" onclick="showScreen('ramadan-grid')">Go to Quiz</button></div>`;
+                showScreen('content');
+                return;
+            }
+            const user = JSON.parse(localStorage.getItem('iq_user')) || { name: "Valued Learner" };
+            const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+            const body = document.getElementById('dynamic-body');
+            body.innerHTML = `
+                <div id="certificate-print-area" style="border:15px double var(--gold); padding:30px; text-align:center; background:white; color:#064e3b; position:relative; font-family:'Cinzel', serif;">
+                    <div style="border:2px solid var(--emerald); padding:20px;">
+                        <h1 style="margin:0; font-size:2.5rem;">CERTIFICATE</h1>
+                        <p style="letter-spacing:3px;">OF COMPLETION</p>
+                        <hr style="width:50%; border:1px solid var(--gold);">
+                        <p>This is to certify that</p>
+                        <h2 style="font-size:2rem; text-decoration:underline; margin:10px 0;">${user.name}</h2>
+                        <p>has successfully completed the</p>
+                        <h3 style="color:var(--emerald)">30-DAY RAMADAN QUEST 2026</h3>
+                        <p>Demonstrating excellent knowledge of Islamic history, <br>Quranic studies, and Ramadan traditions.</p>
+                        <div style="margin-top:30px; display:flex; justify-content:space-between; align-items:flex-end;">
+                            <div style="text-align:left;"><small>Date: ${date}</small></div>
+                            <div style="text-align:right;"><img src="https://img.icons8.com/fluency/64/verified-badge.png" width="40"><br><small>Islamic Questz Certified</small></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <button class="main-btn" style="width:100%; margin-top:20px; background:var(--emerald); color:white;" onclick="printCertificate()">📥 Download / Save PDF</button>
-    `;
-    showScreen('content');
-}
+                <button class="main-btn" style="width:100%; margin-top:20px; background:var(--emerald); color:white;" onclick="printCertificate()">📥 Download / Save PDF</button>
+            `;
+            showScreen('content');
+        }
 
-// Special print function to focus only on the certificate
-function printCertificate() {
-    const printContent = document.getElementById('certificate-print-area').innerHTML;
-    const originalContent = document.body.innerHTML;
-    document.body.innerHTML = printContent;
-    window.print();
-    document.body.innerHTML = originalContent;
-    window.location.reload(); // Reload to restore app state
-}
+        function printCertificate() {
+            const printContent = document.getElementById('certificate-print-area').innerHTML;
+            const originalContent = document.body.innerHTML;
+            document.body.innerHTML = printContent;
+            window.print();
+            document.body.innerHTML = originalContent;
+            window.location.reload();
+        }
 
         function uploadImage(input) {
             if (input.files && input.files[0]) {
@@ -413,48 +390,36 @@ function printCertificate() {
             document.body.setAttribute('data-theme', t);
         }
 
-        function shareApp() {
-            if(navigator.share) navigator.share({title:'Islamic Questz', url: location.href});
-        }
+        function shareApp() { if(navigator.share) navigator.share({title:'Islamic Questz', url: location.href}); }
+
         function showReview() {
-    showScreen('content');
-    const body = document.getElementById('dynamic-body');
-    if (typeof RAMADAN_QUESTIONS === 'undefined') return alert("Data not loaded.");
+            showScreen('content');
+            const body = document.getElementById('dynamic-body');
+            if (typeof window.RAMADAN_QUESTIONS === 'undefined') return showPopup("Error", "Data not loaded.", "❌");
 
-    let html = '<h2>Knowledge Review</h2><p>Correct answers from your journey:</p>';
-    
-    for (let i = 1; i <= 30; i++) {
-        const level = RAMADAN_QUESTIONS[`level${i}`];
-        if(!level) continue; // Skip if level doesn't exist
+            let html = '<h2>Knowledge Review</h2><p>Correct answers from your journey:</p>';
+            for (let i = 1; i <= 30; i++) {
+                const level = window.RAMADAN_QUESTIONS[`level${i}`];
+                if(!level) continue;
+                html += `<details style="margin-bottom:10px; padding:10px; background:var(--soft-gold); border-radius:8px; color: #000;">
+                            <summary style="font-weight:600; cursor:pointer;">Day ${i} Questions</summary>`;
+                level.forEach(q => {
+                    html += `<p style="border-left:3px solid var(--emerald); padding-left:10px; margin-top:10px;">
+                                <strong>Q: ${q.q}</strong><br>
+                                <span style="color:green;">Ans: ${q.a}</span><br>
+                                <small style="color: #666;">${q.e || ""}</small>
+                             </p>`;
+                });
+                html += `</details>`;
+            }
+            body.innerHTML = html;
+        }
 
-        html += `<details style="margin-bottom:10px; padding:10px; background:var(--soft-gold); border-radius:8px; color: #000;">
-                    <summary style="font-weight:600; cursor:pointer;">Day ${i} Questions</summary>`;
-        level.forEach(q => {
-            html += `<p style="border-left:3px solid var(--emerald); padding-left:10px; margin-top:10px;">
-                        <strong>Q: ${q.q}</strong><br>
-                        <span style="color:green;">Ans: ${q.a}</span><br>
-                        <small style="color: #666;">${q.e || ""}</small>
-                     </p>`;
-        });
-        html += `</details>`;
-    }
-    body.innerHTML = html;
-}
-
-// Update your existing renderRamadanGrid to show the review link if finished
-function updateSidebarLinks() {
-    if (localStorage.getItem('lvl_31')) {
-        document.getElementById('review-link').classList.remove('hidden');
-    }
-}
+        function updateSidebarLinks() {
+            if (localStorage.getItem('lvl_31')) {
+                document.getElementById('review-link').classList.remove('hidden');
+            }
+        }
     </script>
-    <div id="app-modal" class="hidden" style="position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px;">
-    <div style="background: var(--card-bg); width: 100%; max-width: 400px; border-radius: 20px; padding: 25px; text-align: center; border: 2px solid var(--gold); box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-        <div id="modal-icon" style="font-size: 3rem; margin-bottom: 10px;"></div>
-        <h3 id="modal-title" style="font-family: 'Cinzel'; margin-top: 0; color: var(--emerald);"></h3>
-        <p id="modal-message" style="margin-bottom: 25px; line-height: 1.5; color: var(--text-main);"></p>
-        <button id="modal-btn" class="main-btn" style="width: 100%; background: var(--emerald); color: white; border: none;">Continue</button>
-    </div>
-</div>
 </body>
 </html>
