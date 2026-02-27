@@ -448,5 +448,13 @@ function updateSidebarLinks() {
     }
 }
     </script>
+    <div id="app-modal" class="hidden" style="position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px;">
+    <div style="background: var(--card-bg); width: 100%; max-width: 400px; border-radius: 20px; padding: 25px; text-align: center; border: 2px solid var(--gold); box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+        <div id="modal-icon" style="font-size: 3rem; margin-bottom: 10px;"></div>
+        <h3 id="modal-title" style="font-family: 'Cinzel'; margin-top: 0; color: var(--emerald);"></h3>
+        <p id="modal-message" style="margin-bottom: 25px; line-height: 1.5; color: var(--text-main);"></p>
+        <button id="modal-btn" class="main-btn" style="width: 100%; background: var(--emerald); color: white; border: none;">Continue</button>
+    </div>
+</div>
 </body>
 </html>
