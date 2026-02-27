@@ -137,16 +137,28 @@
         ];
 
         // --- CORE ENGINE ---
-        window.addEventListener('load', () => {
+      window.addEventListener('load', () => {
+    console.log("App loaded. Starting timer...");
+    
+    // Safety Force-Hide: This hides the screen even if other code crashes
+    setTimeout(() => {
+        const overlay = document.getElementById('bismillah-overlay');
+        const main = document.getElementById('main-container');
+        
+        if (overlay) {
+            overlay.style.opacity = '0';
+            // Important: We set pointer-events to none immediately
+            overlay.style.pointerEvents = 'none'; 
+            
             setTimeout(() => {
-                document.getElementById('bismillah-overlay').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('bismillah-overlay').classList.add('hidden');
-                    document.getElementById('main-container').classList.remove('hidden');
-                    checkExistingLogin();
-                }, 800);
-            }, 2500);
-        });
+                overlay.classList.add('hidden');
+                if (main) main.classList.remove('hidden');
+                console.log("Overlay hidden, showing main container.");
+                checkExistingLogin();
+            }, 800);
+        }
+    }, 2500);
+});
 
         function handleAuth(type) {
             let user = { name: "", avatar: "" };
