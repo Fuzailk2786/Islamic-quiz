@@ -212,90 +212,102 @@
         }
 
         // --- RAMADAN LOGIC ---
-        function renderRamadanGrid() {
-            const container = document.getElementById('dynamic-body');
-            container.innerHTML = '<h2>Ramadan Challenge 2026</h2><div class="level-grid" id="grid"></div>';
-            
-            const ramadanStart = new Date('2026-02-18');
-            const diff = Math.floor((new Date() - ramadanStart) / 86400000) + 1;
+        // --- RAMADAN LOGIC ---
+function renderRamadanGrid() {
+    const container = document.getElementById('dynamic-body');
+    container.innerHTML = '<h2>Ramadan Challenge 2026</h2><div class="level-grid" id="grid"></div>';
+    
+    // Ramadan 2026 starts approx Feb 18
+    const ramadanStart = new Date('2026-02-18');
+    const today = new Date();
+    const diff = Math.floor((today - ramadanStart) / 86400000) + 1;
 
-            for(let i=1; i<=31; i++) {
-                const btn = document.createElement('button');
-                btn.className = 'lvl';
-                btn.innerText = i === 31 ? "EID" : i;
-                
-                if(i > diff) {
-                    btn.classList.add('locked');
-                    btn.onclick = () => alert("Unlocks on Day " + i);
-                } else {
-                    const done = localStorage.getItem('lvl_'+i);
-                    if(done) btn.classList.add('completed');
-                    btn.onclick = () => i === 31 ? startEidQuiz() : startRamadanLevel(i);
-                }
-                document.getElementById('grid').appendChild(btn);
-            }
-        }
-
-        function startRamadanLevel(levelNum) {
-            if (typeof RAMADAN_QUESTIONS === 'undefined') return alert("Error: Questions not loaded.");
-            const questions = RAMADAN_QUESTIONS[`level${levelNum}`];
-            if (!questions) return alert("Coming soon!");
-
-            const body = document.getElementById('dynamic-body');
-            body.innerHTML = `<h3 id="quiz-title">Day ${levelNum}</h3><div id="quiz-area"></div>`;
-            loadQuestion(levelNum, 0);
-        }
-
-        function loadQuestion(level, index) {
-            const qData = RAMADAN_QUESTIONS[`level${level}`][index];
-            const area = document.getElementById('quiz-area');
-            area.innerHTML = `
-                <p>Question ${index + 1} of ${RAMADAN_QUESTIONS[`level${level}`].length}</p>
-                <h4>${qData.q}</h4>
-                <div id="options-box"></div>
-            `;
-
-            qData.o.forEach(opt => {
-                const b = document.createElement('button');
-                b.className = 'main-btn';
-                b.style.width = "100%";
-                b.style.marginBottom = "10px";
-                b.innerText = opt;
-                b.onclick = () => checkAnswer(level, index, opt);
-                document.getElementById('options-box').appendChild(b);
-            });
-        }
-
-       function checkAnswer(level, index, selected) {
-        if (typeof RAMADAN_QUESTIONS === 'undefined' || !RAMADAN_QUESTIONS[`level${level}`]) {
-            console.error("Questions not loaded.");
-            return;
-        }
-
-        const qData = RAMADAN_QUESTIONS[`level${level}`][index];
-        if (!qData) return; // Silent exit if no data
-
-        const totalQuestions = RAMADAN_QUESTIONS[`level${level}`].length;
-
-        if (selected === qData.a) {
-            alert("Correct! " + (qData.e || ""));
-            if (index + 1 < totalQuestions) {
-                loadQuestion(level, index + 1);
-            } else {
-                localStorage.setItem(`lvl_${level}`, 'true');
-                if (level === 31) {
-                    alert("MABROOK! You have passed the Grand Finale!");
-                    showCertificate();
-                } else {
-                    alert("Day " + level + " Completed!");
-                    renderRamadanGrid();
-                }
-                if (typeof updateSidebarLinks === 'function') updateSidebarLinks();
-            }
+    for(let i=1; i<=31; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'lvl';
+        btn.innerText = i === 31 ? "EID" : i;
+        
+        // Logical unlock: Only allow days that have passed
+        if(i > diff && i !== 31) { 
+            btn.classList.add('locked');
+            btn.onclick = () => alert("This challenge unlocks on Day " + i);
         } else {
-            alert("Incorrect. Think carefully and try again!");
+            if(localStorage.getItem('lvl_'+i)) btn.classList.add('completed');
+            btn.onclick = () => i === 31 ? startEidQuiz() : startRamadanLevel(i);
         }
+        document.getElementById('grid').appendChild(btn);
     }
+}
+
+function startRamadanLevel(levelNum) {
+    // GUARD 1: Ensure data exists
+    if (typeof window.RAMADAN_QUESTIONS === 'undefined') {
+        return alert("Loading questions... please wait a moment and try again.");
+    }
+    const questions = window.RAMADAN_QUESTIONS[`level${levelNum}`];
+    if (!questions) return alert("Content for Day " + levelNum + " is coming soon!");
+
+    const body = document.getElementById('dynamic-body');
+    body.innerHTML = `<h3 id="quiz-title">Day ${levelNum}</h3><div id="quiz-area"></div>`;
+    loadQuestion(levelNum, 0);
+}
+
+function loadQuestion(level, index) {
+    const qData = window.RAMADAN_QUESTIONS[`level${level}`][index];
+    const area = document.getElementById('quiz-area');
+    
+    // GUARD 2: Prevent rendering if data is corrupted
+    if (!qData) return;
+
+    area.innerHTML = `
+        <p style="color:var(--gold); font-weight:600;">Question ${index + 1} of ${window.RAMADAN_QUESTIONS[`level${level}`].length}</p>
+        <h4 style="margin-bottom:20px;">${qData.q}</h4>
+        <div id="options-box"></div>
+    `;
+
+    qData.o.forEach(opt => {
+        const b = document.createElement('button');
+        b.className = 'main-btn';
+        b.style.width = "100%";
+        b.style.marginBottom = "10px";
+        b.style.textAlign = "left";
+        b.innerText = opt;
+        
+        // GUARD 3: Only check answer on explicit user click
+        b.onclick = (e) => {
+            e.preventDefault();
+            checkAnswer(level, index, opt);
+        };
+        document.getElementById('options-box').appendChild(b);
+    });
+}
+
+function checkAnswer(level, index, selected) {
+    const qData = window.RAMADAN_QUESTIONS[`level${level}`][index];
+    
+    // Check if correct
+    if (selected === qData.a) {
+        alert("Correct! ✨\n\n" + (qData.e || ""));
+        
+        const nextIndex = index + 1;
+        if (nextIndex < window.RAMADAN_QUESTIONS[`level${level}`].length) {
+            loadQuestion(level, nextIndex);
+        } else {
+            localStorage.setItem(`lvl_${level}`, 'true');
+            if (level === 31) {
+                alert("MABROOK! You have passed the Grand Finale!");
+                showCertificate();
+            } else {
+                alert("Day " + level + " Completed!");
+                renderRamadanGrid();
+            }
+            updateSidebarLinks();
+        }
+    } else {
+        // Only shows if they actually picked the wrong option
+        alert("Incorrect. Think carefully and try again! 🤔");
+    }
+}
 
 
         function showDuas() {
