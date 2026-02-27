@@ -70,6 +70,7 @@
     
     <nav id="sidebar">
         <div class="profile-section">
+            <div id="review-link" class="nav-item hidden" onclick="showReview()">📚 Review All Answers</div>
             <div class="avatar" onclick="document.getElementById('upload-pic').click()">
                 <span id="avatar-init">?</span>
                 <img id="profile-img" src="" alt="Profile">
@@ -533,30 +534,76 @@
         }
 
         function startEidQuiz() {
-            // Check if all 30 days are done
-            let completedAll = true;
-            for(let i=1; i<=30; i++) { if(!localStorage.getItem('lvl_'+i)) completedAll = false; }
-            
-            if(!completedAll) {
-                alert("Please complete all 30 days of Ramadan challenges first!");
-                return;
-            }
-            showCertificate();
-        }
+    // Check if Day 30 is done before letting them even try the Finale
+    if (!localStorage.getItem('lvl_30')) {
+        alert("🔒 The Grand Finale is locked! Please complete all 30 days of Ramadan first.");
+        showScreen('ramadan-grid');
+        return;
+    }
+    
+    alert("Welcome to the Grand Finale! Answer all 10 questions correctly to earn your certificate.");
+    startRamadanLevel(31); // Launches the 10-question set
+}
 
-        function showCertificate() {
-            const user = JSON.parse(localStorage.getItem('iq_user'));
-            document.getElementById('dynamic-body').innerHTML = `
-                <div style="border:10px double var(--gold); padding:20px; text-align:center; background:white; color:#064e3b;">
-                    <h1 style="font-family:Cinzel">CERTIFICATE</h1>
-                    <p>Presented to</p>
-                    <h2 style="text-transform:uppercase">${user.name}</h2>
-                    <p>For successfully completing the 30-Day Ramadan Quest 2026</p>
-                    <p><small>Date: Eid-ul-Fitr 2026</small></p>
+function showCertificate() {
+    // Strict Lock: Check if Level 31 (Grand Finale) is actually marked 'true'
+    const isCompleted = localStorage.getItem('lvl_31');
+    
+    if (!isCompleted) {
+        const body = document.getElementById('dynamic-body');
+        body.innerHTML = `
+            <div style="text-align:center; padding:40px;">
+                <div style="font-size:50px;">🔒</div>
+                <h3>Certificate Locked</h3>
+                <p>You must complete the 10-question Grand Finale on the EID level to unlock your official certificate.</p>
+                <button class="main-btn" onclick="showScreen('ramadan-grid')">Go to Quiz</button>
+            </div>
+        `;
+        showScreen('content');
+        return;
+    }
+
+    // If unlocked, generate the certificate
+    const user = JSON.parse(localStorage.getItem('iq_user')) || { name: "Valued Learner" };
+    const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    const body = document.getElementById('dynamic-body');
+    body.innerHTML = `
+        <div id="certificate-print-area" style="border:15px double var(--gold); padding:30px; text-align:center; background:white; color:#064e3b; position:relative; font-family:'Cinzel', serif;">
+            <div style="border:2px solid var(--emerald); padding:20px;">
+                <h1 style="margin:0; font-size:2.5rem;">CERTIFICATE</h1>
+                <p style="letter-spacing:3px;">OF COMPLETION</p>
+                <hr style="width:50%; border:1px solid var(--gold);">
+                <p>This is to certify that</p>
+                <h2 style="font-size:2rem; text-decoration:underline; margin:10px 0;">${user.name}</h2>
+                <p>has successfully completed the</p>
+                <h3 style="color:var(--emerald)">30-DAY RAMADAN QUEST 2026</h3>
+                <p>Demonstrating excellent knowledge of Islamic history, <br>Quranic studies, and Ramadan traditions.</p>
+                <div style="margin-top:30px; display:flex; justify-content:space-between; align-items:flex-end;">
+                    <div style="text-align:left;">
+                        <small>Date: ${date}</small>
+                    </div>
+                    <div style="text-align:right;">
+                        <img src="https://img.icons8.com/fluency/64/verified-badge.png" width="40"><br>
+                        <small>Islamic Questz Certified</small>
+                    </div>
                 </div>
-                <button class="main-btn" style="width:100%; margin-top:10px; background:var(--emerald); color:white;" onclick="window.print()">Download Certificate</button>
-            `;
-        }
+            </div>
+        </div>
+        <button class="main-btn" style="width:100%; margin-top:20px; background:var(--emerald); color:white;" onclick="printCertificate()">📥 Download / Save PDF</button>
+    `;
+    showScreen('content');
+}
+
+// Special print function to focus only on the certificate
+function printCertificate() {
+    const printContent = document.getElementById('certificate-print-area').innerHTML;
+    const originalContent = document.body.innerHTML;
+    document.body.innerHTML = printContent;
+    window.print();
+    document.body.innerHTML = originalContent;
+    window.location.reload(); // Reload to restore app state
+}
 
         function uploadImage(input) {
             if (input.files && input.files[0]) {
@@ -578,6 +625,33 @@
         function shareApp() {
             if(navigator.share) navigator.share({title:'Islamic Questz', url: location.href});
         }
+        function showReview() {
+    showScreen('content');
+    const body = document.getElementById('dynamic-body');
+    let html = '<h2>Knowledge Review</h2><p>Here are all the correct answers from your 30-day journey:</p>';
+    
+    for (let i = 1; i <= 30; i++) {
+        const level = RAMADAN_QUESTIONS[`level${i}`];
+        html += `<details style="margin-bottom:10px; padding:10px; background:var(--soft-gold); border-radius:8px;">
+                    <summary style="font-weight:600; cursor:pointer;">Day ${i} Questions</summary>`;
+        level.forEach(q => {
+            html += `<p style="border-left:3px solid var(--emerald); padding-left:10px; margin-top:10px;">
+                        <strong>Q: ${q.q}</strong><br>
+                        <span style="color:green;">Ans: ${q.a}</span><br>
+                        <small>${q.e}</small>
+                     </p>`;
+        });
+        html += `</details>`;
+    }
+    body.innerHTML = html;
+}
+
+// Update your existing renderRamadanGrid to show the review link if finished
+function updateSidebarLinks() {
+    if (localStorage.getItem('lvl_31')) {
+        document.getElementById('review-link').classList.remove('hidden');
+    }
+}
     </script>
 </body>
 </html>
