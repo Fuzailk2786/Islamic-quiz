@@ -6,6 +6,25 @@
     <title>Islamic Questz - 2026</title>
     <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyD6v6BFkqUmgfJWGIm1eMEEOQX7wnWkq8k",
+    authDomain: "islamicquestz.firebaseapp.com",
+    databaseURL: "https://islamicquestz-default-rtdb.firebaseio.com",
+    projectId: "islamicquestz",
+    storageBucket: "islamicquestz.firebasestorage.app",
+    appId: "1:740000996250:web:444a3b4ba9c92dad64b823",
+    messagingSenderId: "740000996250",
+    measurementId: "G-YSH95XR38D"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+</script>
     <style>
         :root {
             --bg-color: #f8fafc; --card-bg: #ffffff; --text-main: #064e3b;
