@@ -151,6 +151,64 @@
     <script src="questions.js"></script>
 
     <script>
+        function checkMasterAccess() {
+    const params = new URLSearchParams(window.location.search);
+    
+    // If you visit with ?master=true, it saves a key on your phone forever
+    if (params.get('master') === 'secret-key-123') {
+        localStorage.setItem('is_admin', 'true');
+        alert("Master Access Verified!");
+    }
+}
+
+// Call this as soon as the app loads
+            checkMasterAccess();
+        function showAdminPanel() {
+    if (localStorage.getItem('is_admin') !== 'true') return;
+
+    const container = document.getElementById('dynamic-body');
+    container.innerHTML = `
+        <h2>📜 Post Daily Hadith</h2>
+        <textarea id="hadith-input" placeholder="Type Hadith related to Instagram post..." 
+                  style="width:100%; height:150px; padding:10px; border-radius:8px;"></textarea>
+        <button onclick="postHadith()" class="main-btn" style="margin-top:15px; width:100%;">
+            Broadcast to All Users
+        </button>
+    `;
+}
+        // 1. You use this from your phone to send the Hadith to Firebase
+function postHadith() {
+    const text = document.getElementById('hadith-input').value;
+    if (!text) return alert("Please type something!");
+
+    db.ref('dailyHadith').set({
+        content: text,
+        timestamp: Date.now()
+    }).then(() => {
+        alert("Updated successfully! Users will see it now.");
+    });
+}
+
+// 2. This is what EVERY user calls when they click the Hadith button
+function showHadith() {
+    showScreen('content');
+    const body = document.getElementById('dynamic-body');
+    body.innerHTML = "<h2>Hadith of the Day</h2><p>Loading blessed words...</p>";
+
+    // Real-time listener: as soon as you hit 'post', the user's screen updates!
+    db.ref('dailyHadith').on('value', (snapshot) => {
+        const data = snapshot.val();
+        body.innerHTML = `
+            <h2>Hadith of the Day</h2>
+            <div class="dua-card" style="font-size:1.1rem; line-height:1.6; border-left:5px solid var(--gold);">
+                "${data.content}"
+            </div>
+            <p style="text-align:right; font-size:0.8rem; color:gray; margin-top:10px;">
+                Updated: ${new Date(data.timestamp).toLocaleDateString()}
+            </p>
+        `;
+    });
+}
         const DUA_DB = [
             { t: "Before Eating", a: "بِسْمِ اللَّهِ", tr: "In the name of Allah" },
             { t: "After Eating", a: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا", tr: "Praise be to Allah who fed us" },
