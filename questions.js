@@ -327,7 +327,7 @@ window.RAMADAN_QUESTIONS = {
             qh: "Huzoor (SAW) ke kis chacha ko 'Asadullah' (Allah ka Sher) kaha jata hai?",
             o: ["Abu Talib", "Abbas", "Hamza", "Abu Lahab"], 
             oh: ["Abu Talib", "Abbas", "Hamza", "Abu Lahab"],
-            a: "Hamza", 
+            a: "Hamza",
             e: "Hamza (RA) was a brave warrior and martyr.",
             eh: "Hazrat Hamza (R.A) bahut bahadur sipahi aur shaheed-e-Uhud hain."
         },
@@ -635,9 +635,9 @@ level9: [
         { 
             q: "In which city is the Al-Aqsa Mosque located?", 
             qh: "Masjid-e-Aqsa kis shehar mein maujood hai?",
-            o: ["Mecca", "Madinah", "Jerusalem", "Cairo"], 
-            oh: ["Makkah", "Madinah", "Jerusalem (Bait-ul-Muqaddas)", "Cairo"],
-            a: "Jerusalem", 
+            o: ["Mecca", "Madinah", "palastine", "Cairo"], 
+            oh: ["Makkah", "Madinah", "palestine (Bait-ul-Muqaddas)", "Cairo"],
+            a: "palastine", 
             e: "It was the first Qibla for Muslims.",
             eh: "Masjid-e-Aqsa Musalmanon ka pehla Qibla tha."
         },
