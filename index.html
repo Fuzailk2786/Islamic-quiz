@@ -23,8 +23,10 @@
 
   // Initialize Firebase
  /* --- MASTER ACCESS & HADITH LOGIC --- */
+/* --- MASTER ACCESS & HADITH LOGIC --- */
 function checkMasterAccess() {
     const params = new URLSearchParams(window.location.search);
+    // Use admin786 consistently as your key
     if (params.get('master') === 'admin786') {
         localStorage.setItem('is_admin', 'true');
         showPopup("Verified", "Master Access Activated!", "🔑");
@@ -38,7 +40,7 @@ function renderAdminPanel() {
         <div style="padding:20px; background:var(--soft-gold); border-radius:15px; border:2px solid var(--gold);">
             <h2 style="color:var(--emerald);">📜 Post Daily Hadith</h2>
             <textarea id="hadith-text" placeholder="Write Hadith here..." 
-                style="width:100%; height:150px; border-radius:10px; border:1px solid #ccc; padding:10px; margin-bottom:10px; color:#000;"></textarea>
+                style="width:100%; height:150px; border-radius:10px; border:1px solid #ccc; padding:10px; margin-bottom:10px; color:#000; font-family:inherit;"></textarea>
             <button onclick="saveHadithToCloud()" class="main-btn" style="width:100%; background:var(--emerald); color:white;">Broadcast to All Users</button>
         </div>
     `;
@@ -50,7 +52,8 @@ function saveHadithToCloud() {
     db.ref('dailyHadith').set({
         content: text,
         timestamp: Date.now()
-    }).then(() => showPopup("Success", "Updated for all users!", "✨"));
+    }).then(() => showPopup("Success", "Updated for all users!", "✨"))
+      .catch(err => alert("Firebase Error: " + err.message));
 }
 
 function showHadith() {
@@ -60,7 +63,8 @@ function showHadith() {
 
     db.ref('dailyHadith').on('value', (snapshot) => {
         const data = snapshot.val();
-        const adminBtn = localStorage.getItem('is_admin') === 'true' ? `<button onclick="renderAdminPanel()" class="main-btn" style="margin-top:20px;">Edit Hadith</button>` : '';
+        const adminBtn = localStorage.getItem('is_admin') === 'true' ? 
+            `<button onclick="renderAdminPanel()" class="main-btn" style="margin-top:20px;">Edit Hadith</button>` : '';
         
         if(!data) {
             body.innerHTML = `<h2>Hadith of the Day</h2><p>No Hadith posted yet.</p> ${adminBtn}`;
@@ -76,7 +80,11 @@ function showHadith() {
 
 /* --- LEADERBOARD LOGIC --- */
 function submitScore(username, score) {
-    db.ref('leaderboard/' + username).set({ name: username, score: score, timestamp: Date.now() });
+    db.ref('leaderboard/' + username).set({ 
+        name: username, 
+        score: score, 
+        timestamp: Date.now() 
+    });
 }
 
 function loadLeaderboard() {
@@ -97,6 +105,7 @@ function loadLeaderboard() {
     });
 }
 
+// Ensure Master check runs on load
 checkMasterAccess();
 </script>
     <style>
@@ -193,10 +202,8 @@ checkMasterAccess();
     </div>
     <div class="nav-item" onclick="showScreen('home'); toggleMenu();">🏠 Home</div>
     <div class="nav-item" onclick="showScreen('ramadan-grid'); toggleMenu();">🌙 Ramadan Quiz</div>
-    
     <div class="nav-item" onclick="showHadith(); toggleMenu();">📜 Daily Hadith</div>
     <div class="nav-item" onclick="loadLeaderboard(); toggleMenu();">🏆 Leaderboard</div>
-    
     <div class="nav-item" onclick="showDuas(); toggleMenu();">🤲 Daily Duas</div>
     <div class="nav-item" onclick="toggleTheme(); toggleMenu();">🌓 Theme Mode</div>
     <div class="nav-item" onclick="toggleMenu()" style="color:gray;">Close</div>
