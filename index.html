@@ -236,6 +236,21 @@ function showHadith() {
                 if (callback) callback();
             };
         }
+        // Run this function immediately on page load
+function initializeMasterAccess() {
+    const params = new URLSearchParams(window.location.search);
+    
+    // Check if the URL has your secret key
+    if (params.get('master') === 'secret-key-123') {
+        localStorage.setItem('is_admin', 'true');
+        showPopup("Verified", "Master Access Activated!", "🔑");
+    }
+
+    // If verified, show the Admin Button in the UI
+    if (localStorage.getItem('is_admin') === 'true') {
+        document.getElementById('admin-btn-container').style.display = 'block';
+    }
+}
         function updateCountdown(targetDate) {
     const timerDisplay = document.getElementById('countdown-clock');
     
