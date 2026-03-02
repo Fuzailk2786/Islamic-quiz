@@ -24,6 +24,113 @@
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
+    /* --- MASTER ACCESS & HADITH LOGIC --- */
+
+// 1. Identify if you are the Admin
+function checkMasterAccess() {
+    const params = new URLSearchParams(window.location.search);
+    // Visit your site with ?master=admin786 to unlock
+    if (params.get('master') === 'admin786') {
+        localStorage.setItem('is_admin', 'true');
+        showPopup("Verified", "Master Access Activated!", "🔑");
+    }
+}
+
+// 2. The Admin Panel to post Hadith
+function renderAdminPanel() {
+    if (localStorage.getItem('is_admin') !== 'true') return;
+    const body = document.getElementById('dynamic-body');
+    body.innerHTML = `
+        <div style="padding:20px; background:var(--soft-gold); border-radius:15px; border:2px solid var(--gold);">
+            <h2 style="color:var(--emerald);">📜 Post Daily Hadith</h2>
+            <textarea id="hadith-text" placeholder="Write Hadith here..." 
+                style="width:100%; height:150px; border-radius:10px; border:1px solid #ccc; padding:10px; margin-bottom:10px;"></textarea>
+            <button onclick="saveHadithToCloud()" class="main-btn" style="width:100%;">Broadcast to All Users</button>
+        </div>
+    `;
+}
+
+function saveHadithToCloud() {
+    const text = document.getElementById('hadith-text').value;
+    if (!text) return alert("Enter text!");
+    db.ref('dailyHadith').set({
+        content: text,
+        timestamp: Date.now()
+    }).then(() => showPopup("Success", "Updated for all users!", "✨"));
+}
+
+// 3. What users see when they click "Hadith"
+function showHadith() {
+    showScreen('content');
+    const body = document.getElementById('dynamic-body');
+    body.innerHTML = "<h2>Hadith of the Day</h2><p>Loading...</p>";
+
+    db.ref('dailyHadith').on('value', (snapshot) => {
+        const data = snapshot.val();
+        if(!data) {
+            body.innerHTML = "<h2>Hadith of the Day</h2><p>No Hadith posted for today yet.</p>";
+            if(localStorage.getItem('is_admin') === 'true') {
+                body.innerHTML += `<button onclick="renderAdminPanel()" class="main-btn">Add Hadith</button>`;
+            }
+            return;
+        }
+        body.innerHTML = `
+            <h2>Hadith of the Day</h2>
+            <div class="dua-card" style="font-size:1.1rem; line-height:1.6; border-left:5px solid var(--gold);">
+                "${data.content}"
+            </div>
+            ${localStorage.getItem('is_admin') === 'true' ? '<button onclick="renderAdminPanel()" class="main-btn" style="margin-top:20px;">Edit Hadith</button>' : ''}
+        `;
+    });
+}
+
+/* --- LEADERBOARD LOGIC --- */
+
+function submitScore(username, score) {
+    db.ref('leaderboard/' + username).set({
+        name: username,
+        score: score,
+        timestamp: Date.now()
+    }).then(() => {
+        showPopup("Score Saved", "You are now on the leaderboard!", "🏆");
+        loadLeaderboard();
+    });
+}
+
+function loadLeaderboard() {
+    showScreen('content');
+    const body = document.getElementById('dynamic-body');
+    body.innerHTML = "<h2>🏆 Global Leaderboard</h2><p>Loading Top 10...</p>";
+
+    db.ref('leaderboard').orderByChild('score').limitToLast(10).once('value', (snapshot) => {
+        let scores = [];
+        snapshot.forEach(child => scores.push(child.val()));
+        scores.reverse();
+
+        let html = '<table style="width:100%; margin-top:20px; border-collapse:collapse;">';
+        html += '<tr style="border-bottom:2px solid var(--gold);"><th>Rank</th><th>Name</th><th>Points</th></tr>';
+        scores.forEach((p, i) => {
+            html += `<tr style="border-bottom:1px solid #eee; height:45px;">
+                        <td>${i + 1}</td><td>${p.name}</td><td style="color:var(--gold); font-weight:bold;">${p.score}</td>
+                     </tr>`;
+        });
+        html += '</table>';
+        body.innerHTML = html;
+    });
+}
+
+// Ensure Master check runs on load
+checkMasterAccess();
+    <div id="sidebar" class="sidebar">
+    <div style="padding:20px;">
+        <h3 style="color:var(--gold); font-family:'Cinzel';">Menu</h3>
+        <p onclick="renderRamadanGrid()" style="cursor:pointer; margin:15px 0;">🏠 Home</p>
+        <p onclick="showHadith()" style="cursor:pointer; margin:15px 0;">📜 Daily Hadith</p>
+        <p onclick="loadLeaderboard()" style="cursor:pointer; margin:15px 0;">🏆 Leaderboard</p>
+        <p onclick="showReview()" id="review-link" class="hidden" style="cursor:pointer; margin:15px 0;">⭐ Knowledge Review</p>
+        <p onclick="toggleSidebar()" style="cursor:pointer; margin:15px 0; color:gray;">Close</p>
+    </div>
+</div>
 </script>
     <style>
         :root {
