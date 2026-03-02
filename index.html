@@ -176,6 +176,37 @@
         </button>
     `;
 }
+        function renderAdminPanel() {
+    const body = document.getElementById('dynamic-body');
+    body.innerHTML = `
+        <div style="padding:20px; background:var(--soft-gold); border-radius:15px; border:2px solid var(--gold);">
+            <h2 style="color:var(--emerald);">📜 Post Daily Hadith</h2>
+            <p style="font-size:0.9rem;">Type the Hadith for your latest Instagram post below:</p>
+            
+            <textarea id="hadith-text" placeholder="Write Hadith here..." 
+                style="width:100%; height:150px; border-radius:10px; border:1px solid #ccc; padding:10px; font-family:inherit;"></textarea>
+            
+            <button onclick="saveHadithToCloud()" class="main-btn" style="width:100%; margin-top:15px;">
+                Update App for All Users
+            </button>
+        </div>
+    `;
+}
+
+function saveHadithToCloud() {
+    const text = document.getElementById('hadith-text').value;
+    if (!text) return alert("Please enter text first!");
+
+    // Send to Firebase
+    db.ref('dailyHadith').set({
+        content: text,
+        timestamp: Date.now()
+    }).then(() => {
+        showPopup("Success", "Hadith updated live on all devices!", "✨");
+    }).catch((error) => {
+        alert("Error: " + error.message);
+    });
+}
         // 1. You use this from your phone to send the Hadith to Firebase
 function postHadith() {
     const text = document.getElementById('hadith-input').value;
