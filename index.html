@@ -20,10 +20,28 @@
     messagingSenderId: "740000996250",
     measurementId: "G-YSH95XR38D"
   };
+function loadLeaderboard() {
+    showScreen('content');
+    const body = document.getElementById('dynamic-body');
+    body.innerHTML = "<h2>🏆 Global Leaderboard</h2><p>Loading Top 10...</p>";
 
-  // Initialize Firebase
- /* --- MASTER ACCESS & HADITH LOGIC --- */
-/* --- MASTER ACCESS & HADITH LOGIC --- */
+    db.ref('leaderboard').orderByChild('score').limitToLast(10).once('value', (snapshot) => {
+        let scores = [];
+        snapshot.forEach(child => scores.push(child.val()));
+        scores.reverse();
+
+        let html = '<table style="width:100%; margin-top:20px; border-collapse:collapse;">';
+        html += '<tr style="border-bottom:2px solid var(--gold);"><th>Rank</th><th>Name</th><th>Points</th></tr>';
+        scores.forEach((p, i) => {
+            html += `<tr style="border-bottom:1px solid #eee; height:45px;">
+                        <td>${i + 1}</td><td>${p.name}</td><td style="color:var(--gold); font-weight:bold;">${p.score}</td>
+                     </tr>`;
+        });
+        html += '</table>';
+        body.innerHTML = html;
+    });
+}
+
 function checkMasterAccess() {
     const params = new URLSearchParams(window.location.search);
     // Use admin786 consistently as your key
@@ -456,21 +474,21 @@ function initializeMasterAccess() {
         });
 
         function handleAuth(type) {
-            let user = { name: "", avatar: "" };
-            if(type === 'guest') {
-                user.name = "Guest_" + Math.floor(Math.random() * 9000);
-            } else {
-                const val = document.getElementById('auth-email').value;
-                if(!val.includes('@')) {
-                    showPopup("Input Error", "A valid email is required to register.", "📧");
-                    return;
-                }
-                user.name = val.split('@')[0];
-            }
-          localStorage.setItem('user_name', user.name); // ADD THIS LINE
+    let user = { name: "", avatar: "" };
+    if(type === 'guest') {
+        user.name = "Guest_" + Math.floor(Math.random() * 9000);
+    } else {
+        const val = document.getElementById('auth-email').value;
+        if(!val.includes('@')) {
+            showPopup("Input Error", "A valid email is required to register.", "📧");
+            return;
+        }
+        user.name = val.split('@')[0];
+    }
+    // Save the name for the leaderboard
+    localStorage.setItem('user_name', user.name); 
     loginUser(user);
 }
-        }
 
         function loginUser(user) {
             document.getElementById('screen-auth').classList.add('hidden');
