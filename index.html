@@ -103,7 +103,7 @@
     </div>
     <div class="nav-item" onclick="showScreen('home'); toggleMenu();">🏠 Home</div>
     <div class="nav-item" onclick="showScreen('ramadan-grid'); toggleMenu();">🌙 Ramadan Quiz</div>
-    <div class="nav-item" onclick="showScreen('regular-grid'); toggleMenu();">📖 Knowledge & Learning</div>
+  <div class="nav-item" onclick="openLearningQuiz(); toggleMenu();">📖 Knowledge & Learning</div>
     <div class="nav-item" onclick="showHadith(); toggleMenu();">📜 Daily Hadith</div>
     <div class="nav-item" onclick="loadLeaderboard(); toggleMenu();">🏆 Leaderboard</div>
     <div class="nav-item" onclick="showDuas(); toggleMenu();">🤲 Duas for Daily Living</div>
@@ -151,6 +151,23 @@
 
   <!-- App Scripts -->
   <script>
+  function checkLearningAnswer(cat, idx, selected) {
+  const dataset = window.LEARNING_QUESTIONS[cat];
+  const qData = dataset[idx];
+  const isCorrect = (selected || '').trim() === (qData.a || '').trim();
+
+  const fullExplanation = (qData.e || "") + (qData.eh ? `\n\n(${qData.eh})` : "");
+  const title = isCorrect ? "Correct! ✨" : "Explanation";
+
+  showPopup(title, fullExplanation, isCorrect ? "✅" : "ℹ️", () => {
+    const next = idx + 1;
+    if (next < dataset.length) {
+      loadLearningQuestion(cat, next);
+    } else {
+      showPopup("Completed!", "You finished this topic. Great job!", "🏁");
+    }
+  });
+}
     /* ------------------ Firebase Init ------------------ */
     const firebaseConfig = {
       apiKey: "AIzaSyD6v6BFkqUmgfJWGIm1eMEEOQX7wnWkq8k",
