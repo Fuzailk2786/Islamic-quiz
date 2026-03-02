@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Islamic Questz - 2026</title>
 
-  <link rel="manifest" href="manifest.json">
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json"/>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet"/>
 
   <!-- Firebase (Compat) -->
   <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
@@ -36,7 +39,7 @@
     }
     .bismillah-text { color: #fbbf24; font-size: 2rem; margin-bottom: 20px; font-family: 'Cinzel'; opacity: 0; animation: fadeIn 2s forwards; }
 
-    /* Sidebar styles (kept the same ID = #sidebar) */
+    /* Sidebar */
     #sidebar {
       position: fixed; right: -280px; top: 0; width: 280px; height: 100%;
       background: var(--card-bg); z-index: 2000; transition: 0.3s;
@@ -87,7 +90,7 @@
   <!-- Menu button -->
   <button id="menu-btn" class="hidden" onclick="toggleMenu()">☰</button>
 
-  <!-- SINGLE SIDEBAR (kept the <nav id="sidebar"> version) -->
+  <!-- SINGLE SIDEBAR (kept the <nav id="sidebar"> version only) -->
   <nav id="sidebar">
     <div class="profile-section">
       <div id="review-link" class="nav-item hidden" onclick="showReview()">📚 Review All Answers</div>
@@ -148,61 +151,7 @@
 
   <!-- App Scripts -->
   <script>
-    <script>
-/* ---------- USER & PROGRESS HELPERS (Per User) ---------- */
-
-// Get current user name (falls back to "Guest")
-function getCurrentUserName() {
-  const u = JSON.parse(localStorage.getItem('iq_user') || '{}');
-  return (u && u.name) ? u.name : (localStorage.getItem('user_name') || 'Guest');
-}
-
-// Build namespaced storage key per user
-function progressKey() {
-  const uname = getCurrentUserName();
-  return `iq_progress_${uname}`;
-}
-
-// Read progress map: { "1": true, "2": true, ... }
-function getProgress() {
-  try {
-    return JSON.parse(localStorage.getItem(progressKey()) || '{}');
-  } catch (e) {
-    return {};
-  }
-}
-
-// Write progress map
-function setProgressMap(map) {
-  localStorage.setItem(progressKey(), JSON.stringify(map));
-}
-
-// Mark a level as completed
-function markLevelCompleted(levelNum) {
-  const map = getProgress();
-  map[String(levelNum)] = true;
-  setProgressMap(map);
-}
-
-// Check if a level is completed
-function isLevelCompleted(levelNum) {
-  const map = getProgress();
-  return !!map[String(levelNum)];
-}
-
-// Reset (restart) a specific level only
-function resetLevel(levelNum) {
-  const map = getProgress();
-  delete map[String(levelNum)];
-  setProgressMap(map);
-}
-
-// Optional: reset ALL levels for current user
-function resetAllLevelsForCurrentUser() {
-  setProgressMap({});
-}
-</script>
-    /* ------------------ Firebase Init (REQUIRED) ------------------ */
+    /* ------------------ Firebase Init ------------------ */
     const firebaseConfig = {
       apiKey: "AIzaSyD6v6BFkqUmgfJWGIm1eMEEOQX7wnWkq8k",
       authDomain: "islamicquestz.firebaseapp.com",
@@ -216,7 +165,7 @@ function resetAllLevelsForCurrentUser() {
     const app = firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    /* ------------------ Utilities / Modal ------------------ */
+    /* ------------------ Modal / Utilities ------------------ */
     function showPopup(title, message, icon, callback) {
       const modal = document.getElementById('app-modal');
       document.getElementById('modal-title').innerText = title;
@@ -233,7 +182,7 @@ function resetAllLevelsForCurrentUser() {
       const s = document.getElementById('sidebar');
       if (s) s.classList.toggle('open');
     }
-    // Backward-compat wrapper to avoid breaking old inline calls
+    // Backward-compat wrapper for any old inline calls
     function toggleSidebar(){ toggleMenu(); }
 
     function toggleTheme() {
@@ -243,7 +192,7 @@ function resetAllLevelsForCurrentUser() {
 
     function shareApp() { if (navigator.share) navigator.share({ title:'Islamic Questz', url: location.href }); }
 
-    /* ------------------ Master Access (Single Source) ------------------ */
+    /* ------------------ Master Access (Single) ------------------ */
     function checkMasterAccess() {
       const params = new URLSearchParams(window.location.search);
       if (params.get('master') === 'admin786') {
@@ -296,6 +245,40 @@ function resetAllLevelsForCurrentUser() {
         };
         reader.readAsDataURL(input.files[0]);
       }
+    }
+
+    /* ------------------ Per-User Progress Helpers ------------------ */
+    function getCurrentUserName() {
+      const u = JSON.parse(localStorage.getItem('iq_user') || '{}');
+      return (u && u.name) ? u.name : (localStorage.getItem('user_name') || 'Guest');
+    }
+    function progressKey() {
+      const uname = getCurrentUserName();
+      return `iq_progress_${uname}`;
+    }
+    function getProgress() {
+      try { return JSON.parse(localStorage.getItem(progressKey()) || '{}'); }
+      catch (e) { return {}; }
+    }
+    function setProgressMap(map) {
+      localStorage.setItem(progressKey(), JSON.stringify(map));
+    }
+    function markLevelCompleted(levelNum) {
+      const map = getProgress();
+      map[String(levelNum)] = true;
+      setProgressMap(map);
+    }
+    function isLevelCompleted(levelNum) {
+      const map = getProgress();
+      return !!map[String(levelNum)];
+    }
+    function resetLevel(levelNum) {
+      const map = getProgress();
+      delete map[String(levelNum)];
+      setProgressMap(map);
+    }
+    function resetAllLevelsForCurrentUser() {
+      setProgressMap({});
     }
 
     /* ------------------ Screens ------------------ */
@@ -367,7 +350,7 @@ function resetAllLevelsForCurrentUser() {
           btn.classList.add('locked');
           btn.onclick = () => showPopup("Locked / Band Hai", `This challenge unlocks on Day ${i}.\n(Yeh challenge Day ${i} ko khulega.)`, "🔒");
         } else {
-         if (isLevelCompleted(i)) btn.classList.add('completed');
+          if (isLevelCompleted(i)) btn.classList.add('completed');  /* per-user */
           btn.onclick = () => i === 31 ? startEidQuiz() : startRamadanLevel(i);
         }
         document.getElementById('grid').appendChild(btn);
@@ -375,38 +358,36 @@ function resetAllLevelsForCurrentUser() {
     }
 
     function startRamadanLevel(levelNum) {
-        <script>
-function confirmRestartLevel(levelNum) {
-  showPopup(
-    "Restart Level?",
-    "This will clear completion status for this level and let you replay it. Proceed?",
-    "⚠️",
-    () => {
-      resetLevel(levelNum);     // clear per-user completion
-      renderRamadanGrid();      // refresh grid state
-      startRamadanLevel(levelNum); // reopen level fresh
-    }
-  );
-}
-</script>
       if (typeof window.RAMADAN_QUESTIONS === 'undefined') {
         return showPopup("Loading", "Questions are still loading, please wait.", "⏳");
       }
       const questions = window.RAMADAN_QUESTIONS[`level${levelNum}`];
       if (!questions) return showPopup("Coming Soon", "Content for this day is being prepared.", "📅");
-      // If this level is already completed, show a Restart option
-const restartBtn = isLevelCompleted(levelNum) ? `
-  <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
-    <button class="main-btn" style="background:#fee2e2; border-color:#fecaca; color:#b91c1c;"
-      onclick="confirmRestartLevel(${levelNum})">↺ Restart this Level</button>
-  </div>
-` : '';
-      body.innerHTML = `
-  <h3 id="quiz-title">Day ${levelNum}</h3>
-  ${restartBtn}
-  <div id="quiz-area"></div>
-`;
+
+      const body = document.getElementById('dynamic-body');
+
+      // Show restart only if already completed (per user)
+      const restartBtn = isLevelCompleted(levelNum) ? `
+        <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
+          <button class="main-btn" style="background:#fee2e2; border-color:#fecaca; color:#b91c1c;"
+            onclick="confirmRestartLevel(${levelNum})">↺ Restart this Level</button>
+        </div>
+      ` : '';
+
+      body.innerHTML = `<h3 id="quiz-title">Day ${levelNum}</h3>${restartBtn}<div id="quiz-area"></div>`;
       loadQuestion(levelNum, 0);
+    }
+
+    function confirmRestartLevel(levelNum) {
+      showPopup("Restart Level?",
+        "This will clear completion status for this level and let you replay it. Proceed?",
+        "⚠️",
+        () => {
+          resetLevel(levelNum);
+          renderRamadanGrid();
+          startRamadanLevel(levelNum);
+        }
+      );
     }
 
     function loadQuestion(level, index) {
@@ -422,6 +403,7 @@ const restartBtn = isLevelCompleted(levelNum) ? `
         </div>
         <div id="options-box"></div>
       `;
+
       qData.o.forEach((opt, i) => {
         const b = document.createElement('button');
         b.className = 'main-btn';
@@ -444,16 +426,21 @@ const restartBtn = isLevelCompleted(levelNum) ? `
           if (nextIndex < window.RAMADAN_QUESTIONS[`level${level}`].length) {
             loadQuestion(level, nextIndex);
           } else {
-            markLevelCompleted(level)
+            // Per-user completion
+            markLevelCompleted(level);
+
             if (level === 31) {
               showPopup("MABROOK!", "Finale Completed! / Finale Poora Hua!", "🏆", () => showCertificate());
             } else {
               showPopup("Day Completed!", `Day ${level} finished. / Din ${level} poora hua.`, "⭐", () => renderRamadanGrid());
             }
+
+            // Points & leaderboard (unchanged)
             const currentPoints = (parseInt(localStorage.getItem('totalPoints')) || 0) + 10;
             localStorage.setItem('totalPoints', currentPoints);
             const savedName = localStorage.getItem('user_name');
             if (savedName) submitScore(savedName, currentPoints);
+
             updateSidebarLinks();
           }
         });
@@ -463,7 +450,7 @@ const restartBtn = isLevelCompleted(levelNum) ? `
     }
 
     function startEidQuiz() {
-      if (!localStorage.getItem('lvl_30')) {
+      if (!isLevelCompleted(30)) {  /* per-user check */
         showPopup("Grand Finale Locked", "Please complete all 30 days of Ramadan first.", "🔒", () => showScreen('ramadan-grid'));
         return;
       }
@@ -471,16 +458,22 @@ const restartBtn = isLevelCompleted(levelNum) ? `
     }
 
     function showCertificate() {
-      const isCompleted = localStorage.getItem('lvl_31');
+      const isCompleted = isLevelCompleted(31);  /* per-user check */
+      const body = document.getElementById('dynamic-body');
+
       if (!isCompleted) {
-        const body = document.getElementById('dynamic-body');
-        body.innerHTML = `<div style="text-align:center; padding:40px;"><div style="font-size:50px;">🔒</div><h3>Certificate Locked</h3><button class="main-btn" onclick="showScreen('ramadan-grid')">Go to Quiz</button></div>`;
+        body.innerHTML = `<div style="text-align:center; padding:40px;">
+          <div style="font-size:50px;">🔒</div>
+          <h3>Certificate Locked</h3>
+          <button class="main-btn" onclick="showScreen('ramadan-grid')">Go to Quiz</button>
+        </div>`;
         showScreen('content');
         return;
       }
+
       const user = JSON.parse(localStorage.getItem('iq_user')) || { name: "Valued Learner" };
       const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-      const body = document.getElementById('dynamic-body');
+
       body.innerHTML = `
         <div id="certificate-print-area" style="border:15px double var(--gold); padding:30px; text-align:center; background:white; color:#064e3b; position:relative; font-family:'Cinzel', serif;">
           <div style="border:2px solid var(--emerald); padding:20px;">
@@ -494,7 +487,7 @@ const restartBtn = isLevelCompleted(levelNum) ? `
             <p>Demonstrating excellent knowledge of Islamic history, <br>Quranic studies, and Ramadan traditions.</p>
             <div style="margin-top:30px; display:flex; justify-content:space-between; align-items:flex-end;">
               <div style="text-align:left;"><small>Date: ${date}</small></div>
-              <div style="text-align:right;"><img src="https://img.icons8.com/fluency/64/verified-badge.png" width="40"><br><small>Islamic Questz Certified</small></div>
+              <div style="text-align:right;"><img src="https://img.icons8.com/fluency/64/verified-badge.png" width="40" alt="verified"><br><small>Islamic Questz Certified</small></div>
             </div>
           </div>
         </div>
@@ -527,7 +520,7 @@ const restartBtn = isLevelCompleted(levelNum) ? `
       });
     }
 
-    /* ------------------ Hadith (Firebase Version ONLY) ------------------ */
+    /* ------------------ Hadith (Firebase + Fallback) ------------------ */
     const HADITH_LIST = [
       "The best among you are those who learn the Quran and teach it.",
       "Cleanliness is half of faith.",
@@ -560,12 +553,14 @@ const restartBtn = isLevelCompleted(levelNum) ? `
       showScreen('content');
       const body = document.getElementById('dynamic-body');
       body.innerHTML = "<h2>Hadith of the Day</h2><p>Loading...</p>";
+
       db.ref('dailyHadith').on('value', (snapshot) => {
         const data = snapshot.val();
         const adminBtn = localStorage.getItem('is_admin') === 'true' 
           ? `<button onclick="renderAdminPanel()" class="main-btn" style="margin-top:20px;">Edit Hadith</button>` : '';
+
         if (!data) {
-          // Fallback to local list if nothing posted yet
+          // Fallback to local list if no cloud hadith yet
           const dayIdx = new Date().getDate() % HADITH_LIST.length;
           body.innerHTML = `
             <h2>Hadith of the Day</h2>
@@ -574,6 +569,7 @@ const restartBtn = isLevelCompleted(levelNum) ? `
           `;
           return;
         }
+
         body.innerHTML = `
           <h2>Hadith of the Day</h2>
           <div class="dua-card" style="font-size:1.1rem; line-height:1.6;">"${data.content}"</div>
@@ -585,7 +581,7 @@ const restartBtn = isLevelCompleted(levelNum) ? `
       });
     }
 
-    /* ------------------ Leaderboard (Single Version) ------------------ */
+    /* ------------------ Leaderboard ------------------ */
     function submitScore(username, score) {
       db.ref('leaderboard/' + username).set({ 
         name: username, 
@@ -598,10 +594,12 @@ const restartBtn = isLevelCompleted(levelNum) ? `
       showScreen('content');
       const body = document.getElementById('dynamic-body');
       body.innerHTML = "<h2>🏆 Global Leaderboard</h2><p>Loading Top 10...</p>";
+
       db.ref('leaderboard').orderByChild('score').limitToLast(10).once('value', (snapshot) => {
         let scores = [];
         snapshot.forEach(child => scores.push(child.val()));
         scores.reverse();
+
         let html = '<table style="width:100%; margin-top:20px; border-collapse:collapse;">';
         html += '<tr style="border-bottom:2px solid var(--gold);"><th>Rank</th><th>Name</th><th>Points</th></tr>';
         scores.forEach((p, i) => {
@@ -614,11 +612,12 @@ const restartBtn = isLevelCompleted(levelNum) ? `
       });
     }
 
-    /* ------------------ Review ------------------ */
+    /* ------------------ Review & Sidebar Link ------------------ */
     function showReview() {
       showScreen('content');
       const body = document.getElementById('dynamic-body');
       if (typeof window.RAMADAN_QUESTIONS === 'undefined') return showPopup("Error", "Data not loaded.", "❌");
+
       let html = '<h2>Knowledge Review</h2><p>Correct answers from your journey:</p>';
       for (let i = 1; i <= 30; i++) {
         const level = window.RAMADAN_QUESTIONS[`level${i}`];
@@ -638,7 +637,7 @@ const restartBtn = isLevelCompleted(levelNum) ? `
     }
 
     function updateSidebarLinks() {
-      if (localStorage.getItem('lvl_31')) {
+      if (isLevelCompleted(31)) {
         document.getElementById('review-link').classList.remove('hidden');
       }
     }
@@ -658,7 +657,7 @@ const restartBtn = isLevelCompleted(levelNum) ? `
         }, 800);
       }
       window.addEventListener('load', () => setTimeout(() => { hide(); checkMasterAccess(); }, 2500));
-      // Fallback in case of other errors
+      // Fallback in case of any earlier errors
       setTimeout(() => {
         const overlay = document.getElementById('bismillah-overlay');
         if (overlay && !overlay.classList.contains('hidden')) { hide(); checkMasterAccess(); }
