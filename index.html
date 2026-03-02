@@ -22,21 +22,15 @@
   };
 
   // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
-    /* --- MASTER ACCESS & HADITH LOGIC --- */
-
-// 1. Identify if you are the Admin
+ /* --- MASTER ACCESS & HADITH LOGIC --- */
 function checkMasterAccess() {
     const params = new URLSearchParams(window.location.search);
-    // Visit your site with ?master=admin786 to unlock
     if (params.get('master') === 'admin786') {
         localStorage.setItem('is_admin', 'true');
         showPopup("Verified", "Master Access Activated!", "🔑");
     }
 }
 
-// 2. The Admin Panel to post Hadith
 function renderAdminPanel() {
     if (localStorage.getItem('is_admin') !== 'true') return;
     const body = document.getElementById('dynamic-body');
@@ -44,8 +38,8 @@ function renderAdminPanel() {
         <div style="padding:20px; background:var(--soft-gold); border-radius:15px; border:2px solid var(--gold);">
             <h2 style="color:var(--emerald);">📜 Post Daily Hadith</h2>
             <textarea id="hadith-text" placeholder="Write Hadith here..." 
-                style="width:100%; height:150px; border-radius:10px; border:1px solid #ccc; padding:10px; margin-bottom:10px;"></textarea>
-            <button onclick="saveHadithToCloud()" class="main-btn" style="width:100%;">Broadcast to All Users</button>
+                style="width:100%; height:150px; border-radius:10px; border:1px solid #ccc; padding:10px; margin-bottom:10px; color:#000;"></textarea>
+            <button onclick="saveHadithToCloud()" class="main-btn" style="width:100%; background:var(--emerald); color:white;">Broadcast to All Users</button>
         </div>
     `;
 }
@@ -59,7 +53,6 @@ function saveHadithToCloud() {
     }).then(() => showPopup("Success", "Updated for all users!", "✨"));
 }
 
-// 3. What users see when they click "Hadith"
 function showHadith() {
     showScreen('content');
     const body = document.getElementById('dynamic-body');
@@ -67,59 +60,43 @@ function showHadith() {
 
     db.ref('dailyHadith').on('value', (snapshot) => {
         const data = snapshot.val();
+        const adminBtn = localStorage.getItem('is_admin') === 'true' ? `<button onclick="renderAdminPanel()" class="main-btn" style="margin-top:20px;">Edit Hadith</button>` : '';
+        
         if(!data) {
-            body.innerHTML = "<h2>Hadith of the Day</h2><p>No Hadith posted for today yet.</p>";
-            if(localStorage.getItem('is_admin') === 'true') {
-                body.innerHTML += `<button onclick="renderAdminPanel()" class="main-btn">Add Hadith</button>`;
-            }
+            body.innerHTML = `<h2>Hadith of the Day</h2><p>No Hadith posted yet.</p> ${adminBtn}`;
             return;
         }
         body.innerHTML = `
             <h2>Hadith of the Day</h2>
-            <div class="dua-card" style="font-size:1.1rem; line-height:1.6; border-left:5px solid var(--gold);">
-                "${data.content}"
-            </div>
-            ${localStorage.getItem('is_admin') === 'true' ? '<button onclick="renderAdminPanel()" class="main-btn" style="margin-top:20px;">Edit Hadith</button>' : ''}
+            <div class="dua-card" style="font-size:1.1rem; line-height:1.6;">"${data.content}"</div>
+            ${adminBtn}
         `;
     });
 }
 
 /* --- LEADERBOARD LOGIC --- */
-
 function submitScore(username, score) {
-    db.ref('leaderboard/' + username).set({
-        name: username,
-        score: score,
-        timestamp: Date.now()
-    }).then(() => {
-        showPopup("Score Saved", "You are now on the leaderboard!", "🏆");
-        loadLeaderboard();
-    });
+    db.ref('leaderboard/' + username).set({ name: username, score: score, timestamp: Date.now() });
 }
 
 function loadLeaderboard() {
     showScreen('content');
     const body = document.getElementById('dynamic-body');
-    body.innerHTML = "<h2>🏆 Global Leaderboard</h2><p>Loading Top 10...</p>";
+    body.innerHTML = "<h2>🏆 Leaderboard</h2><p>Loading...</p>";
 
     db.ref('leaderboard').orderByChild('score').limitToLast(10).once('value', (snapshot) => {
         let scores = [];
-        snapshot.forEach(child => scores.push(child.val()));
+        snapshot.forEach(c => scores.push(c.val()));
         scores.reverse();
-
-        let html = '<table style="width:100%; margin-top:20px; border-collapse:collapse;">';
-        html += '<tr style="border-bottom:2px solid var(--gold);"><th>Rank</th><th>Name</th><th>Points</th></tr>';
+        let table = '<table style="width:100%; margin-top:20px; border-collapse:collapse;">';
+        table += '<tr style="border-bottom:2px solid var(--gold);"><th>Rank</th><th>Name</th><th>Points</th></tr>';
         scores.forEach((p, i) => {
-            html += `<tr style="border-bottom:1px solid #eee; height:45px;">
-                        <td>${i + 1}</td><td>${p.name}</td><td style="color:var(--gold); font-weight:bold;">${p.score}</td>
-                     </tr>`;
+            table += `<tr style="border-bottom:1px solid #eee; height:45px;"><td>${i+1}</td><td>${p.name}</td><td>${p.score}</td></tr>`;
         });
-        html += '</table>';
-        body.innerHTML = html;
+        body.innerHTML = table + '</table>';
     });
 }
 
-// Ensure Master check runs on load
 checkMasterAccess();
 </script>
     <style>
@@ -204,25 +181,26 @@ checkMasterAccess();
 
     <button id="menu-btn" class="hidden" onclick="toggleMenu()">☰</button>
     
-    <nav id="sidebar">
-        <div class="profile-section">
-            <div id="review-link" class="nav-item hidden" onclick="showReview()">📚 Review All Answers</div>
-            <div class="avatar" onclick="document.getElementById('upload-pic').click()">
-                <span id="avatar-init">?</span>
-                <img id="profile-img" src="" alt="Profile">
-            </div>
-            <input type="file" id="upload-pic" class="hidden" accept="image/*" onchange="uploadImage(this)">
-            <div id="user-display-name" style="font-weight: 600; margin-top: 5px;">Guest User</div>
+<nav id="sidebar">
+    <div class="profile-section">
+        <div id="review-link" class="nav-item hidden" onclick="showReview()">📚 Review All Answers</div>
+        <div class="avatar" onclick="document.getElementById('upload-pic').click()">
+            <span id="avatar-init">?</span>
+            <img id="profile-img" src="" alt="Profile">
         </div>
-        <div class="nav-item" onclick="showScreen('home')">🏠 Home</div>
-        <div class="nav-item" onclick="showScreen('ramadan-grid')">🌙 Ramadan Quiz</div>
-        <div class="nav-item" onclick="showScreen('regular-grid')">📖 Learning</div>
-        <div class="nav-item" onclick="showHadith()">📜 Hadith of Day</div>
-        <div class="nav-item" onclick="showDuas()">🤲 Daily Duas</div>
-        <div class="nav-item" onclick="showScreen('feedback')">💡 Feedback</div>
-        <div class="nav-item" onclick="shareApp()">📤 Invite Friends</div>
-        <div class="nav-item" onclick="toggleTheme()">🌓 Theme Mode</div>
-    </nav>
+        <input type="file" id="upload-pic" class="hidden" accept="image/*" onchange="uploadImage(this)">
+        <div id="user-display-name" style="font-weight: 600; margin-top: 5px;">Guest User</div>
+    </div>
+    <div class="nav-item" onclick="showScreen('home'); toggleMenu();">🏠 Home</div>
+    <div class="nav-item" onclick="showScreen('ramadan-grid'); toggleMenu();">🌙 Ramadan Quiz</div>
+    
+    <div class="nav-item" onclick="showHadith(); toggleMenu();">📜 Daily Hadith</div>
+    <div class="nav-item" onclick="loadLeaderboard(); toggleMenu();">🏆 Leaderboard</div>
+    
+    <div class="nav-item" onclick="showDuas(); toggleMenu();">🤲 Daily Duas</div>
+    <div class="nav-item" onclick="toggleTheme(); toggleMenu();">🌓 Theme Mode</div>
+    <div class="nav-item" onclick="toggleMenu()" style="color:gray;">Close</div>
+</nav>
 
     <div id="main-container" class="hidden">
         <div class="app-card" style="margin: 0 auto; max-width: 500px; padding: 20px;">
@@ -263,7 +241,7 @@ checkMasterAccess();
     const params = new URLSearchParams(window.location.search);
     
     // If you visit with ?master=true, it saves a key on your phone forever
-    if (params.get('master') === 'secret-key-123') {
+    if (params.get('master') === 'admin786') {
         localStorage.setItem('is_admin', 'true');
         alert("Master Access Verified!");
     }
@@ -392,7 +370,7 @@ function initializeMasterAccess() {
     const params = new URLSearchParams(window.location.search);
     
     // Check if the URL has your secret key
-    if (params.get('master') === 'secret-key-123') {
+    if (params.get('master') === 'admin786') {
         localStorage.setItem('is_admin', 'true');
         showPopup("Verified", "Master Access Activated!", "🔑");
     }
@@ -482,8 +460,9 @@ function initializeMasterAccess() {
                 }
                 user.name = val.split('@')[0];
             }
-            localStorage.setItem('iq_user', JSON.stringify(user));
-            loginUser(user);
+          localStorage.setItem('user_name', user.name); // ADD THIS LINE
+    loginUser(user);
+}
         }
 
         function loginUser(user) {
