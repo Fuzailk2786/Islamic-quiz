@@ -148,6 +148,60 @@
 
   <!-- App Scripts -->
   <script>
+    <script>
+/* ---------- USER & PROGRESS HELPERS (Per User) ---------- */
+
+// Get current user name (falls back to "Guest")
+function getCurrentUserName() {
+  const u = JSON.parse(localStorage.getItem('iq_user') || '{}');
+  return (u && u.name) ? u.name : (localStorage.getItem('user_name') || 'Guest');
+}
+
+// Build namespaced storage key per user
+function progressKey() {
+  const uname = getCurrentUserName();
+  return `iq_progress_${uname}`;
+}
+
+// Read progress map: { "1": true, "2": true, ... }
+function getProgress() {
+  try {
+    return JSON.parse(localStorage.getItem(progressKey()) || '{}');
+  } catch (e) {
+    return {};
+  }
+}
+
+// Write progress map
+function setProgressMap(map) {
+  localStorage.setItem(progressKey(), JSON.stringify(map));
+}
+
+// Mark a level as completed
+function markLevelCompleted(levelNum) {
+  const map = getProgress();
+  map[String(levelNum)] = true;
+  setProgressMap(map);
+}
+
+// Check if a level is completed
+function isLevelCompleted(levelNum) {
+  const map = getProgress();
+  return !!map[String(levelNum)];
+}
+
+// Reset (restart) a specific level only
+function resetLevel(levelNum) {
+  const map = getProgress();
+  delete map[String(levelNum)];
+  setProgressMap(map);
+}
+
+// Optional: reset ALL levels for current user
+function resetAllLevelsForCurrentUser() {
+  setProgressMap({});
+}
+</script>
     /* ------------------ Firebase Init (REQUIRED) ------------------ */
     const firebaseConfig = {
       apiKey: "AIzaSyD6v6BFkqUmgfJWGIm1eMEEOQX7wnWkq8k",
@@ -313,7 +367,7 @@
           btn.classList.add('locked');
           btn.onclick = () => showPopup("Locked / Band Hai", `This challenge unlocks on Day ${i}.\n(Yeh challenge Day ${i} ko khulega.)`, "🔒");
         } else {
-          if (localStorage.getItem('lvl_' + i)) btn.classList.add('completed');
+         if (isLevelCompleted(i)) btn.classList.add('completed');
           btn.onclick = () => i === 31 ? startEidQuiz() : startRamadanLevel(i);
         }
         document.getElementById('grid').appendChild(btn);
@@ -321,13 +375,37 @@
     }
 
     function startRamadanLevel(levelNum) {
+        <script>
+function confirmRestartLevel(levelNum) {
+  showPopup(
+    "Restart Level?",
+    "This will clear completion status for this level and let you replay it. Proceed?",
+    "⚠️",
+    () => {
+      resetLevel(levelNum);     // clear per-user completion
+      renderRamadanGrid();      // refresh grid state
+      startRamadanLevel(levelNum); // reopen level fresh
+    }
+  );
+}
+</script>
       if (typeof window.RAMADAN_QUESTIONS === 'undefined') {
         return showPopup("Loading", "Questions are still loading, please wait.", "⏳");
       }
       const questions = window.RAMADAN_QUESTIONS[`level${levelNum}`];
       if (!questions) return showPopup("Coming Soon", "Content for this day is being prepared.", "📅");
-      const body = document.getElementById('dynamic-body');
-      body.innerHTML = `<h3 id="quiz-title">Day ${levelNum}</h3><div id="quiz-area"></div>`;
+      // If this level is already completed, show a Restart option
+const restartBtn = isLevelCompleted(levelNum) ? `
+  <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
+    <button class="main-btn" style="background:#fee2e2; border-color:#fecaca; color:#b91c1c;"
+      onclick="confirmRestartLevel(${levelNum})">↺ Restart this Level</button>
+  </div>
+` : '';
+      body.innerHTML = `
+  <h3 id="quiz-title">Day ${levelNum}</h3>
+  ${restartBtn}
+  <div id="quiz-area"></div>
+`;
       loadQuestion(levelNum, 0);
     }
 
@@ -366,7 +444,7 @@
           if (nextIndex < window.RAMADAN_QUESTIONS[`level${level}`].length) {
             loadQuestion(level, nextIndex);
           } else {
-            localStorage.setItem(`lvl_${level}`, 'true');
+            markLevelCompleted(level)
             if (level === 31) {
               showPopup("MABROOK!", "Finale Completed! / Finale Poora Hua!", "🏆", () => showCertificate());
             } else {
