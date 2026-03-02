@@ -1,122 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Islamic Questz - 2026</title>
-    <link rel="manifest" href="manifest.json">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Islamic Questz - 2026</title>
 
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyD6v6BFkqUmgfJWGIm1eMEEOQX7wnWkq8k",
-    authDomain: "islamicquestz.firebaseapp.com",
-    databaseURL: "https://islamicquestz-default-rtdb.firebaseio.com",
-    projectId: "islamicquestz",
-    storageBucket: "islamicquestz.firebasestorage.app",
-    appId: "1:740000996250:web:444a3b4ba9c92dad64b823",
-    messagingSenderId: "740000996250",
-    measurementId: "G-YSH95XR38D",
-      // 1. Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
+  <link rel="manifest" href="manifest.json">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-  // 2. Define the Database variable (CRITICAL)
-  const db = firebase.database();
-  };
-function loadLeaderboard() {
-    showScreen('content');
-    const body = document.getElementById('dynamic-body');
-    body.innerHTML = "<h2>🏆 Global Leaderboard</h2><p>Loading Top 10...</p>";
+  <!-- Firebase (Compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
 
-    db.ref('leaderboard').orderByChild('score').limitToLast(10).once('value', (snapshot) => {
-        let scores = [];
-        snapshot.forEach(child => scores.push(child.val()));
-        scores.reverse();
+  <style>
+    :root {
+      --bg-color: #f8fafc; --card-bg: #ffffff; --text-main: #064e3b;
+      --emerald: #065f46; --gold: #b45309; --soft-gold: #fef3c7;
+      --border: #e2e8f0; --shadow: rgba(0,0,0,0.1);
+    }
+    [data-theme="dark"] {
+      --bg-color: #0f172a; --card-bg: #1e293b; --text-main: #f1f5f9;
+      --emerald: #10b981; --gold: #fbbf24; --soft-gold: #334155;
+      --border: #334155; --shadow: rgba(0,0,0,0.4);
+    }
 
-        let html = '<table style="width:100%; margin-top:20px; border-collapse:collapse;">';
-        html += '<tr style="border-bottom:2px solid var(--gold);"><th>Rank</th><th>Name</th><th>Points</th></tr>';
-        scores.forEach((p, i) => {
-            html += `<tr style="border-bottom:1px solid #eee; height:45px;">
-                        <td>${i + 1}</td><td>${p.name}</td><td style="color:var(--gold); font-weight:bold;">${p.score}</td>
-                     </tr>`;
-        });
-        html += '</table>';
-        body.innerHTML = html;
-    });
-}
+    body { font-family: 'Poppins', sans-serif; background: var(--bg-color); margin: 0; color: var(--text-main); transition: 0.3s; overflow-x: hidden; }
 
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    #bismillah-overlay {
+      position: fixed; inset: 0; background: #064e3b;
+      display: flex; flex-direction: column; justify-content: center;
+      align-items: center; z-index: 10000; transition: 1s;
+      pointer-events: none; user-select: none;
+    }
+    .bismillah-text { color: #fbbf24; font-size: 2rem; margin-bottom: 20px; font-family: 'Cinzel'; opacity: 0; animation: fadeIn 2s forwards; }
 
-</script>
-    <style>
-        :root {
-            --bg-color: #f8fafc; --card-bg: #ffffff; --text-main: #064e3b;
-            --emerald: #065f46; --gold: #b45309; --soft-gold: #fef3c7;
-            --border: #e2e8f0; --shadow: rgba(0,0,0,0.1);
-        }
-        [data-theme="dark"] {
-            --bg-color: #0f172a; --card-bg: #1e293b; --text-main: #f1f5f9;
-            --emerald: #10b981; --gold: #fbbf24; --soft-gold: #334155;
-            --border: #334155; --shadow: rgba(0,0,0,0.4);
-        }
+    /* Sidebar styles (kept the same ID = #sidebar) */
+    #sidebar {
+      position: fixed; right: -280px; top: 0; width: 280px; height: 100%;
+      background: var(--card-bg); z-index: 2000; transition: 0.3s;
+      box-shadow: -5px 0 15px var(--shadow); padding-top: 20px;
+    }
+    #sidebar.open { right: 0; }
+    .profile-section { padding: 20px; text-align: center; border-bottom: 2px solid var(--gold); }
+    .avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--soft-gold); margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 2rem; border: 2px solid var(--gold); position: relative; cursor: pointer; overflow: hidden; }
+    #profile-img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: none; }
 
-        body { font-family: 'Poppins', sans-serif; background: var(--bg-color); margin: 0; color: var(--text-main); transition: 0.3s; overflow-x: hidden; }
+    .nav-item { padding: 12px 25px; display: flex; align-items: center; gap: 10px; color: var(--text-main); text-decoration: none; cursor: pointer; border-bottom: 1px solid var(--border); }
+    .nav-item:hover { background: var(--soft-gold); }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        #bismillah-overlay {
-            position: fixed; inset: 0; background: #064e3b;
-            display: flex; flex-direction: column; justify-content: center;
-            align-items: center; z-index: 10000; transition: 1s;
-            pointer-events: none; user-select: none;
-        }
-        .bismillah-text { color: #fbbf24; font-size: 2rem; margin-bottom: 20px; font-family: 'Cinzel'; opacity: 0; animation: fadeIn 2s forwards; }
+    .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+    .main-btn { background: var(--card-bg); border: 1px solid var(--border); padding: 15px; border-radius: 15px; cursor: pointer; transition: 0.2s; font-weight: 600; color: var(--text-main); }
+    .main-btn:hover { border-color: var(--gold); transform: translateY(-2px); }
 
-        #sidebar {
-            position: fixed; right: -280px; top: 0; width: 280px; height: 100%;
-            background: var(--card-bg); z-index: 2000; transition: 0.3s;
-            box-shadow: -5px 0 15px var(--shadow); padding-top: 20px;
-        }
-        #sidebar.open { right: 0; }
-        .profile-section { padding: 20px; text-align: center; border-bottom: 2px solid var(--gold); }
-        .avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--soft-gold); margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 2rem; border: 2px solid var(--gold); position: relative; cursor: pointer; overflow: hidden; }
-        #profile-img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: none; }
+    .level-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 20px 0; }
+    .lvl { padding: 15px 5px; border-radius: 12px; border: 2px solid var(--emerald); background: none; color: var(--text-main); font-weight: bold; cursor: pointer; }
+    .lvl.locked { opacity: 0.3; background: #eee; cursor: not-allowed; }
+    .lvl.completed { background: var(--emerald) !important; color: white !important; }
 
-        .nav-item { padding: 12px 25px; display: flex; align-items: center; gap: 10px; color: var(--text-main); text-decoration: none; cursor: pointer; border-bottom: 1px solid var(--border); }
-        .nav-item:hover { background: var(--soft-gold); }
-
-        .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-        .main-btn { background: var(--card-bg); border: 1px solid var(--border); padding: 15px; border-radius: 15px; cursor: pointer; transition: 0.2s; font-weight: 600; color: var(--text-main); }
-        .main-btn:hover { border-color: var(--gold); transform: translateY(-2px); }
-
-        .level-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 20px 0; }
-        .lvl { padding: 15px 5px; border-radius: 12px; border: 2px solid var(--emerald); background: none; color: var(--text-main); font-weight: bold; cursor: pointer; }
-        .lvl.locked { opacity: 0.3; background: #eee; cursor: not-allowed; }
-        .lvl.completed { background: var(--emerald) !important; color: white !important; }
-
-        .dua-card { background: var(--card-bg); border-left: 5px solid var(--gold); padding: 15px; margin: 10px 0; border-radius: 10px; box-shadow: 0 2px 5px var(--shadow); text-align: right; }
-        
-        .hidden { display: none !important; }
-        #menu-btn { position: fixed; top: 15px; right: 15px; font-size: 1.5rem; z-index: 2001; cursor: pointer; background: var(--gold); color: white; border: none; border-radius: 8px; width: 40px; height: 40px; }
-        .back-btn { background: none; border: none; color: var(--gold); font-weight: bold; cursor: pointer; margin-bottom: 15px; font-size: 1rem; }
-    </style>
+    .dua-card { background: var(--card-bg); border-left: 5px solid var(--gold); padding: 15px; margin: 10px 0; border-radius: 10px; box-shadow: 0 2px 5px var(--shadow); text-align: right; }
+    
+    .hidden { display: none !important; }
+    #menu-btn { position: fixed; top: 15px; right: 15px; font-size: 1.5rem; z-index: 2001; cursor: pointer; background: var(--gold); color: white; border: none; border-radius: 8px; width: 40px; height: 40px; }
+    .back-btn { background: none; border: none; color: var(--gold); font-weight: bold; cursor: pointer; margin-bottom: 15px; font-size: 1rem; }
+  </style>
 </head>
 <body>
 
-    <div id="bismillah-overlay">
-        <div class="bismillah-text">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
-        <div style="color: white; letter-spacing: 2px;">ISLAMIC QUESTZ</div>
+  <!-- Splash -->
+  <div id="bismillah-overlay">
+    <div class="bismillah-text">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+    <div style="color: white; letter-spacing: 2px;">ISLAMIC QUESTZ</div>
+  </div>
+
+  <!-- Modal -->
+  <div id="app-modal" class="hidden" style="position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px;">
+    <div style="background: var(--card-bg); width: 100%; max-width: 400px; border-radius: 20px; padding: 25px; text-align: center; border: 2px solid var(--gold); box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+      <div id="modal-icon" style="font-size: 3rem; margin-bottom: 10px;"></div>
+      <h3 id="modal-title" style="font-family: 'Cinzel'; margin-top: 0; color: var(--emerald);"></h3>
+      <p id="modal-message" style="margin-bottom: 25px; line-height: 1.5; color: var(--text-main);"></p>
+      <button id="modal-btn" class="main-btn" style="width: 100%; background: var(--emerald); color: white; border: none;">Continue</button>
     </div>
-<nav id="sidebar">
+  </div>
+
+  <!-- Menu button -->
+  <button id="menu-btn" class="hidden" onclick="toggleMenu()">☰</button>
+
+  <!-- SINGLE SIDEBAR (kept the <nav id="sidebar"> version) -->
+  <nav id="sidebar">
     <div class="profile-section">
-        <div id="review-link" class="nav-item hidden" onclick="showReview()">📚 Review All Answers</div>
-        <div class="avatar" onclick="document.getElementById('upload-pic').click()">
-            <span id="avatar-init">?</span>
-            <img id="profile-img" src="" alt="Profile">
-        </div>
-        <input type="file" id="upload-pic" class="hidden" accept="image/*" onchange="uploadImage(this)">
-        <div id="user-display-name" style="font-weight: 600; margin-top: 5px;">Guest User</div>
+      <div id="review-link" class="nav-item hidden" onclick="showReview()">📚 Review All Answers</div>
+      <div class="avatar" onclick="document.getElementById('upload-pic').click()">
+        <span id="avatar-init">?</span>
+        <img id="profile-img" src="" alt="Profile">
+      </div>
+      <input type="file" id="upload-pic" class="hidden" accept="image/*" onchange="uploadImage(this)">
+      <div id="user-display-name" style="font-weight: 600; margin-top: 5px;">Guest User</div>
     </div>
     <div class="nav-item" onclick="showScreen('home'); toggleMenu();">🏠 Home</div>
     <div class="nav-item" onclick="showScreen('ramadan-grid'); toggleMenu();">🌙 Ramadan Quiz</div>
@@ -128,539 +108,484 @@ function loadLeaderboard() {
     <div class="nav-item" onclick="shareApp(); toggleMenu();">📤 Invite or Share</div>
     <div class="nav-item" onclick="toggleTheme(); toggleMenu();">🌓 Theme Mode</div>
     <div class="nav-item" onclick="toggleMenu()" style="color:gray; border-top: 1px solid var(--border);">Close</div>
-</nav>
+  </nav>
 
-    <div id="main-container" class="hidden">
-        <div class="app-card" style="margin: 0 auto; max-width: 500px; padding: 20px;">
-            
-            <div id="screen-auth">
-                <h2 style="font-family: 'Cinzel'; text-align:center;">Welcome</h2>
-                <div id="login-box" style="text-align:center;">
-                    <input type="email" id="auth-email" class="auth-input" placeholder="Enter Email" style="width: 80%; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: 1px solid var(--border);">
-                    <button class="main-btn" style="width: 85%; background: var(--emerald); color: white;" onclick="handleAuth('register')">Register & Login</button>
-                    <div style="margin: 15px 0;">OR</div>
-                    <button class="main-btn" style="width: 85%; background: var(--gold); color: white;" onclick="handleAuth('guest')">Continue as Guest</button>
-                </div>
-            </div>
-
-            <div id="screen-home" class="hidden">
-                <h1 style="font-family: 'Cinzel'; text-align:center;">Islamic Questz</h1>
-                <div class="mode-grid">
-                    <div class="main-btn" onclick="showScreen('ramadan-grid')">🌙<br>Ramadan Quiz</div>
-                    <div class="main-btn" onclick="showScreen('regular-grid')">📖<br>Learning</div>
-                    <div class="main-btn" onclick="showHadith()">📜<br>Daily Hadith</div>
-                    <div class="main-btn" onclick="showDuas()">🤲<br>Daily Duas</div>
-                </div>
-                <button id="install-btn" class="main-btn" style="width: 100%; margin-top: 20px; background: #3b82f6; color: white;">📲 Install App</button>
-            </div>
-
-            <div id="screen-content" class="hidden">
-                <button class="back-btn" onclick="showScreen('home')">← Back</button>
-                <div id="dynamic-body"></div>
-            </div>
-
+  <!-- App container -->
+  <div id="main-container" class="hidden">
+    <div class="app-card" style="margin: 0 auto; max-width: 500px; padding: 20px;">
+      
+      <div id="screen-auth">
+        <h2 style="font-family: 'Cinzel'; text-align:center;">Welcome</h2>
+        <div id="login-box" style="text-align:center;">
+          <input type="email" id="auth-email" class="auth-input" placeholder="Enter Email" style="width: 80%; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: 1px solid var(--border);">
+          <button class="main-btn" style="width: 85%; background: var(--emerald); color: white;" onclick="handleAuth('register')">Register & Login</button>
+          <div style="margin: 15px 0;">OR</div>
+          <button class="main-btn" style="width: 85%; background: var(--gold); color: white;" onclick="handleAuth('guest')">Continue as Guest</button>
         </div>
+      </div>
+
+      <div id="screen-home" class="hidden">
+        <h1 style="font-family: 'Cinzel'; text-align:center;">Islamic Questz</h1>
+        <div class="mode-grid">
+          <div class="main-btn" onclick="showScreen('ramadan-grid')">🌙<br>Ramadan Quiz</div>
+          <div class="main-btn" onclick="showScreen('regular-grid')">📖<br>Learning</div>
+          <div class="main-btn" onclick="showHadith()">📜<br>Daily Hadith</div>
+          <div class="main-btn" onclick="showDuas()">🤲<br>Daily Duas</div>
+        </div>
+        <button id="install-btn" class="main-btn" style="width: 100%; margin-top: 20px; background: #3b82f6; color: white;">📲 Install App</button>
+      </div>
+
+      <div id="screen-content" class="hidden">
+        <button class="back-btn" onclick="showScreen('home')">← Back</button>
+        <div id="dynamic-body"></div>
+      </div>
+
     </div>
+  </div>
 
-    <script src="questions.js"></script>
+  <!-- Questions -->
+  <script src="questions.js"></script>
 
-    <script>
-       function checkMasterAccess() {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('master') === 'admin786') {
+  <!-- App Scripts -->
+  <script>
+    /* ------------------ Firebase Init (REQUIRED) ------------------ */
+    const firebaseConfig = {
+      apiKey: "AIzaSyD6v6BFkqUmgfJWGIm1eMEEOQX7wnWkq8k",
+      authDomain: "islamicquestz.firebaseapp.com",
+      databaseURL: "https://islamicquestz-default-rtdb.firebaseio.com",
+      projectId: "islamicquestz",
+      storageBucket: "islamicquestz.firebasestorage.app",
+      appId: "1:740000996250:web:444a3b4ba9c92dad64b823",
+      messagingSenderId: "740000996250",
+      measurementId: "G-YSH95XR38D"
+    };
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    /* ------------------ Utilities / Modal ------------------ */
+    function showPopup(title, message, icon, callback) {
+      const modal = document.getElementById('app-modal');
+      document.getElementById('modal-title').innerText = title;
+      document.getElementById('modal-message').innerText = message;
+      document.getElementById('modal-icon').innerText = icon || '';
+      modal.classList.remove('hidden');
+      document.getElementById('modal-btn').onclick = () => {
+        modal.classList.add('hidden');
+        if (callback) callback();
+      };
+    }
+
+    function toggleMenu() {
+      const s = document.getElementById('sidebar');
+      if (s) s.classList.toggle('open');
+    }
+    // Backward-compat wrapper to avoid breaking old inline calls
+    function toggleSidebar(){ toggleMenu(); }
+
+    function toggleTheme() {
+      const t = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.body.setAttribute('data-theme', t);
+    }
+
+    function shareApp() { if (navigator.share) navigator.share({ title:'Islamic Questz', url: location.href }); }
+
+    /* ------------------ Master Access (Single Source) ------------------ */
+    function checkMasterAccess() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('master') === 'admin786') {
         localStorage.setItem('is_admin', 'true');
         showPopup("Verified", "Master Access Activated!", "🔑");
+      }
     }
-}
 
-// Call this as soon as the app loads
-            checkMasterAccess();
-        function showAdminPanel() {
-    if (localStorage.getItem('is_admin') !== 'true') return;
-
-    const container = document.getElementById('dynamic-body');
-    container.innerHTML = `
-        <h2>📜 Post Daily Hadith</h2>
-        <textarea id="hadith-input" placeholder="Type Hadith related to Instagram post..." 
-                  style="width:100%; height:150px; padding:10px; border-radius:8px;"></textarea>
-        <button onclick="postHadith()" class="main-btn" style="margin-top:15px; width:100%;">
-            Broadcast to All Users
-        </button>
-    `;
-}
-        function renderAdminPanel() {
-    const body = document.getElementById('dynamic-body');
-    body.innerHTML = `
-        <div style="padding:20px; background:var(--soft-gold); border-radius:15px; border:2px solid var(--gold);">
-            <h2 style="color:var(--emerald);">📜 Post Daily Hadith</h2>
-            <p style="font-size:0.9rem;">Type the Hadith for your latest Instagram post below:</p>
-            
-            <textarea id="hadith-text" placeholder="Write Hadith here..." 
-                style="width:100%; height:150px; border-radius:10px; border:1px solid #ccc; padding:10px; font-family:inherit;"></textarea>
-            
-            <button onclick="saveHadithToCloud()" class="main-btn" style="width:100%; margin-top:15px;">
-                Update App for All Users
-            </button>
-        </div>
-    `;
-}
-
-function saveHadithToCloud() {
-    const text = document.getElementById('hadith-text').value;
-    if (!text) return alert("Please enter text first!");
-
-    // Send to Firebase
-    db.ref('dailyHadith').set({
-        content: text,
-        timestamp: Date.now()
-    }).then(() => {
-        showPopup("Success", "Hadith updated live on all devices!", "✨");
-    }).catch((error) => {
-        alert("Error: " + error.message);
-    });
-}
-        // 1. You use this from your phone to send the Hadith to Firebase
-function postHadith() {
-    const text = document.getElementById('hadith-input').value;
-    if (!text) return alert("Please type something!");
-
-    db.ref('dailyHadith').set({
-        content: text,
-        timestamp: Date.now()
-    }).then(() => {
-        alert("Updated successfully! Users will see it now.");
-    });
-}
-
-// 2. This is what EVERY user calls when they click the Hadith button
-function showHadith() {
-    showScreen('content');
-    const body = document.getElementById('dynamic-body');
-    body.innerHTML = "<h2>Hadith of the Day</h2><p>Loading...</p>";
-
-    // Listener for live updates
-    db.ref('dailyHadith').on('value', (snapshot) => {
-        const data = snapshot.val();
-        
-        // If you are the admin, show the Post/Edit button always
-        const adminControls = localStorage.getItem('is_admin') === 'true' 
-            ? `<button onclick="renderAdminPanel()" class="main-btn" style="margin-top:20px; background:var(--gold); color:white;">📝 Master: Edit/Post Hadith</button>` 
-            : '';
-
-        if(!data) {
-            body.innerHTML = `<h2>Hadith of the Day</h2><p>No Hadith posted for today yet.</p> ${adminControls}`;
-            return;
+    /* ------------------ Auth / Profile ------------------ */
+    function handleAuth(type) {
+      let user = { name: "", avatar: "" };
+      if (type === 'guest') {
+        user.name = "Guest_" + Math.floor(Math.random() * 9000);
+      } else {
+        const val = document.getElementById('auth-email').value;
+        if (!val.includes('@')) {
+          showPopup("Input Error", "A valid email is required to register.", "📧");
+          return;
         }
-
-        body.innerHTML = `
-            <h2>Hadith of the Day</h2>
-            <div class="dua-card" style="font-size:1.1rem; line-height:1.6; border-left:5px solid var(--gold); background: #fff8e1; color: #333;">
-                "${data.content}"
-            </div>
-            <p style="text-align:right; font-size:0.8rem; color:gray; margin-top:10px;">
-                Last Updated: ${new Date(data.timestamp).toLocaleDateString()}
-            </p>
-            ${adminControls}
-        `;
-    });
-}
-        const DUA_DB = [
-            { t: "Before Eating", a: "بِسْمِ اللَّهِ", tr: "In the name of Allah" },
-            { t: "After Eating", a: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا", tr: "Praise be to Allah who fed us" },
-            { t: "Before Sleeping", a: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا", tr: "In Your name O Allah I die and live" }
-        ];
-
-        const HADITH_LIST = [
-            "The best among you are those who learn the Quran and teach it.",
-            "Cleanliness is half of faith.",
-            "A good word is a charity.",
-            "He who does not show mercy to others will not be shown mercy."
-        ];
-
-        // --- CUSTOM MODAL POPUP ENGINE ---
-        function showPopup(title, message, icon, callback) {
-            const modal = document.getElementById('app-modal');
-            document.getElementById('modal-title').innerText = title;
-            document.getElementById('modal-message').innerText = message;
-            document.getElementById('modal-icon').innerText = icon;
-            
-            modal.classList.remove('hidden');
-            
-            document.getElementById('modal-btn').onclick = () => {
-                modal.classList.add('hidden');
-                if (callback) callback();
-            };
-        }
-        // Run this function immediately on page load
-function initializeMasterAccess() {
-    const params = new URLSearchParams(window.location.search);
-    
-    // Check if the URL has your secret key
-    if (params.get('master') === 'admin786') {
-        localStorage.setItem('is_admin', 'true');
-        showPopup("Verified", "Master Access Activated!", "🔑");
+        user.name = val.split('@')[0];
+      }
+      localStorage.setItem('iq_user', JSON.stringify(user));
+      localStorage.setItem('user_name', user.name);
+      loginUser(user);
     }
 
-    // If verified, show the Admin Button in the UI
-    if (localStorage.getItem('is_admin') === 'true') {
-        document.getElementById('admin-btn-container').style.display = 'block';
+    function loginUser(user) {
+      document.getElementById('screen-auth').classList.add('hidden');
+      document.getElementById('screen-home').classList.remove('hidden');
+      document.getElementById('menu-btn').classList.remove('hidden');
+      document.getElementById('user-display-name').innerText = user.name;
+      document.getElementById('avatar-init').innerText = (user.name || '?')[0].toUpperCase();
     }
-}
-        function updateCountdown(targetDate) {
-    const timerDisplay = document.getElementById('countdown-clock');
-    
-    const interval = setInterval(() => {
+
+    function checkExistingLogin() {
+      const saved = localStorage.getItem('iq_user');
+      if (saved) {
+        loginUser(JSON.parse(saved));
+        updateSidebarLinks();
+      }
+    }
+
+    function uploadImage(input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          document.getElementById('profile-img').src = e.target.result;
+          document.getElementById('profile-img').style.display = 'block';
+          document.getElementById('avatar-init').style.display = 'none';
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    /* ------------------ Screens ------------------ */
+    function showScreen(id) {
+      const screens = ['screen-auth', 'screen-home', 'screen-content'];
+      screens.forEach(s => document.getElementById(s).classList.add('hidden'));
+      
+      if (id === 'ramadan-grid') {
+        renderRamadanGrid();
+        document.getElementById('screen-content').classList.remove('hidden');
+      } else if (id === 'regular-grid') {
+        document.getElementById('screen-content').classList.remove('hidden');
+        document.getElementById('dynamic-body').innerHTML = "<h2>Learning Pathways</h2><p>Coming Soon!</p>";
+      } else {
+        document.getElementById('screen-' + id).classList.remove('hidden');
+      }
+      const s = document.getElementById('sidebar');
+      if (s && s.classList.contains('open')) toggleMenu();
+    }
+
+    /* ------------------ Ramadan Grid / Timer ------------------ */
+    function startTimer(targetDate) {
+      function updateClock() {
         const now = new Date().getTime();
         const distance = targetDate - now;
-        
         if (distance < 0) {
-            clearInterval(interval);
-            timerDisplay.innerText = "New Day Unlocked!";
-            renderRamadanGrid(); // Refresh grid to unlock the new button
-            return;
+          clearInterval(timerInterval);
+          renderRamadanGrid();
+          return;
         }
-        
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        
-        timerDisplay.innerText = 
+        const clockElement = document.getElementById('countdown-clock');
+        if (clockElement) {
+          clockElement.innerText = 
             (hours < 10 ? "0" + hours : hours) + ":" + 
             (minutes < 10 ? "0" + minutes : minutes) + ":" + 
             (seconds < 10 ? "0" + seconds : seconds);
-    }, 1000);
-}
-        function startTimer(targetDate) {
-    function updateClock() {
-        const now = new Date().getTime();
-        const distance = targetDate - now;
-
-        if (distance < 0) {
-            clearInterval(timerInterval);
-            renderRamadanGrid(); // Auto-unlock the next day when timer hits zero
-            return;
         }
-
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        const clockElement = document.getElementById('countdown-clock');
-        if (clockElement) {
-            clockElement.innerText = 
-                (hours < 10 ? "0" + hours : hours) + ":" + 
-                (minutes < 10 ? "0" + minutes : minutes) + ":" + 
-                (seconds < 10 ? "0" + seconds : seconds);
-        }
+      }
+      const timerInterval = setInterval(updateClock, 1000);
+      updateClock();
     }
 
-    const timerInterval = setInterval(updateClock, 1000);
-    updateClock(); // Run once immediately
-}
+    function renderRamadanGrid() {
+      const container = document.getElementById('dynamic-body');
+      const ramadanStart = new Date('2026-02-18T00:00:00'); 
+      const now = new Date();
+      const diffInMs = now - ramadanStart;
+      const currentDay = Math.floor(diffInMs / (1000 * 60 * 60 * 24)) + 1;
+      const nextUnlock = new Date(now); nextUnlock.setHours(24, 0, 0, 0);
 
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const overlay = document.getElementById('bismillah-overlay');
-                const main = document.getElementById('main-container');
-                if (overlay) {
-                    overlay.style.opacity = '0';
-                    overlay.style.pointerEvents = 'none'; 
-                    setTimeout(() => {
-                        overlay.classList.add('hidden');
-                        if (main) main.classList.remove('hidden');
-                        checkExistingLogin();
-                    }, 800);
-                }
-            }, 2500);
-        });
-
-  function handleAuth(type) {
-    let user = { name: "", avatar: "" };
-    if(type === 'guest') {
-        user.name = "Guest_" + Math.floor(Math.random() * 9000);
-    } else {
-        const val = document.getElementById('auth-email').value;
-        if(!val.includes('@')) {
-            showPopup("Input Error", "A valid email is required.", "📧");
-            return;
-        }
-        user.name = val.split('@')[0];
-    }
-    localStorage.setItem('iq_user', JSON.stringify(user));
-    localStorage.setItem('user_name', user.name); 
-    loginUser(user);
-} // Ensure this bracket is present
-
-        function loginUser(user) {
-            document.getElementById('screen-auth').classList.add('hidden');
-            document.getElementById('screen-home').classList.remove('hidden');
-            document.getElementById('menu-btn').classList.remove('hidden');
-            document.getElementById('user-display-name').innerText = user.name;
-            document.getElementById('avatar-init').innerText = user.name[0].toUpperCase();
-        }
-
-        function checkExistingLogin() {
-            const saved = localStorage.getItem('iq_user');
-            if(saved) {
-                loginUser(JSON.parse(saved));
-                updateSidebarLinks();
-            }
-        }
-
-        function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
-
-        function showScreen(id) {
-            const screens = ['screen-auth', 'screen-home', 'screen-content'];
-            screens.forEach(s => document.getElementById(s).classList.add('hidden'));
-            
-            if(id === 'ramadan-grid') {
-                renderRamadanGrid();
-                document.getElementById('screen-content').classList.remove('hidden');
-            } else if (id === 'regular-grid') {
-                document.getElementById('screen-content').classList.remove('hidden');
-                document.getElementById('dynamic-body').innerHTML = "<h2>Learning Pathways</h2><p>Coming Soon!</p>";
-            } else {
-                document.getElementById('screen-' + id).classList.remove('hidden');
-            }
-            if(document.getElementById('sidebar').classList.contains('open')) toggleMenu();
-        }
-
-        function renderRamadanGrid() {
-    const container = document.getElementById('dynamic-body');
-    
-    // Ramadan 2026 Start Date (Adjust if official moon sighting varies)
-    const ramadanStart = new Date('2026-02-18T00:00:00'); 
-    const now = new Date();
-    
-    // Calculate current day of Ramadan
-    const diffInMs = now - ramadanStart;
-    const currentDay = Math.floor(diffInMs / (1000 * 60 * 60 * 24)) + 1;
-    
-    // Calculate when the next day starts (Midnight)
-    const nextUnlock = new Date(now);
-    nextUnlock.setHours(24, 0, 0, 0); 
-
-    container.innerHTML = `
+      container.innerHTML = `
         <div id="timer-banner" style="background:var(--soft-gold); padding:15px; border-radius:15px; margin-bottom:20px; text-align:center; border:1px solid var(--gold); border-left:5px solid var(--gold);">
-            <small style="color:var(--gold); font-weight:600; text-transform:uppercase; letter-spacing:1px;">Next Level Unlocks In / Agla Level Khulega:</small>
-            <div id="countdown-clock" style="font-family:'Cinzel'; font-size:1.8rem; color:var(--emerald); margin-top:5px;">00:00:00</div>
+          <small style="color:var(--gold); font-weight:600; text-transform:uppercase; letter-spacing:1px;">Next Level Unlocks In / Agla Level Khulega:</small>
+          <div id="countdown-clock" style="font-family:'Cinzel'; font-size:1.8rem; color:var(--emerald); margin-top:5px;">00:00:00</div>
         </div>
         <h2 style="font-family:'Cinzel'; text-align:center;">Ramadan Challenge 2026</h2>
         <div class="level-grid" id="grid"></div>
-    `;
+      `;
+      startTimer(nextUnlock);
 
-    // Initialize the ticking timer
-    startTimer(nextUnlock);
-
-    // Build the grid
-    for(let i=1; i<=31; i++) {
+      for (let i = 1; i <= 31; i++) {
         const btn = document.createElement('button');
         btn.className = 'lvl';
         btn.innerText = i === 31 ? "EID" : i;
-        
-        // Lock logic: If the day hasn't arrived yet
-        if(i > currentDay && i !== 31) { 
-            btn.classList.add('locked');
-            btn.onclick = () => showPopup("Locked / Band Hai", `This challenge unlocks on Day ${i}.\n(Yeh challenge Day ${i} ko khulega.)`, "🔒");
+        if (i > currentDay && i !== 31) {
+          btn.classList.add('locked');
+          btn.onclick = () => showPopup("Locked / Band Hai", `This challenge unlocks on Day ${i}.\n(Yeh challenge Day ${i} ko khulega.)`, "🔒");
         } else {
-            if(localStorage.getItem('lvl_'+i)) btn.classList.add('completed');
-            btn.onclick = () => i === 31 ? startEidQuiz() : startRamadanLevel(i);
+          if (localStorage.getItem('lvl_' + i)) btn.classList.add('completed');
+          btn.onclick = () => i === 31 ? startEidQuiz() : startRamadanLevel(i);
         }
         document.getElementById('grid').appendChild(btn);
+      }
     }
-}
-        function startRamadanLevel(levelNum) {
-            if (typeof window.RAMADAN_QUESTIONS === 'undefined') {
-                return showPopup("Loading", "Questions are still loading, please wait.", "⏳");
-            }
-            const questions = window.RAMADAN_QUESTIONS[`level${levelNum}`];
-            if (!questions) return showPopup("Coming Soon", "Content for this day is being prepared.", "📅");
 
-            const body = document.getElementById('dynamic-body');
-            body.innerHTML = `<h3 id="quiz-title">Day ${levelNum}</h3><div id="quiz-area"></div>`;
-            loadQuestion(levelNum, 0);
-        }
+    function startRamadanLevel(levelNum) {
+      if (typeof window.RAMADAN_QUESTIONS === 'undefined') {
+        return showPopup("Loading", "Questions are still loading, please wait.", "⏳");
+      }
+      const questions = window.RAMADAN_QUESTIONS[`level${levelNum}`];
+      if (!questions) return showPopup("Coming Soon", "Content for this day is being prepared.", "📅");
+      const body = document.getElementById('dynamic-body');
+      body.innerHTML = `<h3 id="quiz-title">Day ${levelNum}</h3><div id="quiz-area"></div>`;
+      loadQuestion(levelNum, 0);
+    }
 
-        function loadQuestion(level, index) {
-    const qData = window.RAMADAN_QUESTIONS[`level${level}`][index];
-    const area = document.getElementById('quiz-area');
-    if (!qData) return;
+    function loadQuestion(level, index) {
+      const qData = window.RAMADAN_QUESTIONS[`level${level}`][index];
+      const area = document.getElementById('quiz-area');
+      if (!qData) return;
 
-    area.innerHTML = `
+      area.innerHTML = `
         <p style="color:var(--gold); font-weight:600;">Question ${index + 1} of ${window.RAMADAN_QUESTIONS[`level${level}`].length}</p>
         <div style="margin-bottom:20px;">
-            <h4 style="margin-bottom:5px; line-height:1.4;">${qData.q}</h4>
-            <p style="margin:0; font-style:italic; color:var(--emerald); font-size:0.95rem; opacity:0.9;">${qData.qh || ""}</p>
+          <h4 style="margin-bottom:5px; line-height:1.4;">${qData.q}</h4>
+          <p style="margin:0; font-style:italic; color:var(--emerald); font-size:0.95rem; opacity:0.9;">${qData.qh || ""}</p>
         </div>
         <div id="options-box"></div>
-    `;
-
-    qData.o.forEach((opt, i) => {
+      `;
+      qData.o.forEach((opt, i) => {
         const b = document.createElement('button');
         b.className = 'main-btn';
         b.style.width = "100%";
         b.style.marginBottom = "10px";
         b.style.textAlign = "left";
-        
-        // Combine English and Hinglish options
         const hinglishOpt = (qData.oh && qData.oh[i]) ? `<br><span style="font-size:0.85rem; font-weight:normal; opacity:0.8;">${qData.oh[i]}</span>` : "";
         b.innerHTML = `<strong>${opt}</strong>${hinglishOpt}`;
-        
-        b.onclick = (e) => {
-            e.preventDefault();
-            checkAnswer(level, index, opt);
-        };
+        b.onclick = (e) => { e.preventDefault(); checkAnswer(level, index, opt); };
         document.getElementById('options-box').appendChild(b);
-    });
-}
-
-       function checkAnswer(level, index, selected) {
-    const qData = window.RAMADAN_QUESTIONS[`level${level}`][index];
-    
-    if (selected.trim() === qData.a.trim()) {
-        // Show English explanation followed by Hinglish
-        const fullExplanation = qData.e + (qData.eh ? `\n\n(${qData.eh})` : "");
-        
-        showPopup("Correct! ✨", fullExplanation, "🌙", () => {
-            const nextIndex = index + 1;
-            if (nextIndex < window.RAMADAN_QUESTIONS[`level${level}`].length) {
-                loadQuestion(level, nextIndex);
-            } else {
-                localStorage.setItem(`lvl_${level}`, 'true');
-                if (level === 31) {
-                    showPopup("MABROOK!", "Finale Completed! / Finale Poora Hua!", "🏆", () => showCertificate());
-                } else {
-                    showPopup("Day Completed!", `Day ${level} finished. / Din ${level} poora hua.`, "⭐", () => renderRamadanGrid());
-                }
-                // Inside checkAnswer, where the answer is correct:
-const currentPoints = (parseInt(localStorage.getItem('totalPoints')) || 0) + 10;
-localStorage.setItem('totalPoints', currentPoints);
-
-// If the user has a name saved, update the leaderboard automatically
-const savedName = localStorage.getItem('user_name');
-if(savedName) {
-    submitScore(savedName, currentPoints);
-}
-                updateSidebarLinks();
-            }
-        });
-    } else {
-        showPopup("Try Again", "Incorrect answer. / Galat jawab. Dobara sochein! 🤔", "❌");
+      });
     }
-}
 
-        function showDuas() {
-            showScreen('content');
-            const body = document.getElementById('dynamic-body');
-            body.innerHTML = '<h2>Daily Duas</h2>';
-            DUA_DB.forEach(d => {
-                body.innerHTML += `<div class="dua-card"><strong>${d.t}</strong><br><span>${d.a}</span><br><small>${d.tr}</small></div>`;
-            });
-        }
-
-        function showHadith() {
-            showScreen('content');
-            const dayIdx = new Date().getDate() % HADITH_LIST.length;
-            document.getElementById('dynamic-body').innerHTML = `<h2>Hadith</h2><div class="dua-card" style="text-align:center;">"${HADITH_LIST[dayIdx]}"</div>`;
-        }
-
-        function startEidQuiz() {
-            if (!localStorage.getItem('lvl_30')) {
-                showPopup("Grand Finale Locked", "Please complete all 30 days of Ramadan first.", "🔒", () => showScreen('ramadan-grid'));
-                return;
+    function checkAnswer(level, index, selected) {
+      const qData = window.RAMADAN_QUESTIONS[`level${level}`][index];
+      if (selected.trim() === qData.a.trim()) {
+        const fullExplanation = qData.e + (qData.eh ? `\n\n(${qData.eh})` : "");
+        showPopup("Correct! ✨", fullExplanation, "🌙", () => {
+          const nextIndex = index + 1;
+          if (nextIndex < window.RAMADAN_QUESTIONS[`level${level}`].length) {
+            loadQuestion(level, nextIndex);
+          } else {
+            localStorage.setItem(`lvl_${level}`, 'true');
+            if (level === 31) {
+              showPopup("MABROOK!", "Finale Completed! / Finale Poora Hua!", "🏆", () => showCertificate());
+            } else {
+              showPopup("Day Completed!", `Day ${level} finished. / Din ${level} poora hua.`, "⭐", () => renderRamadanGrid());
             }
-            showPopup("Grand Finale", "Answer all 10 questions correctly to earn your certificate.", "🌟", () => startRamadanLevel(31));
+            const currentPoints = (parseInt(localStorage.getItem('totalPoints')) || 0) + 10;
+            localStorage.setItem('totalPoints', currentPoints);
+            const savedName = localStorage.getItem('user_name');
+            if (savedName) submitScore(savedName, currentPoints);
+            updateSidebarLinks();
+          }
+        });
+      } else {
+        showPopup("Try Again", "Incorrect answer. / Galat jawab. Dobara sochein! 🤔", "❌");
+      }
+    }
+
+    function startEidQuiz() {
+      if (!localStorage.getItem('lvl_30')) {
+        showPopup("Grand Finale Locked", "Please complete all 30 days of Ramadan first.", "🔒", () => showScreen('ramadan-grid'));
+        return;
+      }
+      showPopup("Grand Finale", "Answer all 10 questions correctly to earn your certificate.", "🌟", () => startRamadanLevel(31));
+    }
+
+    function showCertificate() {
+      const isCompleted = localStorage.getItem('lvl_31');
+      if (!isCompleted) {
+        const body = document.getElementById('dynamic-body');
+        body.innerHTML = `<div style="text-align:center; padding:40px;"><div style="font-size:50px;">🔒</div><h3>Certificate Locked</h3><button class="main-btn" onclick="showScreen('ramadan-grid')">Go to Quiz</button></div>`;
+        showScreen('content');
+        return;
+      }
+      const user = JSON.parse(localStorage.getItem('iq_user')) || { name: "Valued Learner" };
+      const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      const body = document.getElementById('dynamic-body');
+      body.innerHTML = `
+        <div id="certificate-print-area" style="border:15px double var(--gold); padding:30px; text-align:center; background:white; color:#064e3b; position:relative; font-family:'Cinzel', serif;">
+          <div style="border:2px solid var(--emerald); padding:20px;">
+            <h1 style="margin:0; font-size:2.5rem;">CERTIFICATE</h1>
+            <p style="letter-spacing:3px;">OF COMPLETION</p>
+            <hr style="width:50%; border:1px solid var(--gold);">
+            <p>This is to certify that</p>
+            <h2 style="font-size:2rem; text-decoration:underline; margin:10px 0;">${user.name}</h2>
+            <p>has successfully completed the</p>
+            <h3 style="color:var(--emerald)">30-DAY RAMADAN QUEST 2026</h3>
+            <p>Demonstrating excellent knowledge of Islamic history, <br>Quranic studies, and Ramadan traditions.</p>
+            <div style="margin-top:30px; display:flex; justify-content:space-between; align-items:flex-end;">
+              <div style="text-align:left;"><small>Date: ${date}</small></div>
+              <div style="text-align:right;"><img src="https://img.icons8.com/fluency/64/verified-badge.png" width="40"><br><small>Islamic Questz Certified</small></div>
+            </div>
+          </div>
+        </div>
+        <button class="main-btn" style="width:100%; margin-top:20px; background:var(--emerald); color:white;" onclick="printCertificate()">📥 Download / Save PDF</button>
+      `;
+      showScreen('content');
+    }
+
+    function printCertificate() {
+      const printContent = document.getElementById('certificate-print-area').innerHTML;
+      const originalContent = document.body.innerHTML;
+      document.body.innerHTML = printContent;
+      window.print();
+      document.body.innerHTML = originalContent;
+      window.location.reload();
+    }
+
+    /* ------------------ Duas ------------------ */
+    const DUA_DB = [
+      { t: "Before Eating", a: "بِسْمِ اللَّهِ", tr: "In the name of Allah" },
+      { t: "After Eating", a: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا", tr: "Praise be to Allah who fed us" },
+      { t: "Before Sleeping", a: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا", tr: "In Your name O Allah I die and live" }
+    ];
+    function showDuas() {
+      showScreen('content');
+      const body = document.getElementById('dynamic-body');
+      body.innerHTML = '<h2>Daily Duas</h2>';
+      DUA_DB.forEach(d => {
+        body.innerHTML += `<div class="dua-card"><strong>${d.t}</strong><br><span>${d.a}</span><br><small>${d.tr}</small></div>`;
+      });
+    }
+
+    /* ------------------ Hadith (Firebase Version ONLY) ------------------ */
+    const HADITH_LIST = [
+      "The best among you are those who learn the Quran and teach it.",
+      "Cleanliness is half of faith.",
+      "A good word is a charity.",
+      "He who does not show mercy to others will not be shown mercy."
+    ];
+
+    function renderAdminPanel() {
+      if (localStorage.getItem('is_admin') !== 'true') return;
+      const body = document.getElementById('dynamic-body');
+      body.innerHTML = `
+        <div style="padding:20px; background:var(--soft-gold); border-radius:15px; border:2px solid var(--gold);">
+          <h2 style="color:var(--emerald);">📜 Post Daily Hadith</h2>
+          <textarea id="hadith-text" placeholder="Write Hadith here..."
+            style="width:100%; height:150px; border-radius:10px; border:1px solid #ccc; padding:10px; margin-bottom:10px; color:#000; font-family:inherit;"></textarea>
+          <button onclick="saveHadithToCloud()" class="main-btn" style="width:100%; background:var(--emerald); color:white;">Broadcast to All Users</button>
+        </div>
+      `;
+    }
+
+    function saveHadithToCloud() {
+      const text = document.getElementById('hadith-text').value;
+      if (!text) return showPopup("Validation", "Enter text first!", "✍️");
+      db.ref('dailyHadith').set({ content: text, timestamp: Date.now() })
+        .then(() => showPopup("Success", "Updated for all users!", "✨"))
+        .catch(err => showPopup("Firebase Error", err.message, "⚠️"));
+    }
+
+    function showHadith() {
+      showScreen('content');
+      const body = document.getElementById('dynamic-body');
+      body.innerHTML = "<h2>Hadith of the Day</h2><p>Loading...</p>";
+      db.ref('dailyHadith').on('value', (snapshot) => {
+        const data = snapshot.val();
+        const adminBtn = localStorage.getItem('is_admin') === 'true' 
+          ? `<button onclick="renderAdminPanel()" class="main-btn" style="margin-top:20px;">Edit Hadith</button>` : '';
+        if (!data) {
+          // Fallback to local list if nothing posted yet
+          const dayIdx = new Date().getDate() % HADITH_LIST.length;
+          body.innerHTML = `
+            <h2>Hadith of the Day</h2>
+            <div class="dua-card" style="font-size:1.1rem; line-height:1.6; text-align:center;">"${HADITH_LIST[dayIdx]}"</div>
+            ${adminBtn}
+          `;
+          return;
         }
+        body.innerHTML = `
+          <h2>Hadith of the Day</h2>
+          <div class="dua-card" style="font-size:1.1rem; line-height:1.6;">"${data.content}"</div>
+          <p style="text-align:right; font-size:0.8rem; color:gray; margin-top:10px;">
+            Last Updated: ${new Date(data.timestamp).toLocaleDateString()}
+          </p>
+          ${adminBtn}
+        `;
+      });
+    }
 
-        function showCertificate() {
-            const isCompleted = localStorage.getItem('lvl_31');
-            if (!isCompleted) {
-                const body = document.getElementById('dynamic-body');
-                body.innerHTML = `<div style="text-align:center; padding:40px;"><div style="font-size:50px;">🔒</div><h3>Certificate Locked</h3><button class="main-btn" onclick="showScreen('ramadan-grid')">Go to Quiz</button></div>`;
-                showScreen('content');
-                return;
-            }
-            const user = JSON.parse(localStorage.getItem('iq_user')) || { name: "Valued Learner" };
-            const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-            const body = document.getElementById('dynamic-body');
-            body.innerHTML = `
-                <div id="certificate-print-area" style="border:15px double var(--gold); padding:30px; text-align:center; background:white; color:#064e3b; position:relative; font-family:'Cinzel', serif;">
-                    <div style="border:2px solid var(--emerald); padding:20px;">
-                        <h1 style="margin:0; font-size:2.5rem;">CERTIFICATE</h1>
-                        <p style="letter-spacing:3px;">OF COMPLETION</p>
-                        <hr style="width:50%; border:1px solid var(--gold);">
-                        <p>This is to certify that</p>
-                        <h2 style="font-size:2rem; text-decoration:underline; margin:10px 0;">${user.name}</h2>
-                        <p>has successfully completed the</p>
-                        <h3 style="color:var(--emerald)">30-DAY RAMADAN QUEST 2026</h3>
-                        <p>Demonstrating excellent knowledge of Islamic history, <br>Quranic studies, and Ramadan traditions.</p>
-                        <div style="margin-top:30px; display:flex; justify-content:space-between; align-items:flex-end;">
-                            <div style="text-align:left;"><small>Date: ${date}</small></div>
-                            <div style="text-align:right;"><img src="https://img.icons8.com/fluency/64/verified-badge.png" width="40"><br><small>Islamic Questz Certified</small></div>
-                        </div>
-                    </div>
-                </div>
-                <button class="main-btn" style="width:100%; margin-top:20px; background:var(--emerald); color:white;" onclick="printCertificate()">📥 Download / Save PDF</button>
-            `;
-            showScreen('content');
-        }
+    /* ------------------ Leaderboard (Single Version) ------------------ */
+    function submitScore(username, score) {
+      db.ref('leaderboard/' + username).set({ 
+        name: username, 
+        score: score, 
+        timestamp: Date.now() 
+      }).catch(err => console.error('Leaderboard write failed:', err));
+    }
 
-        function printCertificate() {
-            const printContent = document.getElementById('certificate-print-area').innerHTML;
-            const originalContent = document.body.innerHTML;
-            document.body.innerHTML = printContent;
-            window.print();
-            document.body.innerHTML = originalContent;
-            window.location.reload();
-        }
+    function loadLeaderboard() {
+      showScreen('content');
+      const body = document.getElementById('dynamic-body');
+      body.innerHTML = "<h2>🏆 Global Leaderboard</h2><p>Loading Top 10...</p>";
+      db.ref('leaderboard').orderByChild('score').limitToLast(10).once('value', (snapshot) => {
+        let scores = [];
+        snapshot.forEach(child => scores.push(child.val()));
+        scores.reverse();
+        let html = '<table style="width:100%; margin-top:20px; border-collapse:collapse;">';
+        html += '<tr style="border-bottom:2px solid var(--gold);"><th>Rank</th><th>Name</th><th>Points</th></tr>';
+        scores.forEach((p, i) => {
+          html += `<tr style="border-bottom:1px solid #eee; height:45px;">
+                    <td>${i + 1}</td><td>${p.name}</td><td style="color:var(--gold); font-weight:bold;">${p.score}</td>
+                   </tr>`;
+        });
+        html += '</table>';
+        body.innerHTML = html;
+      });
+    }
 
-        function uploadImage(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    document.getElementById('profile-img').src = e.target.result;
-                    document.getElementById('profile-img').style.display = 'block';
-                    document.getElementById('avatar-init').style.display = 'none';
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
+    /* ------------------ Review ------------------ */
+    function showReview() {
+      showScreen('content');
+      const body = document.getElementById('dynamic-body');
+      if (typeof window.RAMADAN_QUESTIONS === 'undefined') return showPopup("Error", "Data not loaded.", "❌");
+      let html = '<h2>Knowledge Review</h2><p>Correct answers from your journey:</p>';
+      for (let i = 1; i <= 30; i++) {
+        const level = window.RAMADAN_QUESTIONS[`level${i}`];
+        if (!level) continue;
+        html += `<details style="margin-bottom:10px; padding:10px; background:var(--soft-gold); border-radius:8px; color: #000;">
+                  <summary style="font-weight:600; cursor:pointer;">Day ${i} Questions</summary>`;
+        level.forEach(q => {
+          html += `<p style="border-left:3px solid var(--emerald); padding-left:10px; margin-top:10px;">
+                    <strong>Q: ${q.q}</strong><br>
+                    <span style="color:green;">Ans: ${q.a}</span><br>
+                    <small style="color: #666;">${q.e || ""}</small>
+                   </p>`;
+        });
+        html += `</details>`;
+      }
+      body.innerHTML = html;
+    }
 
-        function toggleTheme() {
-            const t = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            document.body.setAttribute('data-theme', t);
-        }
+    function updateSidebarLinks() {
+      if (localStorage.getItem('lvl_31')) {
+        document.getElementById('review-link').classList.remove('hidden');
+      }
+    }
 
-        function shareApp() { if(navigator.share) navigator.share({title:'Islamic Questz', url: location.href}); }
-
-        function showReview() {
-            showScreen('content');
-            const body = document.getElementById('dynamic-body');
-            if (typeof window.RAMADAN_QUESTIONS === 'undefined') return showPopup("Error", "Data not loaded.", "❌");
-
-            let html = '<h2>Knowledge Review</h2><p>Correct answers from your journey:</p>';
-            for (let i = 1; i <= 30; i++) {
-                const level = window.RAMADAN_QUESTIONS[`level${i}`];
-                if(!level) continue;
-                html += `<details style="margin-bottom:10px; padding:10px; background:var(--soft-gold); border-radius:8px; color: #000;">
-                            <summary style="font-weight:600; cursor:pointer;">Day ${i} Questions</summary>`;
-                level.forEach(q => {
-                    html += `<p style="border-left:3px solid var(--emerald); padding-left:10px; margin-top:10px;">
-                                <strong>Q: ${q.q}</strong><br>
-                                <span style="color:green;">Ans: ${q.a}</span><br>
-                                <small style="color: #666;">${q.e || ""}</small>
-                             </p>`;
-                });
-                html += `</details>`;
-            }
-            body.innerHTML = html;
-        }
-
-        function updateSidebarLinks() {
-            if (localStorage.getItem('lvl_31')) {
-                document.getElementById('review-link').classList.remove('hidden');
-            }
-        }
-    </script>
+    /* ------------------ Overlay Hide (Robust) ------------------ */
+    (function ensureOverlayHides() {
+      function hide() {
+        const overlay = document.getElementById('bismillah-overlay');
+        const main = document.getElementById('main-container');
+        if (!overlay || !main) return;
+        overlay.style.opacity = '0';
+        overlay.style.pointerEvents = 'none';
+        setTimeout(() => {
+          overlay.classList.add('hidden');
+          main.classList.remove('hidden');
+          checkExistingLogin();
+        }, 800);
+      }
+      window.addEventListener('load', () => setTimeout(() => { hide(); checkMasterAccess(); }, 2500));
+      // Fallback in case of other errors
+      setTimeout(() => {
+        const overlay = document.getElementById('bismillah-overlay');
+        if (overlay && !overlay.classList.contains('hidden')) { hide(); checkMasterAccess(); }
+      }, 5000);
+    })();
+  </script>
 </body>
 </html>
