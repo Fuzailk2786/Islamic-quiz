@@ -210,18 +210,13 @@ checkMasterAccess();
     
 <nav id="sidebar">
     <div class="profile-section">
-        <div id="review-link" class="nav-item hidden" onclick="showReview()">📚 Review All Answers</div>
-        <div class="avatar" onclick="document.getElementById('upload-pic').click()">
-            <span id="avatar-init">?</span>
-            <img id="profile-img" src="" alt="Profile">
         </div>
-        <input type="file" id="upload-pic" class="hidden" accept="image/*" onchange="uploadImage(this)">
-        <div id="user-display-name" style="font-weight: 600; margin-top: 5px;">Guest User</div>
-    </div>
     <div class="nav-item" onclick="showScreen('home'); toggleMenu();">🏠 Home</div>
     <div class="nav-item" onclick="showScreen('ramadan-grid'); toggleMenu();">🌙 Ramadan Quiz</div>
+    
     <div class="nav-item" onclick="showHadith(); toggleMenu();">📜 Daily Hadith</div>
     <div class="nav-item" onclick="loadLeaderboard(); toggleMenu();">🏆 Leaderboard</div>
+    
     <div class="nav-item" onclick="showDuas(); toggleMenu();">🤲 Daily Duas</div>
     <div class="nav-item" onclick="toggleTheme(); toggleMenu();">🌓 Theme Mode</div>
     <div class="nav-item" onclick="toggleMenu()" style="color:gray;">Close</div>
