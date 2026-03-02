@@ -1,4 +1,4 @@
-const CACHE_NAME = 'islamic-questz-v7.1';
+const CACHE_NAME = 'islamic-questz-v7.2';
 const assets = ['./', 
     './index.html', 
     './questions.js', 
