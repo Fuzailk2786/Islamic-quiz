@@ -18,7 +18,12 @@
     storageBucket: "islamicquestz.firebasestorage.app",
     appId: "1:740000996250:web:444a3b4ba9c92dad64b823",
     messagingSenderId: "740000996250",
-    measurementId: "G-YSH95XR38D"
+    measurementId: "G-YSH95XR38D",
+      // 1. Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  // 2. Define the Database variable (CRITICAL)
+  const db = firebase.database();
   };
 function loadLeaderboard() {
     showScreen('content');
@@ -42,89 +47,7 @@ function loadLeaderboard() {
     });
 }
 
-function checkMasterAccess() {
-    const params = new URLSearchParams(window.location.search);
-    // Use admin786 consistently as your key
-    if (params.get('master') === 'admin786') {
-        localStorage.setItem('is_admin', 'true');
-        showPopup("Verified", "Master Access Activated!", "🔑");
-    }
-}
 
-function renderAdminPanel() {
-    if (localStorage.getItem('is_admin') !== 'true') return;
-    const body = document.getElementById('dynamic-body');
-    body.innerHTML = `
-        <div style="padding:20px; background:var(--soft-gold); border-radius:15px; border:2px solid var(--gold);">
-            <h2 style="color:var(--emerald);">📜 Post Daily Hadith</h2>
-            <textarea id="hadith-text" placeholder="Write Hadith here..." 
-                style="width:100%; height:150px; border-radius:10px; border:1px solid #ccc; padding:10px; margin-bottom:10px; color:#000; font-family:inherit;"></textarea>
-            <button onclick="saveHadithToCloud()" class="main-btn" style="width:100%; background:var(--emerald); color:white;">Broadcast to All Users</button>
-        </div>
-    `;
-}
-
-function saveHadithToCloud() {
-    const text = document.getElementById('hadith-text').value;
-    if (!text) return alert("Enter text!");
-    db.ref('dailyHadith').set({
-        content: text,
-        timestamp: Date.now()
-    }).then(() => showPopup("Success", "Updated for all users!", "✨"))
-      .catch(err => alert("Firebase Error: " + err.message));
-}
-
-function showHadith() {
-    showScreen('content');
-    const body = document.getElementById('dynamic-body');
-    body.innerHTML = "<h2>Hadith of the Day</h2><p>Loading...</p>";
-
-    db.ref('dailyHadith').on('value', (snapshot) => {
-        const data = snapshot.val();
-        const adminBtn = localStorage.getItem('is_admin') === 'true' ? 
-            `<button onclick="renderAdminPanel()" class="main-btn" style="margin-top:20px;">Edit Hadith</button>` : '';
-        
-        if(!data) {
-            body.innerHTML = `<h2>Hadith of the Day</h2><p>No Hadith posted yet.</p> ${adminBtn}`;
-            return;
-        }
-        body.innerHTML = `
-            <h2>Hadith of the Day</h2>
-            <div class="dua-card" style="font-size:1.1rem; line-height:1.6;">"${data.content}"</div>
-            ${adminBtn}
-        `;
-    });
-}
-
-/* --- LEADERBOARD LOGIC --- */
-function submitScore(username, score) {
-    db.ref('leaderboard/' + username).set({ 
-        name: username, 
-        score: score, 
-        timestamp: Date.now() 
-    });
-}
-
-function loadLeaderboard() {
-    showScreen('content');
-    const body = document.getElementById('dynamic-body');
-    body.innerHTML = "<h2>🏆 Leaderboard</h2><p>Loading...</p>";
-
-    db.ref('leaderboard').orderByChild('score').limitToLast(10).once('value', (snapshot) => {
-        let scores = [];
-        snapshot.forEach(c => scores.push(c.val()));
-        scores.reverse();
-        let table = '<table style="width:100%; margin-top:20px; border-collapse:collapse;">';
-        table += '<tr style="border-bottom:2px solid var(--gold);"><th>Rank</th><th>Name</th><th>Points</th></tr>';
-        scores.forEach((p, i) => {
-            table += `<tr style="border-bottom:1px solid #eee; height:45px;"><td>${i+1}</td><td>${p.name}</td><td>${p.score}</td></tr>`;
-        });
-        body.innerHTML = table + '</table>';
-    });
-}
-
-// Ensure Master check runs on load
-checkMasterAccess();
 </script>
     <style>
         :root {
@@ -185,29 +108,6 @@ checkMasterAccess();
         <div class="bismillah-text">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
         <div style="color: white; letter-spacing: 2px;">ISLAMIC QUESTZ</div>
     </div>
-<div id="sidebar" class="sidebar">
-    <div style="padding:20px;">
-        <h3 style="color:var(--gold); font-family:'Cinzel';">Menu</h3>
-        <p onclick="renderRamadanGrid(); toggleSidebar();" style="cursor:pointer; margin:15px 0;">🏠 Home</p>
-        
-        <p onclick="showHadith(); toggleSidebar();" style="cursor:pointer; margin:15px 0;">📜 Daily Hadith</p>
-        <p onclick="loadLeaderboard(); toggleSidebar();" style="cursor:pointer; margin:15px 0;">🏆 Leaderboard</p>
-        
-        <p onclick="showReview(); toggleSidebar();" id="review-link" class="hidden" style="cursor:pointer; margin:15px 0;">⭐ Knowledge Review</p>
-        <p onclick="toggleSidebar()" style="cursor:pointer; margin:15px 0; color:gray;">Close</p>
-    </div>
-</div>
-    <div id="app-modal" class="hidden" style="position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px;">
-        <div style="background: var(--card-bg); width: 100%; max-width: 400px; border-radius: 20px; padding: 25px; text-align: center; border: 2px solid var(--gold); box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-            <div id="modal-icon" style="font-size: 3rem; margin-bottom: 10px;"></div>
-            <h3 id="modal-title" style="font-family: 'Cinzel'; margin-top: 0; color: var(--emerald);"></h3>
-            <p id="modal-message" style="margin-bottom: 25px; line-height: 1.5; color: var(--text-main);"></p>
-            <button id="modal-btn" class="main-btn" style="width: 100%; background: var(--emerald); color: white; border: none;">Continue</button>
-        </div>
-    </div>
-
-    <button id="menu-btn" class="hidden" onclick="toggleMenu()">☰</button>
-    
 <nav id="sidebar">
     <div class="profile-section">
         <div id="review-link" class="nav-item hidden" onclick="showReview()">📚 Review All Answers</div>
@@ -265,13 +165,11 @@ checkMasterAccess();
     <script src="questions.js"></script>
 
     <script>
-        function checkMasterAccess() {
+       function checkMasterAccess() {
     const params = new URLSearchParams(window.location.search);
-    
-    // If you visit with ?master=true, it saves a key on your phone forever
     if (params.get('master') === 'admin786') {
         localStorage.setItem('is_admin', 'true');
-        alert("Master Access Verified!");
+        showPopup("Verified", "Master Access Activated!", "🔑");
     }
 }
 
@@ -476,23 +374,22 @@ function initializeMasterAccess() {
             }, 2500);
         });
 
-     function handleAuth(type) {
+  function handleAuth(type) {
     let user = { name: "", avatar: "" };
     if(type === 'guest') {
         user.name = "Guest_" + Math.floor(Math.random() * 9000);
     } else {
         const val = document.getElementById('auth-email').value;
         if(!val.includes('@')) {
-            showPopup("Input Error", "A valid email is required to register.", "📧");
+            showPopup("Input Error", "A valid email is required.", "📧");
             return;
         }
         user.name = val.split('@')[0];
     }
-    // Correctly saving both objects needed for Leaderboard and Profile
     localStorage.setItem('iq_user', JSON.stringify(user));
     localStorage.setItem('user_name', user.name); 
     loginUser(user);
-}
+} // Ensure this bracket is present
 
         function loginUser(user) {
             document.getElementById('screen-auth').classList.add('hidden');
