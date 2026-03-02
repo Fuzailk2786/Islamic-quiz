@@ -121,18 +121,6 @@ function loadLeaderboard() {
 
 // Ensure Master check runs on load
 checkMasterAccess();
-<div id="sidebar" class="sidebar">
-    <div style="padding:20px;">
-        <h3 style="color:var(--gold); font-family:'Cinzel';">Menu</h3>
-        <p onclick="renderRamadanGrid(); toggleSidebar();" style="cursor:pointer; margin:15px 0;">🏠 Home</p>
-        
-        <p onclick="showHadith(); toggleSidebar();" style="cursor:pointer; margin:15px 0;">📜 Daily Hadith</p>
-        <p onclick="loadLeaderboard(); toggleSidebar();" style="cursor:pointer; margin:15px 0;">🏆 Leaderboard</p>
-        
-        <p onclick="showReview(); toggleSidebar();" id="review-link" class="hidden" style="cursor:pointer; margin:15px 0;">⭐ Knowledge Review</p>
-        <p onclick="toggleSidebar()" style="cursor:pointer; margin:15px 0; color:gray;">Close</p>
-    </div>
-</div>
 </script>
     <style>
         :root {
@@ -193,7 +181,18 @@ checkMasterAccess();
         <div class="bismillah-text">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
         <div style="color: white; letter-spacing: 2px;">ISLAMIC QUESTZ</div>
     </div>
-
+<div id="sidebar" class="sidebar">
+    <div style="padding:20px;">
+        <h3 style="color:var(--gold); font-family:'Cinzel';">Menu</h3>
+        <p onclick="renderRamadanGrid(); toggleSidebar();" style="cursor:pointer; margin:15px 0;">🏠 Home</p>
+        
+        <p onclick="showHadith(); toggleSidebar();" style="cursor:pointer; margin:15px 0;">📜 Daily Hadith</p>
+        <p onclick="loadLeaderboard(); toggleSidebar();" style="cursor:pointer; margin:15px 0;">🏆 Leaderboard</p>
+        
+        <p onclick="showReview(); toggleSidebar();" id="review-link" class="hidden" style="cursor:pointer; margin:15px 0;">⭐ Knowledge Review</p>
+        <p onclick="toggleSidebar()" style="cursor:pointer; margin:15px 0; color:gray;">Close</p>
+    </div>
+</div>
     <div id="app-modal" class="hidden" style="position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px;">
         <div style="background: var(--card-bg); width: 100%; max-width: 400px; border-radius: 20px; padding: 25px; text-align: center; border: 2px solid var(--gold); box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
             <div id="modal-icon" style="font-size: 3rem; margin-bottom: 10px;"></div>
