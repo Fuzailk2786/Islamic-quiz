@@ -1797,7 +1797,6 @@ window.LEARNING_QUESTIONS = {
       }
     ]
   };
-/* ======== DROP 3: APPEND FINAL 100 QUESTIONS (do not edit above) ======== */
 (function appendDrop3() {
   if (!window.LEARNING_QUESTIONS) window.LEARNING_QUESTIONS = {};
 
