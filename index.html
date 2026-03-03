@@ -168,6 +168,35 @@
     }
   });
 }
+    <script>
+// ------- Lazy loader for external question files -------
+function loadScriptOnce(src, globalCheck) {
+  return new Promise((resolve, reject) => {
+    try {
+      if (globalCheck && globalCheck()) return resolve();
+      const s = document.createElement('script');
+      s.src = src;
+      s.async = true;
+      s.onload = resolve;
+      s.onerror = () => reject(new Error("Failed to load " + src));
+      document.head.appendChild(s);
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
+// Called from sidebar/menu for Learning page
+async function openLearningQuiz() {
+  try {
+    await loadScriptOnce('questions_learning.js', () => !!window.LEARNING_QUESTIONS);
+    renderLearningGrid(); // defined below
+    document.getElementById('screen-content').classList.remove('hidden');
+  } catch (e) {
+    showPopup("Error", "Could not load Learning questions. Please retry.", "⚠️");
+  }
+}
+</script>
     /* ------------------ Firebase Init ------------------ */
     const firebaseConfig = {
       apiKey: "AIzaSyD6v6BFkqUmgfJWGIm1eMEEOQX7wnWkq8k",
@@ -487,7 +516,68 @@
         showScreen('content');
         return;
       }
+<script>
+// ----- Learning: Topic Grid -----
+function renderLearningGrid() {
+  if (!window.LEARNING_QUESTIONS) {
+    return showPopup("Loading", "Please wait while we load the content.", "⏳");
+  }
 
+  const body = document.getElementById('dynamic-body');
+  const cats = Object.keys(window.LEARNING_QUESTIONS);
+
+  body.innerHTML = `<h2 style="font-family:'Cinzel'">Knowledge & Learning</h2>
+                    <div class="level-grid" id="learn-grid"></div>`;
+
+  cats.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'lvl';
+    // Prettify cat key for label
+    const label = cat.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    btn.innerText = label;
+    btn.onclick = () => startLearningCategory(cat);
+    document.getElementById('learn-grid').appendChild(btn);
+  });
+}
+
+function startLearningCategory(cat) {
+  const qs = window.LEARNING_QUESTIONS[cat] || [];
+  if (!qs.length) return showPopup("Coming Soon", "This topic is being prepared.", "📚");
+
+  const body = document.getElementById('dynamic-body');
+  body.innerHTML = `<h3 id="learn-title">${cat.replace(/_/g,' ').toUpperCase()}</h3>
+                    <div id="learn-quiz-area"></div>`;
+  loadLearningQuestion(cat, 0);
+}
+
+function loadLearningQuestion(cat, idx) {
+  const dataset = window.LEARNING_QUESTIONS[cat];
+  const qData = dataset[idx];
+  const area = document.getElementById('learn-quiz-area');
+  if (!qData) return;
+
+  area.innerHTML = `
+    <p style="color:var(--gold); font-weight:600;">Question ${idx + 1} of ${dataset.length}</p>
+    <div style="margin-bottom:20px;">
+      <h4 style="margin-bottom:5px; line-height:1.4;">${qData.q}</h4>
+      <p style="margin:0; font-style:italic; color:var(--emerald); font-size:0.95rem; opacity:0.9;">${qData.qh || ""}</p>
+    </div>
+    <div id="learn-options-box"></div>
+  `;
+
+  qData.o.forEach((opt, i) => {
+    const b = document.createElement('button');
+    b.className = 'main-btn';
+    b.style.width = "100%";
+    b.style.marginBottom = "10px";
+    b.style.textAlign = "left";
+    const hinglishOpt = (qData.oh && qData.oh[i]) ? `<br><span style="font-size:0.85rem; opacity:0.8;">${qData.oh[i]}</span>` : "";
+    b.innerHTML = `<strong>${opt}</strong>${hinglishOpt}`;
+    b.onclick = () => checkLearningAnswer(cat, idx, opt); // you already have this function
+    document.getElementById('learn-options-box').appendChild(b);
+  });
+}
+</script>
       const user = JSON.parse(localStorage.getItem('iq_user')) || { name: "Valued Learner" };
       const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
