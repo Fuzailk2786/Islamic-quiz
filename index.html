@@ -107,7 +107,7 @@
     <div class="nav-item" onclick="showHadith(); toggleMenu();">📜 Daily Hadith</div>
     <div class="nav-item" onclick="loadLeaderboard(); toggleMenu();">🏆 Leaderboard</div>
     <div class="nav-item" onclick="showDuas(); toggleMenu();">🤲 Duas for Daily Living</div>
-    <div class="nav-item" onclick="showScreen('feedback'); toggleMenu();">💡 Feedback</div>
+ class="nav-item" onclick="showFeedback(); toggleMenu();">💡 Feedback</div>
     <div class="nav-item" onclick="shareApp(); toggleMenu();">📤 Invite or Share</div>
     <div class="nav-item" onclick="toggleTheme(); toggleMenu();">🌓 Theme Mode</div>
     <div class="nav-item" onclick="toggleMenu()" style="color:gray; border-top: 1px solid var(--border);">Close</div>
@@ -630,6 +630,107 @@ async function openLearningQuiz() {
         `;
       });
     }
+// ------------------ Feedback / Suggestions ------------------
+function showFeedback() {
+  // Reuse the content screen
+  showScreen('content');
+  const user = JSON.parse(localStorage.getItem('iq_user') || '{}');
+  const name = (user && user.name) ? user.name : (localStorage.getItem('user_name') || 'Guest');
+  const emailPrefill = (user && user.name && user.name.includes('@')) ? user.name : '';
+
+  // Build category list from loaded Learning (fallback to static)
+  const cats = (window.LEARNING_QUESTIONS ? Object.keys(window.LEARNING_QUESTIONS) : [
+    'quran_essentials','hadith_science','seerah','aqeedah_creation_to_end','fiqh_worship','manners_akhlaq','general_knowledge'
+  ]);
+
+  const body = document.getElementById('dynamic-body');
+  body.innerHTML = `
+    <h2 style="font-family:'Cinzel'">Feedback & Suggestions</h2>
+
+    <div style="background:var(--card-bg); border:1px solid var(--border); border-left:5px solid var(--gold);
+                border-radius:12px; padding:16px; box-shadow:0 2px 8px var(--shadow);">
+      <div style="display:grid; grid-template-columns:1fr; gap:12px;">
+        <label style="display:block;">
+          <span style="font-weight:600;">Your Email (optional)</span><br>
+          <input id="fb-email" type="email" placeholder="name@example.com"
+                 value="${emailPrefill}" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border);">
+        </label>
+
+        <label style="display:block;">
+          <span style="font-weight:600;">Category (optional)</span><br>
+          <select id="fb-cat" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border);">
+            <option value="">-- Select a topic (optional) --</option>
+            ${cats.map(k => `<option value="${k}">${k.replace(/_/g,' ').toUpperCase()}</option>`).join('')}
+          </select>
+        </label>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <label>
+            <span style="font-weight:600;">Question # (optional)</span><br>
+            <input id="fb-qnum" type="number" min="1" placeholder="e.g., 12"
+                   style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border);">
+          </label>
+          <label>
+            <span style="font-weight:600;">Option (optional)</span><br>
+            <input id="fb-opt" type="text" maxlength="2" placeholder="e.g., A or 'Al-Baqarah'"
+                   style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border);">
+          </label>
+        </div>
+
+        <label style="display:block;">
+          <span style="font-weight:600;">Your Message</span><br>
+          <textarea id="fb-msg" rows="6" placeholder="Type your suggestion or feedback..."
+                    style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border);"></textarea>
+        </label>
+
+        <p style="margin:0; color:#666; font-size:0.9rem;">
+          <strong>Found a mistake?</strong> Please share the <em>question number</em> and <em>option</em>. We’ll fix it quickly!
+        </p>
+
+        <button class="main-btn" style="background:var(--emerald); color:white;"
+                onclick="submitFeedback()">Send Feedback</button>
+      </div>
+    </div>
+  `;
+}
+
+function submitFeedback() {
+  try {
+    const user = JSON.parse(localStorage.getItem('iq_user') || '{}');
+    const name = (user && user.name) ? user.name : (localStorage.getItem('user_name') || 'Guest');
+
+    const email = (document.getElementById('fb-email') || {}).value || '';
+    const cat   = (document.getElementById('fb-cat')   || {}).value || '';
+    const qnum  = (document.getElementById('fb-qnum')  || {}).value || '';
+    const opt   = (document.getElementById('fb-opt')   || {}).value || '';
+    const msg   = (document.getElementById('fb-msg')   || {}).value || '';
+
+    if (!msg || msg.trim().length < 5) {
+      return showPopup("Validation", "Please enter at least 5 characters in the message.", "✍️");
+    }
+
+    const payload = {
+      by: name,
+      email: email,
+      category: cat,
+      questionNumber: qnum,
+      option: opt,
+      message: msg.trim(),
+      timestamp: Date.now(),
+      appVersion: '2026-03-02'
+    };
+
+    // Save to Firebase Realtime Database
+    db.ref('feedback').push(payload)
+      .then(() => {
+        showPopup("Thank you!", "Your feedback has been submitted.", "✅", () => showScreen('home'));
+      })
+      .catch(err => showPopup("Firebase Error", err.message, "⚠️"));
+  } catch (e) {
+    showPopup("Error", (e && e.message) || "Unknown error", "⚠️");
+  }
+}
+
 
     /* ------------------ Leaderboard (safe keys + Top 50) ------------------ */
     function safeKey(name) {
