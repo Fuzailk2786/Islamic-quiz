@@ -30,6 +30,7 @@
     body { font-family: 'Poppins', sans-serif; background: var(--bg-color); margin: 0; color: var(--text-main); transition: 0.3s; overflow-x: hidden; }
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
     #bismillah-overlay {
       position: fixed; inset: 0; background: #064e3b;
       display: flex; flex-direction: column; justify-content: center;
@@ -148,9 +149,9 @@
   <!-- Ramadan Questions -->
   <script src="questions_ramadan.js"></script>
 
-  <!-- App Scripts (single block, no nested <script> tags) -->
+  <!-- App Scripts -->
   <script>
-    /* ------------------ Learning: “explain after every answer” ------------------ */
+    /* ------------------ Learning: explain after every answer ------------------ */
     function checkLearningAnswer(cat, idx, selected) {
       const dataset = window.LEARNING_QUESTIONS[cat];
       const qData = dataset[idx];
@@ -614,6 +615,7 @@
 
     /* ------------------ Leaderboard (safe keys + Top 50) ------------------ */
     function safeKey(name) {
+      // Firebase keys cannot contain . # $ [ ] /
       return String(name || 'guest').replace(/[.#$/\[\]\/]/g, '_').slice(0, 60);
     }
     function submitScore(username, score) {
@@ -680,7 +682,7 @@
       function hide() {
         const overlay = document.getElementById('bismillah-overlay');
         const main = document.getElementById('main-container');
-        if (!overlay || !main) return; /* fixed: || */
+        if (!overlay || !main) return; /* fixed guard */
         overlay.style.opacity = '0';
         overlay.style.pointerEvents = 'none';
         setTimeout(() => {
@@ -690,7 +692,8 @@
         }, 800);
       }
       window.addEventListener('load', () => setTimeout(() => { hide(); checkMasterAccess(); }, 2500));
-      setTimeout(() => { // fallback after 5s anyway
+      // Fallback after 5s anyway
+      setTimeout(() => {
         const overlay = document.getElementById('bismillah-overlay');
         if (overlay && !overlay.classList.contains('hidden')) { hide(); checkMasterAccess(); }
       }, 5000);
