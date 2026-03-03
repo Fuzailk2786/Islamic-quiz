@@ -186,15 +186,33 @@
         }
       });
     }
-    async function openLearningQuiz() {
-      try {
-        await loadScriptOnce('questions_learning.js', () => !!window.LEARNING_QUESTIONS);
-        renderLearningGrid();
-        document.getElementById('screen-content').classList.remove('hidden');
-      } catch (e) {
-        showPopup("Error", "Could not load Learning questions. Please retry.", "⚠️");
+async function openLearningQuiz() {
+  try {
+    const expectedVersion = 3;                      // <-- set to 3 for Drop 3
+    const needsReload =
+      !window.LEARNING_QUESTIONS ||
+      Number(window.LEARNING_QUESTIONS_VERSION) !== expectedVersion;
+
+    // Always request with a cache-buster when we expect a new version
+    const url = `questions_learning.js?v=${expectedVersion}`;
+
+    if (needsReload) {
+      await loadScriptOnce(url, () => false);       // force load; don't short-circuit on globalCheck
+      if (Number(window.LEARNING_QUESTIONS_VERSION) !== expectedVersion) {
+        throw new Error("Learning data version mismatch after load.");
       }
+    } else {
+      // already loaded with correct version
     }
+
+    renderLearningGrid();
+    document.getElementById('screen-content').classList.remove('hidden');
+  } catch (e) {
+    const msg = (e && e.message) || "Learning questions failed to initialize.";
+    showPopup("Error", msg, "⚠️");
+    console.error("Learning loader:", e);
+  }
+}
 
     /* ------------------ Firebase Init ------------------ */
     const firebaseConfig = {
