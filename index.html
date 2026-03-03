@@ -30,7 +30,6 @@
     body { font-family: 'Poppins', sans-serif; background: var(--bg-color); margin: 0; color: var(--text-main); transition: 0.3s; overflow-x: hidden; }
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    
     #bismillah-overlay {
       position: fixed; inset: 0; background: #064e3b;
       display: flex; flex-direction: column; justify-content: center;
@@ -63,7 +62,7 @@
     .lvl.completed { background: var(--emerald) !important; color: white !important; }
 
     .dua-card { background: var(--card-bg); border-left: 5px solid var(--gold); padding: 15px; margin: 10px 0; border-radius: 10px; box-shadow: 0 2px 5px var(--shadow); text-align: right; }
-    
+
     .hidden { display: none !important; }
     #menu-btn { position: fixed; top: 15px; right: 15px; font-size: 1.5rem; z-index: 2001; cursor: pointer; background: var(--gold); color: white; border: none; border-radius: 8px; width: 40px; height: 40px; }
     .back-btn { background: none; border: none; color: var(--gold); font-weight: bold; cursor: pointer; margin-bottom: 15px; font-size: 1rem; }
@@ -90,7 +89,7 @@
   <!-- Menu button -->
   <button id="menu-btn" class="hidden" onclick="toggleMenu()">☰</button>
 
-  <!-- SINGLE SIDEBAR (kept the <nav id="sidebar"> version only) -->
+  <!-- Sidebar -->
   <nav id="sidebar">
     <div class="profile-section">
       <div id="review-link" class="nav-item hidden" onclick="showReview()">📚 Review All Answers</div>
@@ -103,7 +102,7 @@
     </div>
     <div class="nav-item" onclick="showScreen('home'); toggleMenu();">🏠 Home</div>
     <div class="nav-item" onclick="showScreen('ramadan-grid'); toggleMenu();">🌙 Ramadan Quiz</div>
-  <div class="nav-item" onclick="openLearningQuiz(); toggleMenu();">📖 Knowledge & Learning</div>
+    <div class="nav-item" onclick="openLearningQuiz(); toggleMenu();">📖 Knowledge & Learning</div>
     <div class="nav-item" onclick="showHadith(); toggleMenu();">📜 Daily Hadith</div>
     <div class="nav-item" onclick="loadLeaderboard(); toggleMenu();">🏆 Leaderboard</div>
     <div class="nav-item" onclick="showDuas(); toggleMenu();">🤲 Duas for Daily Living</div>
@@ -116,7 +115,7 @@
   <!-- App container -->
   <div id="main-container" class="hidden">
     <div class="app-card" style="margin: 0 auto; max-width: 500px; padding: 20px;">
-      
+
       <div id="screen-auth">
         <h2 style="font-family: 'Cinzel'; text-align:center;">Welcome</h2>
         <div id="login-box" style="text-align:center;">
@@ -131,7 +130,7 @@
         <h1 style="font-family: 'Cinzel'; text-align:center;">Islamic Questz</h1>
         <div class="mode-grid">
           <div class="main-btn" onclick="showScreen('ramadan-grid')">🌙<br>Ramadan Quiz</div>
-          <div class="main-btn" onclick="showScreen('regular-grid')">📖<br>Learning</div>
+          <div class="main-btn" onclick="openLearningQuiz()">📖<br>Learning</div>
           <div class="main-btn" onclick="showHadith()">📜<br>Daily Hadith</div>
           <div class="main-btn" onclick="showDuas()">🤲<br>Daily Duas</div>
         </div>
@@ -146,57 +145,56 @@
     </div>
   </div>
 
-  <!-- Questions -->
+  <!-- Ramadan Questions -->
   <script src="questions_ramadan.js"></script>
 
-  <!-- App Scripts -->
+  <!-- App Scripts (single block, no nested <script> tags) -->
   <script>
-  function checkLearningAnswer(cat, idx, selected) {
-  const dataset = window.LEARNING_QUESTIONS[cat];
-  const qData = dataset[idx];
-  const isCorrect = (selected || '').trim() === (qData.a || '').trim();
+    /* ------------------ Learning: “explain after every answer” ------------------ */
+    function checkLearningAnswer(cat, idx, selected) {
+      const dataset = window.LEARNING_QUESTIONS[cat];
+      const qData = dataset[idx];
+      const isCorrect = (selected || '').trim() === (qData.a || '').trim();
 
-  const fullExplanation = (qData.e || "") + (qData.eh ? `\n\n(${qData.eh})` : "");
-  const title = isCorrect ? "Correct! ✨" : "Explanation";
+      const fullExplanation = (qData.e || "") + (qData.eh ? `\n\n(${qData.eh})` : "");
+      const title = isCorrect ? "Correct! ✨" : "Explanation";
 
-  showPopup(title, fullExplanation, isCorrect ? "✅" : "ℹ️", () => {
-    const next = idx + 1;
-    if (next < dataset.length) {
-      loadLearningQuestion(cat, next);
-    } else {
-      showPopup("Completed!", "You finished this topic. Great job!", "🏁");
+      showPopup(title, fullExplanation, isCorrect ? "✅" : "ℹ️", () => {
+        const next = idx + 1;
+        if (next < dataset.length) {
+          loadLearningQuestion(cat, next);
+        } else {
+          showPopup("Completed!", "You finished this topic. Great job!", "🏁");
+        }
+      });
     }
-  });
-}
-    <script>
-// ------- Lazy loader for external question files -------
-function loadScriptOnce(src, globalCheck) {
-  return new Promise((resolve, reject) => {
-    try {
-      if (globalCheck && globalCheck()) return resolve();
-      const s = document.createElement('script');
-      s.src = src;
-      s.async = true;
-      s.onload = resolve;
-      s.onerror = () => reject(new Error("Failed to load " + src));
-      document.head.appendChild(s);
-    } catch (e) {
-      reject(e);
-    }
-  });
-}
 
-// Called from sidebar/menu for Learning page
-async function openLearningQuiz() {
-  try {
-    await loadScriptOnce('questions_learning.js', () => !!window.LEARNING_QUESTIONS);
-    renderLearningGrid(); // defined below
-    document.getElementById('screen-content').classList.remove('hidden');
-  } catch (e) {
-    showPopup("Error", "Could not load Learning questions. Please retry.", "⚠️");
-  }
-}
-</script>
+    /* ------------------ Lazy loader for questions_learning.js ------------------ */
+    function loadScriptOnce(src, globalCheck) {
+      return new Promise((resolve, reject) => {
+        try {
+          if (globalCheck && globalCheck()) return resolve();
+          const s = document.createElement('script');
+          s.src = src;
+          s.async = true;
+          s.onload = resolve;
+          s.onerror = () => reject(new Error("Failed to load " + src));
+          document.head.appendChild(s);
+        } catch (e) {
+          reject(e);
+        }
+      });
+    }
+    async function openLearningQuiz() {
+      try {
+        await loadScriptOnce('questions_learning.js', () => !!window.LEARNING_QUESTIONS);
+        renderLearningGrid();
+        document.getElementById('screen-content').classList.remove('hidden');
+      } catch (e) {
+        showPopup("Error", "Could not load Learning questions. Please retry.", "⚠️");
+      }
+    }
+
     /* ------------------ Firebase Init ------------------ */
     const firebaseConfig = {
       apiKey: "AIzaSyD6v6BFkqUmgfJWGIm1eMEEOQX7wnWkq8k",
@@ -223,22 +221,15 @@ async function openLearningQuiz() {
         if (callback) callback();
       };
     }
-
-    function toggleMenu() {
-      const s = document.getElementById('sidebar');
-      if (s) s.classList.toggle('open');
-    }
-    // Backward-compat wrapper for any old inline calls
-    function toggleSidebar(){ toggleMenu(); }
-
+    function toggleMenu() { const s = document.getElementById('sidebar'); if (s) s.classList.toggle('open'); }
+    function toggleSidebar(){ toggleMenu(); } // legacy
     function toggleTheme() {
       const t = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
       document.body.setAttribute('data-theme', t);
     }
-
     function shareApp() { if (navigator.share) navigator.share({ title:'Islamic Questz', url: location.href }); }
 
-    /* ------------------ Master Access (Single) ------------------ */
+    /* ------------------ Master Access ------------------ */
     function checkMasterAccess() {
       const params = new URLSearchParams(window.location.search);
       if (params.get('master') === 'admin786') {
@@ -264,7 +255,6 @@ async function openLearningQuiz() {
       localStorage.setItem('user_name', user.name);
       loginUser(user);
     }
-
     function loginUser(user) {
       document.getElementById('screen-auth').classList.add('hidden');
       document.getElementById('screen-home').classList.remove('hidden');
@@ -272,7 +262,6 @@ async function openLearningQuiz() {
       document.getElementById('user-display-name').innerText = user.name;
       document.getElementById('avatar-init').innerText = (user.name || '?')[0].toUpperCase();
     }
-
     function checkExistingLogin() {
       const saved = localStorage.getItem('iq_user');
       if (saved) {
@@ -280,7 +269,6 @@ async function openLearningQuiz() {
         updateSidebarLinks();
       }
     }
-
     function uploadImage(input) {
       if (input.files && input.files[0]) {
         const reader = new FileReader();
@@ -293,45 +281,23 @@ async function openLearningQuiz() {
       }
     }
 
-    /* ------------------ Per-User Progress Helpers ------------------ */
+    /* ------------------ Per-User Progress (Ramadan) ------------------ */
     function getCurrentUserName() {
       const u = JSON.parse(localStorage.getItem('iq_user') || '{}');
       return (u && u.name) ? u.name : (localStorage.getItem('user_name') || 'Guest');
     }
-    function progressKey() {
-      const uname = getCurrentUserName();
-      return `iq_progress_${uname}`;
-    }
-    function getProgress() {
-      try { return JSON.parse(localStorage.getItem(progressKey()) || '{}'); }
-      catch (e) { return {}; }
-    }
-    function setProgressMap(map) {
-      localStorage.setItem(progressKey(), JSON.stringify(map));
-    }
-    function markLevelCompleted(levelNum) {
-      const map = getProgress();
-      map[String(levelNum)] = true;
-      setProgressMap(map);
-    }
-    function isLevelCompleted(levelNum) {
-      const map = getProgress();
-      return !!map[String(levelNum)];
-    }
-    function resetLevel(levelNum) {
-      const map = getProgress();
-      delete map[String(levelNum)];
-      setProgressMap(map);
-    }
-    function resetAllLevelsForCurrentUser() {
-      setProgressMap({});
-    }
+    function progressKey() { return `iq_progress_${getCurrentUserName()}`; }
+    function getProgress() { try { return JSON.parse(localStorage.getItem(progressKey()) || '{}'); } catch { return {}; } }
+    function setProgressMap(map) { localStorage.setItem(progressKey(), JSON.stringify(map)); }
+    function markLevelCompleted(levelNum) { const m = getProgress(); m[String(levelNum)] = true; setProgressMap(m); }
+    function isLevelCompleted(levelNum) { const m = getProgress(); return !!m[String(levelNum)]; }
+    function resetLevel(levelNum) { const m = getProgress(); delete m[String(levelNum)]; setProgressMap(m); }
+    function resetAllLevelsForCurrentUser() { setProgressMap({}); }
 
     /* ------------------ Screens ------------------ */
     function showScreen(id) {
       const screens = ['screen-auth', 'screen-home', 'screen-content'];
       screens.forEach(s => document.getElementById(s).classList.add('hidden'));
-      
       if (id === 'ramadan-grid') {
         renderRamadanGrid();
         document.getElementById('screen-content').classList.remove('hidden');
@@ -350,29 +316,20 @@ async function openLearningQuiz() {
       function updateClock() {
         const now = new Date().getTime();
         const distance = targetDate - now;
-        if (distance < 0) {
-          clearInterval(timerInterval);
-          renderRamadanGrid();
-          return;
-        }
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        const clockElement = document.getElementById('countdown-clock');
-        if (clockElement) {
-          clockElement.innerText = 
-            (hours < 10 ? "0" + hours : hours) + ":" + 
-            (minutes < 10 ? "0" + minutes : minutes) + ":" + 
-            (seconds < 10 ? "0" + seconds : seconds);
-        }
+        if (distance < 0) { clearInterval(timerInterval); renderRamadanGrid(); return; }
+        const hours = Math.floor((distance % (1000*60*60*24))/(1000*60*60));
+        const minutes = Math.floor((distance % (1000*60*60))/(1000*60));
+        const seconds = Math.floor((distance % (1000*60))/1000);
+        const clock = document.getElementById('countdown-clock');
+        if (clock) clock.innerText =
+          (hours<10?"0"+hours:hours)+":"+(minutes<10?"0"+minutes:minutes)+":"+(seconds<10?"0"+seconds:seconds);
       }
       const timerInterval = setInterval(updateClock, 1000);
       updateClock();
     }
-
     function renderRamadanGrid() {
       const container = document.getElementById('dynamic-body');
-      const ramadanStart = new Date('2026-02-18T00:00:00'); 
+      const ramadanStart = new Date('2026-02-18T00:00:00');
       const now = new Date();
       const diffInMs = now - ramadanStart;
       const currentDay = Math.floor(diffInMs / (1000 * 60 * 60 * 24)) + 1;
@@ -396,13 +353,12 @@ async function openLearningQuiz() {
           btn.classList.add('locked');
           btn.onclick = () => showPopup("Locked / Band Hai", `This challenge unlocks on Day ${i}.\n(Yeh challenge Day ${i} ko khulega.)`, "🔒");
         } else {
-          if (isLevelCompleted(i)) btn.classList.add('completed');  /* per-user */
+          if (isLevelCompleted(i)) btn.classList.add('completed');
           btn.onclick = () => i === 31 ? startEidQuiz() : startRamadanLevel(i);
         }
         document.getElementById('grid').appendChild(btn);
       }
     }
-
     function startRamadanLevel(levelNum) {
       if (typeof window.RAMADAN_QUESTIONS === 'undefined') {
         return showPopup("Loading", "Questions are still loading, please wait.", "⏳");
@@ -411,31 +367,22 @@ async function openLearningQuiz() {
       if (!questions) return showPopup("Coming Soon", "Content for this day is being prepared.", "📅");
 
       const body = document.getElementById('dynamic-body');
-
-      // Show restart only if already completed (per user)
       const restartBtn = isLevelCompleted(levelNum) ? `
         <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
           <button class="main-btn" style="background:#fee2e2; border-color:#fecaca; color:#b91c1c;"
             onclick="confirmRestartLevel(${levelNum})">↺ Restart this Level</button>
-        </div>
-      ` : '';
+        </div>` : '';
 
       body.innerHTML = `<h3 id="quiz-title">Day ${levelNum}</h3>${restartBtn}<div id="quiz-area"></div>`;
       loadQuestion(levelNum, 0);
     }
-
     function confirmRestartLevel(levelNum) {
-      showPopup("Restart Level?",
-        "This will clear completion status for this level and let you replay it. Proceed?",
-        "⚠️",
-        () => {
-          resetLevel(levelNum);
-          renderRamadanGrid();
-          startRamadanLevel(levelNum);
-        }
-      );
+      showPopup("Restart Level?", "This will clear completion status for this level and let you replay it. Proceed?", "⚠️", () => {
+        resetLevel(levelNum);
+        renderRamadanGrid();
+        startRamadanLevel(levelNum);
+      });
     }
-
     function loadQuestion(level, index) {
       const qData = window.RAMADAN_QUESTIONS[`level${level}`][index];
       const area = document.getElementById('quiz-area');
@@ -449,20 +396,18 @@ async function openLearningQuiz() {
         </div>
         <div id="options-box"></div>
       `;
-
       qData.o.forEach((opt, i) => {
         const b = document.createElement('button');
         b.className = 'main-btn';
         b.style.width = "100%";
         b.style.marginBottom = "10px";
         b.style.textAlign = "left";
-        const hinglishOpt = (qData.oh && qData.oh[i]) ? `<br><span style="font-size:0.85rem; font-weight:normal; opacity:0.8;">${qData.oh[i]}</span>` : "";
+        const hinglishOpt = (qData.oh && qData.oh[i]) ? `<br><span style="font-size:0.85rem; opacity:0.8;">${qData.oh[i]}</span>` : "";
         b.innerHTML = `<strong>${opt}</strong>${hinglishOpt}`;
         b.onclick = (e) => { e.preventDefault(); checkAnswer(level, index, opt); };
         document.getElementById('options-box').appendChild(b);
       });
     }
-
     function checkAnswer(level, index, selected) {
       const qData = window.RAMADAN_QUESTIONS[`level${level}`][index];
       if (selected.trim() === qData.a.trim()) {
@@ -472,21 +417,16 @@ async function openLearningQuiz() {
           if (nextIndex < window.RAMADAN_QUESTIONS[`level${level}`].length) {
             loadQuestion(level, nextIndex);
           } else {
-            // Per-user completion
             markLevelCompleted(level);
-
             if (level === 31) {
               showPopup("MABROOK!", "Finale Completed! / Finale Poora Hua!", "🏆", () => showCertificate());
             } else {
               showPopup("Day Completed!", `Day ${level} finished. / Din ${level} poora hua.`, "⭐", () => renderRamadanGrid());
             }
-
-            // Points & leaderboard (unchanged)
             const currentPoints = (parseInt(localStorage.getItem('totalPoints')) || 0) + 10;
             localStorage.setItem('totalPoints', currentPoints);
             const savedName = localStorage.getItem('user_name');
             if (savedName) submitScore(savedName, currentPoints);
-
             updateSidebarLinks();
           }
         });
@@ -494,17 +434,15 @@ async function openLearningQuiz() {
         showPopup("Try Again", "Incorrect answer. / Galat jawab. Dobara sochein! 🤔", "❌");
       }
     }
-
     function startEidQuiz() {
-      if (!isLevelCompleted(30)) {  /* per-user check */
+      if (!isLevelCompleted(30)) {
         showPopup("Grand Finale Locked", "Please complete all 30 days of Ramadan first.", "🔒", () => showScreen('ramadan-grid'));
         return;
       }
       showPopup("Grand Finale", "Answer all 10 questions correctly to earn your certificate.", "🌟", () => startRamadanLevel(31));
     }
-
     function showCertificate() {
-      const isCompleted = isLevelCompleted(31);  /* per-user check */
+      const isCompleted = isLevelCompleted(31);
       const body = document.getElementById('dynamic-body');
 
       if (!isCompleted) {
@@ -516,68 +454,7 @@ async function openLearningQuiz() {
         showScreen('content');
         return;
       }
-<script>
-// ----- Learning: Topic Grid -----
-function renderLearningGrid() {
-  if (!window.LEARNING_QUESTIONS) {
-    return showPopup("Loading", "Please wait while we load the content.", "⏳");
-  }
 
-  const body = document.getElementById('dynamic-body');
-  const cats = Object.keys(window.LEARNING_QUESTIONS);
-
-  body.innerHTML = `<h2 style="font-family:'Cinzel'">Knowledge & Learning</h2>
-                    <div class="level-grid" id="learn-grid"></div>`;
-
-  cats.forEach(cat => {
-    const btn = document.createElement('button');
-    btn.className = 'lvl';
-    // Prettify cat key for label
-    const label = cat.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-    btn.innerText = label;
-    btn.onclick = () => startLearningCategory(cat);
-    document.getElementById('learn-grid').appendChild(btn);
-  });
-}
-
-function startLearningCategory(cat) {
-  const qs = window.LEARNING_QUESTIONS[cat] || [];
-  if (!qs.length) return showPopup("Coming Soon", "This topic is being prepared.", "📚");
-
-  const body = document.getElementById('dynamic-body');
-  body.innerHTML = `<h3 id="learn-title">${cat.replace(/_/g,' ').toUpperCase()}</h3>
-                    <div id="learn-quiz-area"></div>`;
-  loadLearningQuestion(cat, 0);
-}
-
-function loadLearningQuestion(cat, idx) {
-  const dataset = window.LEARNING_QUESTIONS[cat];
-  const qData = dataset[idx];
-  const area = document.getElementById('learn-quiz-area');
-  if (!qData) return;
-
-  area.innerHTML = `
-    <p style="color:var(--gold); font-weight:600;">Question ${idx + 1} of ${dataset.length}</p>
-    <div style="margin-bottom:20px;">
-      <h4 style="margin-bottom:5px; line-height:1.4;">${qData.q}</h4>
-      <p style="margin:0; font-style:italic; color:var(--emerald); font-size:0.95rem; opacity:0.9;">${qData.qh || ""}</p>
-    </div>
-    <div id="learn-options-box"></div>
-  `;
-
-  qData.o.forEach((opt, i) => {
-    const b = document.createElement('button');
-    b.className = 'main-btn';
-    b.style.width = "100%";
-    b.style.marginBottom = "10px";
-    b.style.textAlign = "left";
-    const hinglishOpt = (qData.oh && qData.oh[i]) ? `<br><span style="font-size:0.85rem; opacity:0.8;">${qData.oh[i]}</span>` : "";
-    b.innerHTML = `<strong>${opt}</strong>${hinglishOpt}`;
-    b.onclick = () => checkLearningAnswer(cat, idx, opt); // you already have this function
-    document.getElementById('learn-options-box').appendChild(b);
-  });
-}
-</script>
       const user = JSON.parse(localStorage.getItem('iq_user')) || { name: "Valued Learner" };
       const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
@@ -602,7 +479,6 @@ function loadLearningQuestion(cat, idx) {
       `;
       showScreen('content');
     }
-
     function printCertificate() {
       const printContent = document.getElementById('certificate-print-area').innerHTML;
       const originalContent = document.body.innerHTML;
@@ -610,6 +486,61 @@ function loadLearningQuestion(cat, idx) {
       window.print();
       document.body.innerHTML = originalContent;
       window.location.reload();
+    }
+
+    /* ------------------ Learning Topic Grid & Flow ------------------ */
+    function renderLearningGrid() {
+      if (!window.LEARNING_QUESTIONS) {
+        return showPopup("Loading", "Please wait while we load the content.", "⏳");
+      }
+      const body = document.getElementById('dynamic-body');
+      const cats = Object.keys(window.LEARNING_QUESTIONS);
+
+      body.innerHTML = `<h2 style="font-family:'Cinzel'">Knowledge & Learning</h2>
+                        <div class="level-grid" id="learn-grid"></div>`;
+
+      cats.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = 'lvl';
+        const label = cat.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+        btn.innerText = label;
+        btn.onclick = () => startLearningCategory(cat);
+        document.getElementById('learn-grid').appendChild(btn);
+      });
+    }
+    function startLearningCategory(cat) {
+      const qs = window.LEARNING_QUESTIONS[cat] || [];
+      if (!qs.length) return showPopup("Coming Soon", "This topic is being prepared.", "📚");
+      const body = document.getElementById('dynamic-body');
+      body.innerHTML = `<h3 id="learn-title">${cat.replace(/_/g,' ').toUpperCase()}</h3>
+                        <div id="learn-quiz-area"></div>`;
+      loadLearningQuestion(cat, 0);
+    }
+    function loadLearningQuestion(cat, idx) {
+      const dataset = window.LEARNING_QUESTIONS[cat];
+      const qData = dataset[idx];
+      const area = document.getElementById('learn-quiz-area');
+      if (!qData) return;
+
+      area.innerHTML = `
+        <p style="color:var(--gold); font-weight:600;">Question ${idx + 1} of ${dataset.length}</p>
+        <div style="margin-bottom:20px;">
+          <h4 style="margin-bottom:5px; line-height:1.4;">${qData.q}</h4>
+          <p style="margin:0; font-style:italic; color:var(--emerald); font-size:0.95rem; opacity:0.9;">${qData.qh || ""}</p>
+        </div>
+        <div id="learn-options-box"></div>
+      `;
+      qData.o.forEach((opt, i) => {
+        const b = document.createElement('button');
+        b.className = 'main-btn';
+        b.style.width = "100%";
+        b.style.marginBottom = "10px";
+        b.style.textAlign = "left";
+        const hinglishOpt = (qData.oh && qData.oh[i]) ? `<br><span style="font-size:0.85rem; opacity:0.8;">${qData.oh[i]}</span>` : "";
+        b.innerHTML = `<strong>${opt}</strong>${hinglishOpt}`;
+        b.onclick = () => checkLearningAnswer(cat, idx, opt);
+        document.getElementById('learn-options-box').appendChild(b);
+      });
     }
 
     /* ------------------ Duas ------------------ */
@@ -634,7 +565,6 @@ function loadLearningQuestion(cat, idx) {
       "A good word is a charity.",
       "He who does not show mercy to others will not be shown mercy."
     ];
-
     function renderAdminPanel() {
       if (localStorage.getItem('is_admin') !== 'true') return;
       const body = document.getElementById('dynamic-body');
@@ -647,7 +577,6 @@ function loadLearningQuestion(cat, idx) {
         </div>
       `;
     }
-
     function saveHadithToCloud() {
       const text = document.getElementById('hadith-text').value;
       if (!text) return showPopup("Validation", "Enter text first!", "✍️");
@@ -655,19 +584,15 @@ function loadLearningQuestion(cat, idx) {
         .then(() => showPopup("Success", "Updated for all users!", "✨"))
         .catch(err => showPopup("Firebase Error", err.message, "⚠️"));
     }
-
     function showHadith() {
       showScreen('content');
       const body = document.getElementById('dynamic-body');
       body.innerHTML = "<h2>Hadith of the Day</h2><p>Loading...</p>";
-
       db.ref('dailyHadith').on('value', (snapshot) => {
         const data = snapshot.val();
-        const adminBtn = localStorage.getItem('is_admin') === 'true' 
+        const adminBtn = localStorage.getItem('is_admin') === 'true'
           ? `<button onclick="renderAdminPanel()" class="main-btn" style="margin-top:20px;">Edit Hadith</button>` : '';
-
         if (!data) {
-          // Fallback to local list if no cloud hadith yet
           const dayIdx = new Date().getDate() % HADITH_LIST.length;
           body.innerHTML = `
             <h2>Hadith of the Day</h2>
@@ -676,7 +601,6 @@ function loadLearningQuestion(cat, idx) {
           `;
           return;
         }
-
         body.innerHTML = `
           <h2>Hadith of the Day</h2>
           <div class="dua-card" style="font-size:1.1rem; line-height:1.6;">"${data.content}"</div>
@@ -688,43 +612,50 @@ function loadLearningQuestion(cat, idx) {
       });
     }
 
-    /* ------------------ Leaderboard ------------------ */
+    /* ------------------ Leaderboard (safe keys + Top 50) ------------------ */
+    function safeKey(name) {
+      return String(name || 'guest').replace(/[.#$/\[\]\/]/g, '_').slice(0, 60);
+    }
     function submitScore(username, score) {
-      db.ref('leaderboard/' + username).set({ 
-        name: username, 
-        score: score, 
-        timestamp: Date.now() 
+      const key = safeKey(username);
+      const ref = db.ref('leaderboardUsers/' + key);
+      ref.once('value').then(snap => {
+        const current = snap.val();
+        if (!current || Number(score) > Number(current.score)) {
+          return ref.set({ name: username, score: Number(score), timestamp: Date.now() });
+        }
       }).catch(err => console.error('Leaderboard write failed:', err));
     }
-
     function loadLeaderboard() {
       showScreen('content');
       const body = document.getElementById('dynamic-body');
-      body.innerHTML = "<h2>🏆 Global Leaderboard</h2><p>Loading Top 10...</p>";
-
-      db.ref('leaderboard').orderByChild('score').limitToLast(10).once('value', (snapshot) => {
-        let scores = [];
-        snapshot.forEach(child => scores.push(child.val()));
-        scores.reverse();
-
+      body.innerHTML = "<h2>🏆 Global Leaderboard</h2><p>Loading Top 50...</p>";
+      const ref = db.ref('leaderboardUsers');
+      ref.orderByChild('score').limitToLast(50).once('value', (snapshot) => {
+        let rows = [];
+        snapshot.forEach(c => rows.push(c.val()));
+        rows.sort((a,b) => b.score - a.score);
         let html = '<table style="width:100%; margin-top:20px; border-collapse:collapse;">';
         html += '<tr style="border-bottom:2px solid var(--gold);"><th>Rank</th><th>Name</th><th>Points</th></tr>';
-        scores.forEach((p, i) => {
+        rows.forEach((p, i) => {
           html += `<tr style="border-bottom:1px solid #eee; height:45px;">
-                    <td>${i + 1}</td><td>${p.name}</td><td style="color:var(--gold); font-weight:bold;">${p.score}</td>
+                    <td>${i + 1}</td>
+                    <td>${(p && p.name) ? p.name : '-'}</td>
+                    <td style="color:var(--gold); font-weight:bold;">${(p && p.score) ? p.score : 0}</td>
                    </tr>`;
         });
         html += '</table>';
         body.innerHTML = html;
+      }).catch(err => {
+        body.innerHTML = `<p style="color:crimson;">Error: ${err.message}</p>`;
       });
     }
 
-    /* ------------------ Review & Sidebar Link ------------------ */
+    /* ------------------ Review ------------------ */
     function showReview() {
       showScreen('content');
       const body = document.getElementById('dynamic-body');
       if (typeof window.RAMADAN_QUESTIONS === 'undefined') return showPopup("Error", "Data not loaded.", "❌");
-
       let html = '<h2>Knowledge Review</h2><p>Correct answers from your journey:</p>';
       for (let i = 1; i <= 30; i++) {
         const level = window.RAMADAN_QUESTIONS[`level${i}`];
@@ -742,19 +673,14 @@ function loadLearningQuestion(cat, idx) {
       }
       body.innerHTML = html;
     }
-
-    function updateSidebarLinks() {
-      if (isLevelCompleted(31)) {
-        document.getElementById('review-link').classList.remove('hidden');
-      }
-    }
+    function updateSidebarLinks() { if (isLevelCompleted(31)) document.getElementById('review-link').classList.remove('hidden'); }
 
     /* ------------------ Overlay Hide (Robust) ------------------ */
     (function ensureOverlayHides() {
       function hide() {
         const overlay = document.getElementById('bismillah-overlay');
         const main = document.getElementById('main-container');
-        if (!overlay || !main) return;
+        if (!overlay || !main) return; /* fixed: || */
         overlay.style.opacity = '0';
         overlay.style.pointerEvents = 'none';
         setTimeout(() => {
@@ -764,8 +690,7 @@ function loadLearningQuestion(cat, idx) {
         }, 800);
       }
       window.addEventListener('load', () => setTimeout(() => { hide(); checkMasterAccess(); }, 2500));
-      // Fallback in case of any earlier errors
-      setTimeout(() => {
+      setTimeout(() => { // fallback after 5s anyway
         const overlay = document.getElementById('bismillah-overlay');
         if (overlay && !overlay.classList.contains('hidden')) { hide(); checkMasterAccess(); }
       }, 5000);
