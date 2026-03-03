@@ -2636,8 +2636,7 @@ window.LEARNING_QUESTIONS = {
       }
     ]
   };
-
-  // Append (do not overwrite)
+   // Append (do not overwrite)
   Object.keys(add).forEach(cat => {
     window.LEARNING_QUESTIONS[cat] = (window.LEARNING_QUESTIONS[cat] || []).concat(add[cat]);
   });
