@@ -2641,5 +2641,3 @@ window.LEARNING_QUESTIONS = {
   Object.keys(add).forEach(function (cat) {
     window.LEARNING_QUESTIONS[cat] = (window.LEARNING_QUESTIONS[cat] || []).concat(add[cat]);
   });
-})();
-
