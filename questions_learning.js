@@ -1796,13 +1796,23 @@ window.LEARNING_QUESTIONS = {
         e: "Ibn Mas‘ud (RA) is renowned among Qur’an reciters.",
         eh: "Ibn Mas‘ud (RA) mashhoor qariyon me se thay."
       }
-],
 
-})();  
+]
+
+}; // <-- CLOSES const add = { ... }
+
+/* Append Drop‑2 */
+Object.keys(add).forEach(function (cat) {
+    window.LEARNING_QUESTIONS[cat] =
+        (window.LEARNING_QUESTIONS[cat] || []).concat(add[cat]);
+});
+
+})();  // <-- CLOSE appendDrop2()
+
 (function appendDrop3() {
   if (!window.LEARNING_QUESTIONS) window.LEARNING_QUESTIONS = {};
 
-  const add = {
+const add = {
     /* =========================
        QURAN ESSENTIALS (+15)
        ========================= */
