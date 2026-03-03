@@ -150,61 +150,57 @@
   <script src="questions_ramadan.js"></script>
 
   <!-- App Scripts -->
-  <script>
-    /* ------------------ Learning: explain after every answer ------------------ */
-    function checkLearningAnswer(cat, idx, selected) {
-      const dataset = window.LEARNING_QUESTIONS[cat];
-      const qData = dataset[idx];
-      const isCorrect = (selected || '').trim() === (qData.a || '').trim();
-
-      const fullExplanation = (qData.e || "") + (qData.eh ? `\n\n(${qData.eh})` : "");
-      const title = isCorrect ? "Correct! ✨" : "Explanation";
-
-      showPopup(title, fullExplanation, isCorrect ? "✅" : "ℹ️", () => {
-        const next = idx + 1;
-        if (next < dataset.length) {
-          loadLearningQuestion(cat, next);
-        } else {
-          showPopup("Completed!", "You finished this topic. Great job!", "🏁");
-        }
-      });
+ <script>
+/* ------------------ Learning: explain after every answer ------------------ */
+function checkLearningAnswer(cat, idx, selected) {
+  const dataset = window.LEARNING_QUESTIONS[cat];
+  const qData = dataset[idx];
+  const isCorrect = ((selected || '').trim() === (qData.a || '').trim());
+  const fullExplanation = (qData.e || "") + (qData.eh ? `\n\n(${qData.eh})` : "");
+  const title = isCorrect ? "Correct! ✨" : "Explanation";
+  showPopup(title, fullExplanation, isCorrect ? "✅" : "ℹ️", () => {
+    const next = idx + 1;
+    if (next < dataset.length) {
+      loadLearningQuestion(cat, next);
+    } else {
+      showPopup("Completed!", "You finished this topic. Great job!", "🏁");
     }
+  });
+}
 
-    /* ------------------ Lazy loader for questions_learning.js ------------------ */
-    function loadScriptOnce(src, globalCheck) {
-      return new Promise((resolve, reject) => {
-        try {
-          if (globalCheck && globalCheck()) return resolve();
-          const s = document.createElement('script');
-          s.src = src;
-          s.async = true;
-          s.onload = resolve;
-          s.onerror = () => reject(new Error("Failed to load " + src));
-          document.head.appendChild(s);
-        } catch (e) {
-          reject(e);
-        }
-      });
+/* ------------------ Lazy loader for questions_learning.js ------------------ */
+function loadScriptOnce(src, globalCheck) {
+  return new Promise((resolve, reject) => {
+    try {
+      if (globalCheck && globalCheck()) return resolve();
+      const s = document.createElement('script');
+      s.src = src;
+      s.async = true;
+      s.onload = resolve;
+      s.onerror = () => reject(new Error("Failed to load " + src));
+      document.head.appendChild(s);
+    } catch (e) {
+      reject(e);
     }
+  });
+}
+
 async function openLearningQuiz() {
   try {
-    const expectedVersion = 3;                      // <-- set to 3 for Drop 3
+    const expectedVersion = 3; // <-- Drop 3
     const needsReload =
-  !window.LEARNING_QUESTIONS ||
-  Number(window.LEARNING_QUESTIONS_VERSION) !== expectedVersion;
+      !window.LEARNING_QUESTIONS ||
+      Number(window.LEARNING_QUESTIONS_VERSION) !== expectedVersion;
 
     // Always request with a cache-buster when we expect a new version
     const url = `questions_learning.js?v=${expectedVersion}`;
 
     if (needsReload) {
-      await loadScriptOnce(url, () => false);       // force load; don't short-circuit on globalCheck
+      await loadScriptOnce(url, () => false); // force load; don't short-circuit
       if (Number(window.LEARNING_QUESTIONS_VERSION) !== expectedVersion) {
         throw new Error("Learning data version mismatch after load.");
       }
-    } else {
-      // already loaded with correct version
     }
-
     renderLearningGrid();
     document.getElementById('screen-content').classList.remove('hidden');
   } catch (e) {
@@ -214,431 +210,421 @@ async function openLearningQuiz() {
   }
 }
 
-    /* ------------------ Firebase Init ------------------ */
-    const firebaseConfig = {
-      apiKey: "AIzaSyD6v6BFkqUmgfJWGIm1eMEEOQX7wnWkq8k",
-      authDomain: "islamicquestz.firebaseapp.com",
-      databaseURL: "https://islamicquestz-default-rtdb.firebaseio.com",
-      projectId: "islamicquestz",
-      storageBucket: "islamicquestz.firebasestorage.app",
-      appId: "1:740000996250:web:444a3b4ba9c92dad64b823",
-      messagingSenderId: "740000996250",
-      measurementId: "G-YSH95XR38D"
+/* ------------------ Firebase Init ------------------ */
+const firebaseConfig = {
+  apiKey: "AIzaSyD6v6BFkqUmgfJWGIm1eMEEOQX7wnWkq8k",
+  authDomain: "islamicquestz.firebaseapp.com",
+  databaseURL: "https://islamicquestz-default-rtdb.firebaseio.com",
+  projectId: "islamicquestz",
+  storageBucket: "islamicquestz.firebasestorage.app",
+  appId: "1:740000996250:web:444a3b4ba9c92dad64b823",
+  messagingSenderId: "740000996250",
+  measurementId: "G-YSH95XR38D"
+};
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+/* ------------------ Modal / Utilities ------------------ */
+function showPopup(title, message, icon, callback) {
+  const modal = document.getElementById('app-modal');
+  document.getElementById('modal-title').innerText = title;
+  document.getElementById('modal-message').innerText = message;
+  document.getElementById('modal-icon').innerText = icon || '';
+  modal.classList.remove('hidden');
+  document.getElementById('modal-btn').onclick = () => {
+    modal.classList.add('hidden');
+    if (callback) callback();
+  };
+}
+function toggleMenu() { const s = document.getElementById('sidebar'); if (s) s.classList.toggle('open'); }
+function toggleSidebar(){ toggleMenu(); } // legacy
+function toggleTheme() {
+  const t = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.body.setAttribute('data-theme', t);
+}
+function shareApp() { if (navigator.share) navigator.share({ title:'Islamic Questz', url: location.href }); }
+
+/* ------------------ Master Access ------------------ */
+function checkMasterAccess() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('master') === 'admin786') {
+    localStorage.setItem('is_admin', 'true');
+    showPopup("Verified", "Master Access Activated!", "🔑");
+  }
+}
+
+/* ------------------ Auth / Profile ------------------ */
+function handleAuth(type) {
+  let user = { name: "", avatar: "" };
+  if (type === 'guest') {
+    user.name = "Guest_" + Math.floor(Math.random() * 9000);
+  } else {
+    const val = document.getElementById('auth-email').value;
+    if (!val.includes('@')) {
+      showPopup("Input Error", "A valid email is required to register.", "📧");
+      return;
+    }
+    user.name = val.split('@')[0];
+  }
+  localStorage.setItem('iq_user', JSON.stringify(user));
+  localStorage.setItem('user_name', user.name);
+  loginUser(user);
+}
+function loginUser(user) {
+  document.getElementById('screen-auth').classList.add('hidden');
+  document.getElementById('screen-home').classList.remove('hidden');
+  document.getElementById('menu-btn').classList.remove('hidden');
+  document.getElementById('user-display-name').innerText = user.name;
+  document.getElementById('avatar-init').innerText = (user.name || '?')[0].toUpperCase();
+}
+function checkExistingLogin() {
+  const saved = localStorage.getItem('iq_user');
+  if (saved) {
+    loginUser(JSON.parse(saved));
+    updateSidebarLinks();
+  }
+}
+function uploadImage(input) {
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      document.getElementById('profile-img').src = e.target.result;
+      document.getElementById('profile-img').style.display = 'block';
+      document.getElementById('avatar-init').style.display = 'none';
     };
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+    reader.readAsDataURL(input.files[0]);
+  }
+}
 
-    /* ------------------ Modal / Utilities ------------------ */
-    function showPopup(title, message, icon, callback) {
-      const modal = document.getElementById('app-modal');
-      document.getElementById('modal-title').innerText = title;
-      document.getElementById('modal-message').innerText = message;
-      document.getElementById('modal-icon').innerText = icon || '';
-      modal.classList.remove('hidden');
-      document.getElementById('modal-btn').onclick = () => {
-        modal.classList.add('hidden');
-        if (callback) callback();
-      };
-    }
-    function toggleMenu() { const s = document.getElementById('sidebar'); if (s) s.classList.toggle('open'); }
-    function toggleSidebar(){ toggleMenu(); } // legacy
-    function toggleTheme() {
-      const t = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      document.body.setAttribute('data-theme', t);
-    }
-    function shareApp() { if (navigator.share) navigator.share({ title:'Islamic Questz', url: location.href }); }
+/* ------------------ Per-User Progress (Ramadan) ------------------ */
+function getCurrentUserName() {
+  const u = JSON.parse(localStorage.getItem('iq_user') || '{}');
+  return (u && u.name) ? u.name : (localStorage.getItem('user_name') || 'Guest');
+}
+function progressKey() { return `iq_progress_${getCurrentUserName()}`; }
+function getProgress() { try { return JSON.parse(localStorage.getItem(progressKey()) || '{}'); } catch { return {}; } }
+function setProgressMap(map) { localStorage.setItem(progressKey(), JSON.stringify(map)); }
+function markLevelCompleted(levelNum) { const m = getProgress(); m[String(levelNum)] = true; setProgressMap(m); }
+function isLevelCompleted(levelNum) { const m = getProgress(); return !!m[String(levelNum)]; }
+function resetLevel(levelNum) { const m = getProgress(); delete m[String(levelNum)]; setProgressMap(m); }
+function resetAllLevelsForCurrentUser() { setProgressMap({}); }
 
-    /* ------------------ Master Access ------------------ */
-    function checkMasterAccess() {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('master') === 'admin786') {
-        localStorage.setItem('is_admin', 'true');
-        showPopup("Verified", "Master Access Activated!", "🔑");
-      }
-    }
+/* ------------------ Screens ------------------ */
+function showScreen(id) {
+  const screens = ['screen-auth', 'screen-home', 'screen-content'];
+  screens.forEach(s => document.getElementById(s).classList.add('hidden'));
+  if (id === 'ramadan-grid') {
+    renderRamadanGrid();
+    document.getElementById('screen-content').classList.remove('hidden');
+  } else if (id === 'regular-grid') {
+    document.getElementById('screen-content').classList.remove('hidden');
+    document.getElementById('dynamic-body').innerHTML = "<h2>Learning Pathways</h2><p>Coming Soon!</p>";
+  } else {
+    document.getElementById('screen-' + id).classList.remove('hidden');
+  }
+  const s = document.getElementById('sidebar');
+  if (s && s.classList.contains('open')) toggleMenu();
+}
 
-    /* ------------------ Auth / Profile ------------------ */
-    function handleAuth(type) {
-      let user = { name: "", avatar: "" };
-      if (type === 'guest') {
-        user.name = "Guest_" + Math.floor(Math.random() * 9000);
+/* ------------------ Ramadan Grid / Timer ------------------ */
+function startTimer(targetDate) {
+  function updateClock() {
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+    if (distance < 0) { clearInterval(timerInterval); renderRamadanGrid(); return; }
+    const hours = Math.floor((distance % (1000*60*60*24))/(1000*60*60));
+    const minutes = Math.floor((distance % (1000*60*60))/(1000*60));
+    const seconds = Math.floor((distance % (1000*60))/1000);
+    const clock = document.getElementById('countdown-clock');
+    if (clock) clock.innerText =
+      (hours<10?"0"+hours:hours)+":"+(minutes<10?"0"+minutes:minutes)+":"+(seconds<10?"0"+seconds:seconds);
+  }
+  const timerInterval = setInterval(updateClock, 1000);
+  updateClock();
+}
+function renderRamadanGrid() {
+  const container = document.getElementById('dynamic-body');
+  const ramadanStart = new Date('2026-02-18T00:00:00');
+  const now = new Date();
+  const diffInMs = now - ramadanStart;
+  const currentDay = Math.floor(diffInMs / (1000 * 60 * 60 * 24)) + 1;
+  const nextUnlock = new Date(now); nextUnlock.setHours(24, 0, 0, 0);
+  container.innerHTML = `
+    <div id="timer-banner" style="background:var(--soft-gold); padding:15px; border-radius:15px; margin-bottom:20px; text-align:center; border:1px solid var(--gold); border-left:5px solid var(--gold);">
+      <small style="color:var(--gold); font-weight:600; text-transform:uppercase; letter-spacing:1px;">Next Level Unlocks In / Agla Level Khulega:</small>
+      <div id="countdown-clock" style="font-family:'Cinzel'; font-size:1.8rem; color:var(--emerald); margin-top:5px;">00:00:00</div>
+    </div>
+    <h2 style="font-family:'Cinzel'; text-align:center;">Ramadan Challenge 2026</h2>
+    <div class="level-grid" id="grid"></div>
+  `;
+  startTimer(nextUnlock);
+  for (let i = 1; i <= 31; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'lvl';
+    btn.innerText = i === 31 ? "EID" : i;
+    if (i > currentDay && i !== 31) {
+      btn.classList.add('locked');
+      btn.onclick = () => showPopup("Locked / Band Hai", `This challenge unlocks on Day ${i}.\n(Yeh challenge Day ${i} ko khulega.)`, "🔒");
+    } else {
+      if (isLevelCompleted(i)) btn.classList.add('completed');
+      btn.onclick = () => i === 31 ? startEidQuiz() : startRamadanLevel(i);
+    }
+    document.getElementById('grid').appendChild(btn);
+  }
+}
+function startRamadanLevel(levelNum) {
+  if (typeof window.RAMADAN_QUESTIONS === 'undefined') {
+    return showPopup("Loading", "Questions are still loading, please wait.", "⏳");
+  }
+  const questions = window.RAMADAN_QUESTIONS[`level${levelNum}`];
+  if (!questions) return showPopup("Coming Soon", "Content for this day is being prepared.", "📅");
+  const body = document.getElementById('dynamic-body');
+  const restartBtn = isLevelCompleted(levelNum) ? `
+    <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
+      <button class="main-btn" style="background:#fee2e2; border-color:#fecaca; color:#b91c1c;"
+        onclick="confirmRestartLevel(${levelNum})">↺ Restart this Level</button>
+    </div>` : '';
+  body.innerHTML = `<h3 id="quiz-title">Day ${levelNum}</h3>${restartBtn}<div id="quiz-area"></div>`;
+  loadQuestion(levelNum, 0);
+}
+function confirmRestartLevel(levelNum) {
+  showPopup("Restart Level?", "This will clear completion status for this level and let you replay it. Proceed?", "⚠️", () => {
+    resetLevel(levelNum);
+    renderRamadanGrid();
+    startRamadanLevel(levelNum);
+  });
+}
+function loadQuestion(level, index) {
+  const qData = window.RAMADAN_QUESTIONS[`level${level}`][index];
+  const area = document.getElementById('quiz-area');
+  if (!qData) return;
+  area.innerHTML = `
+    <p style="color:var(--gold); font-weight:600;">Question ${index + 1} of ${window.RAMADAN_QUESTIONS[`level${level}`].length}</p>
+    <div style="margin-bottom:20px;">
+      <h4 style="margin-bottom:5px; line-height:1.4;">${qData.q}</h4>
+      <p style="margin:0; font-style:italic; color:var(--emerald); font-size:0.95rem; opacity:0.9;">${qData.qh || ""}</p>
+    </div>
+    <div id="options-box"></div>
+  `;
+  qData.o.forEach((opt, i) => {
+    const b = document.createElement('button');
+    b.className = 'main-btn';
+    b.style.width = "100%";
+    b.style.marginBottom = "10px";
+    b.style.textAlign = "left";
+    const hinglishOpt = (qData.oh && qData.oh[i]) ? `<br><span style="font-size:0.85rem; opacity:0.8;">${qData.oh[i]}</span>` : "";
+    b.innerHTML = `<strong>${opt}</strong>${hinglishOpt}`;
+    b.onclick = (e) => { e.preventDefault(); checkAnswer(level, index, opt); };
+    document.getElementById('options-box').appendChild(b);
+  });
+}
+function checkAnswer(level, index, selected) {
+  const qData = window.RAMADAN_QUESTIONS[`level${level}`][index];
+  if ((selected || '').trim() === (qData.a || '').trim()) {
+    const fullExplanation = (qData.e || "") + (qData.eh ? `\n\n(${qData.eh})` : "");
+    showPopup("Correct! ✨", fullExplanation, "🌙", () => {
+      const nextIndex = index + 1;
+      if (nextIndex < window.RAMADAN_QUESTIONS[`level${level}`].length) {
+        loadQuestion(level, nextIndex);
       } else {
-        const val = document.getElementById('auth-email').value;
-        if (!val.includes('@')) {
-          showPopup("Input Error", "A valid email is required to register.", "📧");
-          return;
+        markLevelCompleted(level);
+        if (level === 31) {
+          showPopup("MABROOK!", "Finale Completed! / Finale Poora Hua!", "🏆", () => showCertificate());
+        } else {
+          showPopup("Day Completed!", `Day ${level} finished. / Din ${level} poora hua.`, "⭐", () => renderRamadanGrid());
         }
-        user.name = val.split('@')[0];
-      }
-      localStorage.setItem('iq_user', JSON.stringify(user));
-      localStorage.setItem('user_name', user.name);
-      loginUser(user);
-    }
-    function loginUser(user) {
-      document.getElementById('screen-auth').classList.add('hidden');
-      document.getElementById('screen-home').classList.remove('hidden');
-      document.getElementById('menu-btn').classList.remove('hidden');
-      document.getElementById('user-display-name').innerText = user.name;
-      document.getElementById('avatar-init').innerText = (user.name || '?')[0].toUpperCase();
-    }
-    function checkExistingLogin() {
-      const saved = localStorage.getItem('iq_user');
-      if (saved) {
-        loginUser(JSON.parse(saved));
+        const currentPoints = (parseInt(localStorage.getItem('totalPoints')) || 0) + 10;
+        localStorage.setItem('totalPoints', currentPoints);
+        const savedName = localStorage.getItem('user_name');
+        if (savedName) submitScore(savedName, currentPoints);
         updateSidebarLinks();
       }
-    }
-    function uploadImage(input) {
-      if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          document.getElementById('profile-img').src = e.target.result;
-          document.getElementById('profile-img').style.display = 'block';
-          document.getElementById('avatar-init').style.display = 'none';
-        };
-        reader.readAsDataURL(input.files[0]);
-      }
-    }
-
-    /* ------------------ Per-User Progress (Ramadan) ------------------ */
-    function getCurrentUserName() {
-      const u = JSON.parse(localStorage.getItem('iq_user') || '{}');
-      return (u && u.name) ? u.name : (localStorage.getItem('user_name') || 'Guest');
-    }
-    function progressKey() { return `iq_progress_${getCurrentUserName()}`; }
-    function getProgress() { try { return JSON.parse(localStorage.getItem(progressKey()) || '{}'); } catch { return {}; } }
-    function setProgressMap(map) { localStorage.setItem(progressKey(), JSON.stringify(map)); }
-    function markLevelCompleted(levelNum) { const m = getProgress(); m[String(levelNum)] = true; setProgressMap(m); }
-    function isLevelCompleted(levelNum) { const m = getProgress(); return !!m[String(levelNum)]; }
-    function resetLevel(levelNum) { const m = getProgress(); delete m[String(levelNum)]; setProgressMap(m); }
-    function resetAllLevelsForCurrentUser() { setProgressMap({}); }
-
-    /* ------------------ Screens ------------------ */
-    function showScreen(id) {
-      const screens = ['screen-auth', 'screen-home', 'screen-content'];
-      screens.forEach(s => document.getElementById(s).classList.add('hidden'));
-      if (id === 'ramadan-grid') {
-        renderRamadanGrid();
-        document.getElementById('screen-content').classList.remove('hidden');
-      } else if (id === 'regular-grid') {
-        document.getElementById('screen-content').classList.remove('hidden');
-        document.getElementById('dynamic-body').innerHTML = "<h2>Learning Pathways</h2><p>Coming Soon!</p>";
-      } else {
-        document.getElementById('screen-' + id).classList.remove('hidden');
-      }
-      const s = document.getElementById('sidebar');
-      if (s && s.classList.contains('open')) toggleMenu();
-    }
-
-    /* ------------------ Ramadan Grid / Timer ------------------ */
-    function startTimer(targetDate) {
-      function updateClock() {
-        const now = new Date().getTime();
-        const distance = targetDate - now;
-        if (distance < 0) { clearInterval(timerInterval); renderRamadanGrid(); return; }
-        const hours = Math.floor((distance % (1000*60*60*24))/(1000*60*60));
-        const minutes = Math.floor((distance % (1000*60*60))/(1000*60));
-        const seconds = Math.floor((distance % (1000*60))/1000);
-        const clock = document.getElementById('countdown-clock');
-        if (clock) clock.innerText =
-          (hours<10?"0"+hours:hours)+":"+(minutes<10?"0"+minutes:minutes)+":"+(seconds<10?"0"+seconds:seconds);
-      }
-      const timerInterval = setInterval(updateClock, 1000);
-      updateClock();
-    }
-    function renderRamadanGrid() {
-      const container = document.getElementById('dynamic-body');
-      const ramadanStart = new Date('2026-02-18T00:00:00');
-      const now = new Date();
-      const diffInMs = now - ramadanStart;
-      const currentDay = Math.floor(diffInMs / (1000 * 60 * 60 * 24)) + 1;
-      const nextUnlock = new Date(now); nextUnlock.setHours(24, 0, 0, 0);
-
-      container.innerHTML = `
-        <div id="timer-banner" style="background:var(--soft-gold); padding:15px; border-radius:15px; margin-bottom:20px; text-align:center; border:1px solid var(--gold); border-left:5px solid var(--gold);">
-          <small style="color:var(--gold); font-weight:600; text-transform:uppercase; letter-spacing:1px;">Next Level Unlocks In / Agla Level Khulega:</small>
-          <div id="countdown-clock" style="font-family:'Cinzel'; font-size:1.8rem; color:var(--emerald); margin-top:5px;">00:00:00</div>
+    });
+  } else {
+    showPopup("Try Again", "Incorrect answer. / Galat jawab. Dobara sochein! 🤔", "❌");
+  }
+}
+function startEidQuiz() {
+  if (!isLevelCompleted(30)) {
+    showPopup("Grand Finale Locked", "Please complete all 30 days of Ramadan first.", "🔒", () => showScreen('ramadan-grid'));
+    return;
+  }
+  showPopup("Grand Finale", "Answer all 10 questions correctly to earn your certificate.", "🌟", () => startRamadanLevel(31));
+}
+function showCertificate() {
+  const isCompleted = isLevelCompleted(31);
+  const body = document.getElementById('dynamic-body');
+  if (!isCompleted) {
+    body.innerHTML = `
+      <div style="text-align:center; padding:40px;">
+        <div style="font-size:50px;">🔒</div>
+        <h3>Certificate Locked</h3>
+        <button class="main-btn" onclick="showScreen('ramadan-grid')">Go to Quiz</button>
+      </div>`;
+    showScreen('content');
+    return;
+  }
+  const user = JSON.parse(localStorage.getItem('iq_user') || '{}') || { name: "Valued Learner" };
+  const name = user.name || "Valued Learner";
+  const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  body.innerHTML = `
+    <div id="certificate-print-area" style="border:15px double var(--gold); padding:30px; text-align:center; background:white; color:#064e3b; position:relative; font-family:'Cinzel', serif;">
+      <div style="border:2px solid var(--emerald); padding:20px;">
+        <h1 style="margin:0; font-size:2.5rem;">CERTIFICATE</h1>
+        <p style="letter-spacing:3px;">OF COMPLETION</p>
+        <hr style="width:50%; border:1px solid var(--gold);">
+        <p>This is to certify that</p>
+        <h2 style="font-size:2rem; text-decoration:underline; margin:10px 0;">${name}</h2>
+        <p>has successfully completed the</p>
+        <h3 style="color:var(--emerald)">30-DAY RAMADAN QUEST 2026</h3>
+        <p>Demonstrating excellent knowledge of Islamic history, <br>Quranic studies, and Ramadan traditions.</p>
+        <div style="margin-top:30px; display:flex; justify-content:space-between; align-items:flex-end;">
+          <div style="text-align:left;"><small>Date: ${date}</small></div>
+          <div style="text-align:right;"><img src="https://img.icons8.com/fluency/64/verified-badge.png" width="40" alt="verified"><br><small>Islamic Questz Certified</small></div>
         </div>
-        <h2 style="font-family:'Cinzel'; text-align:center;">Ramadan Challenge 2026</h2>
-        <div class="level-grid" id="grid"></div>
-      `;
-      startTimer(nextUnlock);
+      </div>
+    </div>
+    <button class="main-btn" style="width:100%; margin-top:20px; background:var(--emerald); color:white;" onclick="printCertificate()">📥 Download / Save PDF</button>
+  `;
+  showScreen('content');
+}
+function printCertificate() {
+  const printContent = document.getElementById('certificate-print-area').innerHTML;
+  const originalContent = document.body.innerHTML;
+  document.body.innerHTML = printContent;
+  window.print();
+  document.body.innerHTML = originalContent;
+  window.location.reload();
+}
 
-      for (let i = 1; i <= 31; i++) {
-        const btn = document.createElement('button');
-        btn.className = 'lvl';
-        btn.innerText = i === 31 ? "EID" : i;
-        if (i > currentDay && i !== 31) {
-          btn.classList.add('locked');
-          btn.onclick = () => showPopup("Locked / Band Hai", `This challenge unlocks on Day ${i}.\n(Yeh challenge Day ${i} ko khulega.)`, "🔒");
-        } else {
-          if (isLevelCompleted(i)) btn.classList.add('completed');
-          btn.onclick = () => i === 31 ? startEidQuiz() : startRamadanLevel(i);
-        }
-        document.getElementById('grid').appendChild(btn);
-      }
-    }
-    function startRamadanLevel(levelNum) {
-      if (typeof window.RAMADAN_QUESTIONS === 'undefined') {
-        return showPopup("Loading", "Questions are still loading, please wait.", "⏳");
-      }
-      const questions = window.RAMADAN_QUESTIONS[`level${levelNum}`];
-      if (!questions) return showPopup("Coming Soon", "Content for this day is being prepared.", "📅");
+/* ------------------ Learning Topic Grid & Flow ------------------ */
+function renderLearningGrid() {
+  if (!window.LEARNING_QUESTIONS) {
+    return showPopup("Loading", "Please wait while we load the content.", "⏳");
+  }
+  const body = document.getElementById('dynamic-body');
+  const cats = Object.keys(window.LEARNING_QUESTIONS);
+  body.innerHTML = `<h2 style="font-family:'Cinzel'">Knowledge & Learning</h2>
+  <div class="level-grid" id="learn-grid"></div>`;
+  cats.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'lvl';
+    const label = cat.replace(/\_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    btn.innerText = label;
+    btn.onclick = () => startLearningCategory(cat);
+    document.getElementById('learn-grid').appendChild(btn);
+  });
+}
+function startLearningCategory(cat) {
+  const qs = window.LEARNING_QUESTIONS[cat] || [];
+  if (!qs.length) return showPopup("Coming Soon", "This topic is being prepared.", "📚");
+  const body = document.getElementById('dynamic-body');
+  body.innerHTML = `<h3 id="learn-title">${cat.replace(/\_/g,' ').toUpperCase()}</h3>
+  <div id="learn-quiz-area"></div>`;
+  loadLearningQuestion(cat, 0);
+}
+function loadLearningQuestion(cat, idx) {
+  const dataset = window.LEARNING_QUESTIONS[cat];
+  const qData = dataset[idx];
+  const area = document.getElementById('learn-quiz-area');
+  if (!qData) return;
+  area.innerHTML = `
+    <p style="color:var(--gold); font-weight:600;">Question ${idx + 1} of ${dataset.length}</p>
+    <div style="margin-bottom:20px;">
+      <h4 style="margin-bottom:5px; line-height:1.4;">${qData.q}</h4>
+      <p style="margin:0; font-style:italic; color:var(--emerald); font-size:0.95rem; opacity:0.9;">${qData.qh || ""}</p>
+    </div>
+    <div id="learn-options-box"></div>
+  `;
+  qData.o.forEach((opt, i) => {
+    const b = document.createElement('button');
+    b.className = 'main-btn';
+    b.style.width = "100%";
+    b.style.marginBottom = "10px";
+    b.style.textAlign = "left";
+    const hinglishOpt = (qData.oh && qData.oh[i]) ? `<br><span style="font-size:0.85rem; opacity:0.8;">${qData.oh[i]}</span>` : "";
+    b.innerHTML = `<strong>${opt}</strong>${hinglishOpt}`;
+    b.onclick = () => checkLearningAnswer(cat, idx, opt);
+    document.getElementById('learn-options-box').appendChild(b);
+  });
+}
 
-      const body = document.getElementById('dynamic-body');
-      const restartBtn = isLevelCompleted(levelNum) ? `
-        <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
-          <button class="main-btn" style="background:#fee2e2; border-color:#fecaca; color:#b91c1c;"
-            onclick="confirmRestartLevel(${levelNum})">↺ Restart this Level</button>
-        </div>` : '';
+/* ------------------ Duas ------------------ */
+const DUA_DB = [
+  { t: "Before Eating",  a: "بِسْمِ اللَّهِ", tr: "In the name of Allah" },
+  { t: "After Eating",   a: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا", tr: "Praise be to Allah who fed us" },
+  { t: "Before Sleeping",a: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا", tr: "In Your name O Allah I die and live" }
+];
+function showDuas() {
+  showScreen('content');
+  const body = document.getElementById('dynamic-body');
+  body.innerHTML = '<h2>Daily Duas</h2>';
+  DUA_DB.forEach(d => {
+    body.innerHTML += `<div class="dua-card"><strong>${d.t}</strong><br><span>${d.a}</span><br><small>${d.tr}</small></div>`;
+  });
+}
 
-      body.innerHTML = `<h3 id="quiz-title">Day ${levelNum}</h3>${restartBtn}<div id="quiz-area"></div>`;
-      loadQuestion(levelNum, 0);
-    }
-    function confirmRestartLevel(levelNum) {
-      showPopup("Restart Level?", "This will clear completion status for this level and let you replay it. Proceed?", "⚠️", () => {
-        resetLevel(levelNum);
-        renderRamadanGrid();
-        startRamadanLevel(levelNum);
-      });
-    }
-    function loadQuestion(level, index) {
-      const qData = window.RAMADAN_QUESTIONS[`level${level}`][index];
-      const area = document.getElementById('quiz-area');
-      if (!qData) return;
-
-      area.innerHTML = `
-        <p style="color:var(--gold); font-weight:600;">Question ${index + 1} of ${window.RAMADAN_QUESTIONS[`level${level}`].length}</p>
-        <div style="margin-bottom:20px;">
-          <h4 style="margin-bottom:5px; line-height:1.4;">${qData.q}</h4>
-          <p style="margin:0; font-style:italic; color:var(--emerald); font-size:0.95rem; opacity:0.9;">${qData.qh || ""}</p>
-        </div>
-        <div id="options-box"></div>
-      `;
-      qData.o.forEach((opt, i) => {
-        const b = document.createElement('button');
-        b.className = 'main-btn';
-        b.style.width = "100%";
-        b.style.marginBottom = "10px";
-        b.style.textAlign = "left";
-        const hinglishOpt = (qData.oh && qData.oh[i]) ? `<br><span style="font-size:0.85rem; opacity:0.8;">${qData.oh[i]}</span>` : "";
-        b.innerHTML = `<strong>${opt}</strong>${hinglishOpt}`;
-        b.onclick = (e) => { e.preventDefault(); checkAnswer(level, index, opt); };
-        document.getElementById('options-box').appendChild(b);
-      });
-    }
-    function checkAnswer(level, index, selected) {
-      const qData = window.RAMADAN_QUESTIONS[`level${level}`][index];
-      if (selected.trim() === qData.a.trim()) {
-        const fullExplanation = qData.e + (qData.eh ? `\n\n(${qData.eh})` : "");
-        showPopup("Correct! ✨", fullExplanation, "🌙", () => {
-          const nextIndex = index + 1;
-          if (nextIndex < window.RAMADAN_QUESTIONS[`level${level}`].length) {
-            loadQuestion(level, nextIndex);
-          } else {
-            markLevelCompleted(level);
-            if (level === 31) {
-              showPopup("MABROOK!", "Finale Completed! / Finale Poora Hua!", "🏆", () => showCertificate());
-            } else {
-              showPopup("Day Completed!", `Day ${level} finished. / Din ${level} poora hua.`, "⭐", () => renderRamadanGrid());
-            }
-            const currentPoints = (parseInt(localStorage.getItem('totalPoints')) || 0) + 10;
-            localStorage.setItem('totalPoints', currentPoints);
-            const savedName = localStorage.getItem('user_name');
-            if (savedName) submitScore(savedName, currentPoints);
-            updateSidebarLinks();
-          }
-        });
-      } else {
-        showPopup("Try Again", "Incorrect answer. / Galat jawab. Dobara sochein! 🤔", "❌");
-      }
-    }
-    function startEidQuiz() {
-      if (!isLevelCompleted(30)) {
-        showPopup("Grand Finale Locked", "Please complete all 30 days of Ramadan first.", "🔒", () => showScreen('ramadan-grid'));
-        return;
-      }
-      showPopup("Grand Finale", "Answer all 10 questions correctly to earn your certificate.", "🌟", () => startRamadanLevel(31));
-    }
-    function showCertificate() {
-      const isCompleted = isLevelCompleted(31);
-      const body = document.getElementById('dynamic-body');
-
-      if (!isCompleted) {
-        body.innerHTML = `<div style="text-align:center; padding:40px;">
-          <div style="font-size:50px;">🔒</div>
-          <h3>Certificate Locked</h3>
-          <button class="main-btn" onclick="showScreen('ramadan-grid')">Go to Quiz</button>
-        </div>`;
-        showScreen('content');
-        return;
-      }
-
-      const user = JSON.parse(localStorage.getItem('iq_user')) || { name: "Valued Learner" };
-      const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-
+/* ------------------ Hadith (Firebase + Fallback) ------------------ */
+const HADITH_LIST = [
+  "The best among you are those who learn the Quran and teach it.",
+  "Cleanliness is half of faith.",
+  "A good word is a charity.",
+  "He who does not show mercy to others will not be shown mercy."
+];
+function renderAdminPanel() {
+  if (localStorage.getItem('is_admin') !== 'true') return;
+  const body = document.getElementById('dynamic-body');
+  body.innerHTML = `
+    <div style="padding:20px; background:var(--soft-gold); border-radius:15px; border:2px solid var(--gold);">
+      <h2 style="color:var(--emerald);">📝 Post Daily Hadith</h2>
+      <textarea id="hadith-text" placeholder="Write Hadith here..."
+        style="width:100%; height:150px; border-radius:10px; border:1px solid #ccc; padding:10px; margin-bottom:10px; color:#000; font-family:inherit;"></textarea>
+      <button onclick="saveHadithToCloud()" class="main-btn" style="width:100%; background:var(--emerald); color:white;">Broadcast to All Users</button>
+    </div>
+  `;
+}
+function saveHadithToCloud() {
+  const text = (document.getElementById('hadith-text') || {}).value;
+  if (!text) return showPopup("Validation", "Enter text first!", "✍️");
+  db.ref('dailyHadith').set({ content: text, timestamp: Date.now() })
+    .then(() => showPopup("Success", "Updated for all users!", "✨"))
+    .catch(err => showPopup("Firebase Error", err.message, "⚠️"));
+}
+function showHadith() {
+  showScreen('content');
+  const body = document.getElementById('dynamic-body');
+  body.innerHTML = "<h2>Hadith of the Day</h2><p>Loading...</p>";
+  db.ref('dailyHadith').on('value', (snapshot) => {
+    const data = snapshot.val();
+    const adminBtn = localStorage.getItem('is_admin') === 'true'
+      ? `<button onclick="renderAdminPanel()" class="main-btn" style="margin-top:20px;">Edit Hadith</button>` : '';
+    if (!data) {
+      const dayIdx = new Date().getDate() % HADITH_LIST.length;
       body.innerHTML = `
-        <div id="certificate-print-area" style="border:15px double var(--gold); padding:30px; text-align:center; background:white; color:#064e3b; position:relative; font-family:'Cinzel', serif;">
-          <div style="border:2px solid var(--emerald); padding:20px;">
-            <h1 style="margin:0; font-size:2.5rem;">CERTIFICATE</h1>
-            <p style="letter-spacing:3px;">OF COMPLETION</p>
-            <hr style="width:50%; border:1px solid var(--gold);">
-            <p>This is to certify that</p>
-            <h2 style="font-size:2rem; text-decoration:underline; margin:10px 0;">${user.name}</h2>
-            <p>has successfully completed the</p>
-            <h3 style="color:var(--emerald)">30-DAY RAMADAN QUEST 2026</h3>
-            <p>Demonstrating excellent knowledge of Islamic history, <br>Quranic studies, and Ramadan traditions.</p>
-            <div style="margin-top:30px; display:flex; justify-content:space-between; align-items:flex-end;">
-              <div style="text-align:left;"><small>Date: ${date}</small></div>
-              <div style="text-align:right;"><img src="https://img.icons8.com/fluency/64/verified-badge.png" width="40" alt="verified"><br><small>Islamic Questz Certified</small></div>
-            </div>
-          </div>
-        </div>
-        <button class="main-btn" style="width:100%; margin-top:20px; background:var(--emerald); color:white;" onclick="printCertificate()">📥 Download / Save PDF</button>
+        <h2>Hadith of the Day</h2>
+        <div class="dua-card" style="font-size:1.1rem; line-height:1.6; text-align:center;">"${HADITH_LIST[dayIdx]}"</div>
+        ${adminBtn}
       `;
-      showScreen('content');
+      return;
     }
-    function printCertificate() {
-      const printContent = document.getElementById('certificate-print-area').innerHTML;
-      const originalContent = document.body.innerHTML;
-      document.body.innerHTML = printContent;
-      window.print();
-      document.body.innerHTML = originalContent;
-      window.location.reload();
-    }
+    body.innerHTML = `
+      <h2>Hadith of the Day</h2>
+      <div class="dua-card" style="font-size:1.1rem; line-height:1.6;">"${data.content}"</div>
+      <p style="text-align:right; font-size:0.8rem; color:gray; margin-top:10px;">
+        Last Updated: ${new Date(data.timestamp).toLocaleDateString()}
+      </p>
+      ${adminBtn}
+    `;
+  });
+}
 
-    /* ------------------ Learning Topic Grid & Flow ------------------ */
-    function renderLearningGrid() {
-      if (!window.LEARNING_QUESTIONS) {
-        return showPopup("Loading", "Please wait while we load the content.", "⏳");
-      }
-      const body = document.getElementById('dynamic-body');
-      const cats = Object.keys(window.LEARNING_QUESTIONS);
-
-      body.innerHTML = `<h2 style="font-family:'Cinzel'">Knowledge & Learning</h2>
-                        <div class="level-grid" id="learn-grid"></div>`;
-
-      cats.forEach(cat => {
-        const btn = document.createElement('button');
-        btn.className = 'lvl';
-        const label = cat.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-        btn.innerText = label;
-        btn.onclick = () => startLearningCategory(cat);
-        document.getElementById('learn-grid').appendChild(btn);
-      });
-    }
-    function startLearningCategory(cat) {
-      const qs = window.LEARNING_QUESTIONS[cat] || [];
-      if (!qs.length) return showPopup("Coming Soon", "This topic is being prepared.", "📚");
-      const body = document.getElementById('dynamic-body');
-      body.innerHTML = `<h3 id="learn-title">${cat.replace(/_/g,' ').toUpperCase()}</h3>
-                        <div id="learn-quiz-area"></div>`;
-      loadLearningQuestion(cat, 0);
-    }
-    function loadLearningQuestion(cat, idx) {
-      const dataset = window.LEARNING_QUESTIONS[cat];
-      const qData = dataset[idx];
-      const area = document.getElementById('learn-quiz-area');
-      if (!qData) return;
-
-      area.innerHTML = `
-        <p style="color:var(--gold); font-weight:600;">Question ${idx + 1} of ${dataset.length}</p>
-        <div style="margin-bottom:20px;">
-          <h4 style="margin-bottom:5px; line-height:1.4;">${qData.q}</h4>
-          <p style="margin:0; font-style:italic; color:var(--emerald); font-size:0.95rem; opacity:0.9;">${qData.qh || ""}</p>
-        </div>
-        <div id="learn-options-box"></div>
-      `;
-      qData.o.forEach((opt, i) => {
-        const b = document.createElement('button');
-        b.className = 'main-btn';
-        b.style.width = "100%";
-        b.style.marginBottom = "10px";
-        b.style.textAlign = "left";
-        const hinglishOpt = (qData.oh && qData.oh[i]) ? `<br><span style="font-size:0.85rem; opacity:0.8;">${qData.oh[i]}</span>` : "";
-        b.innerHTML = `<strong>${opt}</strong>${hinglishOpt}`;
-        b.onclick = () => checkLearningAnswer(cat, idx, opt);
-        document.getElementById('learn-options-box').appendChild(b);
-      });
-    }
-
-    /* ------------------ Duas ------------------ */
-    const DUA_DB = [
-      { t: "Before Eating", a: "بِسْمِ اللَّهِ", tr: "In the name of Allah" },
-      { t: "After Eating", a: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا", tr: "Praise be to Allah who fed us" },
-      { t: "Before Sleeping", a: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا", tr: "In Your name O Allah I die and live" }
-    ];
-    function showDuas() {
-      showScreen('content');
-      const body = document.getElementById('dynamic-body');
-      body.innerHTML = '<h2>Daily Duas</h2>';
-      DUA_DB.forEach(d => {
-        body.innerHTML += `<div class="dua-card"><strong>${d.t}</strong><br><span>${d.a}</span><br><small>${d.tr}</small></div>`;
-      });
-    }
-
-    /* ------------------ Hadith (Firebase + Fallback) ------------------ */
-    const HADITH_LIST = [
-      "The best among you are those who learn the Quran and teach it.",
-      "Cleanliness is half of faith.",
-      "A good word is a charity.",
-      "He who does not show mercy to others will not be shown mercy."
-    ];
-    function renderAdminPanel() {
-      if (localStorage.getItem('is_admin') !== 'true') return;
-      const body = document.getElementById('dynamic-body');
-      body.innerHTML = `
-        <div style="padding:20px; background:var(--soft-gold); border-radius:15px; border:2px solid var(--gold);">
-          <h2 style="color:var(--emerald);">📜 Post Daily Hadith</h2>
-          <textarea id="hadith-text" placeholder="Write Hadith here..."
-            style="width:100%; height:150px; border-radius:10px; border:1px solid #ccc; padding:10px; margin-bottom:10px; color:#000; font-family:inherit;"></textarea>
-          <button onclick="saveHadithToCloud()" class="main-btn" style="width:100%; background:var(--emerald); color:white;">Broadcast to All Users</button>
-        </div>
-      `;
-    }
-    function saveHadithToCloud() {
-      const text = document.getElementById('hadith-text').value;
-      if (!text) return showPopup("Validation", "Enter text first!", "✍️");
-      db.ref('dailyHadith').set({ content: text, timestamp: Date.now() })
-        .then(() => showPopup("Success", "Updated for all users!", "✨"))
-        .catch(err => showPopup("Firebase Error", err.message, "⚠️"));
-    }
-    function showHadith() {
-      showScreen('content');
-      const body = document.getElementById('dynamic-body');
-      body.innerHTML = "<h2>Hadith of the Day</h2><p>Loading...</p>";
-      db.ref('dailyHadith').on('value', (snapshot) => {
-        const data = snapshot.val();
-        const adminBtn = localStorage.getItem('is_admin') === 'true'
-          ? `<button onclick="renderAdminPanel()" class="main-btn" style="margin-top:20px;">Edit Hadith</button>` : '';
-        if (!data) {
-          const dayIdx = new Date().getDate() % HADITH_LIST.length;
-          body.innerHTML = `
-            <h2>Hadith of the Day</h2>
-            <div class="dua-card" style="font-size:1.1rem; line-height:1.6; text-align:center;">"${HADITH_LIST[dayIdx]}"</div>
-            ${adminBtn}
-          `;
-          return;
-        }
-        body.innerHTML = `
-          <h2>Hadith of the Day</h2>
-          <div class="dua-card" style="font-size:1.1rem; line-height:1.6;">"${data.content}"</div>
-          <p style="text-align:right; font-size:0.8rem; color:gray; margin-top:10px;">
-            Last Updated: ${new Date(data.timestamp).toLocaleDateString()}
-          </p>
-          ${adminBtn}
-        `;
-      });
-    }
-// ------------------ Feedback / Suggestions ------------------
+/* ------------------ Feedback / Suggestions ------------------ */
 function showFeedback() {
-  // Reuse the content screen
   showScreen('content');
   const user = JSON.parse(localStorage.getItem('iq_user') || '{}');
   const name = (user && user.name) ? user.name : (localStorage.getItem('user_name') || 'Guest');
   const emailPrefill = (user && user.name && user.name.includes('@')) ? user.name : '';
 
-  // Build category list from loaded Learning (fallback to static)
   const cats = (window.LEARNING_QUESTIONS ? Object.keys(window.LEARNING_QUESTIONS) : [
     'quran_essentials','hadith_science','seerah','aqeedah_creation_to_end','fiqh_worship','manners_akhlaq','general_knowledge'
   ]);
@@ -646,17 +632,16 @@ function showFeedback() {
   const body = document.getElementById('dynamic-body');
   body.innerHTML = `
     <h2 style="font-family:'Cinzel'">Feedback & Suggestions</h2>
-
     <div style="background:var(--card-bg); border:1px solid var(--border); border-left:5px solid var(--gold);
                 border-radius:12px; padding:16px; box-shadow:0 2px 8px var(--shadow);">
       <div style="display:grid; grid-template-columns:1fr; gap:12px;">
-        <label style="display:block;">
+        <label>
           <span style="font-weight:600;">Your Email (optional)</span><br>
           <input id="fb-email" type="email" placeholder="name@example.com"
                  value="${emailPrefill}" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border);">
         </label>
 
-        <label style="display:block;">
+        <label>
           <span style="font-weight:600;">Category (optional)</span><br>
           <select id="fb-cat" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border);">
             <option value="">-- Select a topic (optional) --</option>
@@ -677,7 +662,7 @@ function showFeedback() {
           </label>
         </div>
 
-        <label style="display:block;">
+        <label>
           <span style="font-weight:600;">Your Message</span><br>
           <textarea id="fb-msg" rows="6" placeholder="Type your suggestion or feedback..."
                     style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border);"></textarea>
@@ -693,7 +678,6 @@ function showFeedback() {
     </div>
   `;
 }
-
 function submitFeedback() {
   try {
     const user = JSON.parse(localStorage.getItem('iq_user') || '{}');
@@ -720,7 +704,6 @@ function submitFeedback() {
       appVersion: '2026-03-02'
     };
 
-    // Save to Firebase Realtime Database
     db.ref('feedback').push(payload)
       .then(() => {
         showPopup("Thank you!", "Your feedback has been submitted.", "✅", () => showScreen('home'));
@@ -731,92 +714,91 @@ function submitFeedback() {
   }
 }
 
+/* ------------------ Leaderboard (safe keys + Top 50) ------------------ */
+function safeKey(name) {
+  // Firebase keys cannot contain . # $ [ ] /
+  return String(name || 'guest').replace(/[.#$/\[\]\/]/g, '_').slice(0, 60);
+}
+function submitScore(username, score) {
+  const key = safeKey(username);
+  const ref = db.ref('leaderboardUsers/' + key);
+  ref.once('value').then(snap => {
+    const current = snap.val();
+    if (!current || Number(score) > Number((current || {}).score)) {
+      return ref.set({ name: username, score: Number(score), timestamp: Date.now() });
+    }
+  }).catch(err => console.error('Leaderboard write failed:', err));
+}
+function loadLeaderboard() {
+  showScreen('content');
+  const body = document.getElementById('dynamic-body');
+  body.innerHTML = "<h2>🏆 Global Leaderboard</h2><p>Loading Top 50...</p>";
+  const ref = db.ref('leaderboardUsers');
+  ref.orderByChild('score').limitToLast(50).once('value', (snapshot) => {
+    let rows = [];
+    snapshot.forEach(c => rows.push(c.val()));
+    rows.sort((a,b) => b.score - a.score);
+    let html = '<table style="width:100%; margin-top:20px; border-collapse:collapse;">';
+    html += '<tr style="border-bottom:2px solid var(--gold);"><th>Rank</th><th>Name</th><th>Points</th></tr>';
+    rows.forEach((p, i) => {
+      html += `<tr style="border-bottom:1px solid #eee; height:45px;">
+        <td>${i + 1}</td>
+        <td>${(p && p.name) ? p.name : '-'}</td>
+        <td style="color:var(--gold); font-weight:bold;">${(p && p.score) ? p.score : 0}</td>
+      </tr>`;
+    });
+    html += '</table>';
+    body.innerHTML = html;
+  }).catch(err => {
+    body.innerHTML = `<p style="color:crimson;">Error: ${err.message}</p>`;
+  });
+}
 
-    /* ------------------ Leaderboard (safe keys + Top 50) ------------------ */
-    function safeKey(name) {
-      // Firebase keys cannot contain . # $ [ ] /
-      return String(name || 'guest').replace(/[.#$/\[\]\/]/g, '_').slice(0, 60);
-    }
-    function submitScore(username, score) {
-      const key = safeKey(username);
-      const ref = db.ref('leaderboardUsers/' + key);
-      ref.once('value').then(snap => {
-        const current = snap.val();
-        if (!current || Number(score) > Number(current.score)) {
-          return ref.set({ name: username, score: Number(score), timestamp: Date.now() });
-        }
-      }).catch(err => console.error('Leaderboard write failed:', err));
-    }
-    function loadLeaderboard() {
-      showScreen('content');
-      const body = document.getElementById('dynamic-body');
-      body.innerHTML = "<h2>🏆 Global Leaderboard</h2><p>Loading Top 50...</p>";
-      const ref = db.ref('leaderboardUsers');
-      ref.orderByChild('score').limitToLast(50).once('value', (snapshot) => {
-        let rows = [];
-        snapshot.forEach(c => rows.push(c.val()));
-        rows.sort((a,b) => b.score - a.score);
-        let html = '<table style="width:100%; margin-top:20px; border-collapse:collapse;">';
-        html += '<tr style="border-bottom:2px solid var(--gold);"><th>Rank</th><th>Name</th><th>Points</th></tr>';
-        rows.forEach((p, i) => {
-          html += `<tr style="border-bottom:1px solid #eee; height:45px;">
-                    <td>${i + 1}</td>
-                    <td>${(p && p.name) ? p.name : '-'}</td>
-                    <td style="color:var(--gold); font-weight:bold;">${(p && p.score) ? p.score : 0}</td>
-                   </tr>`;
-        });
-        html += '</table>';
-        body.innerHTML = html;
-      }).catch(err => {
-        body.innerHTML = `<p style="color:crimson;">Error: ${err.message}</p>`;
-      });
-    }
+/* ------------------ Review ------------------ */
+function showReview() {
+  showScreen('content');
+  const body = document.getElementById('dynamic-body');
+  if (typeof window.RAMADAN_QUESTIONS === 'undefined') return showPopup("Error", "Data not loaded.", "❌");
+  let html = '<h2>Knowledge Review</h2><p>Correct answers from your journey:</p>';
+  for (let i = 1; i <= 30; i++) {
+    const level = window.RAMADAN_QUESTIONS[`level${i}`];
+    if (!level) continue;
+    html += `<details style="margin-bottom:10px; padding:10px; background:var(--soft-gold); border-radius:8px; color: #000;">
+      <summary style="font-weight:600; cursor:pointer;">Day ${i} Questions</summary>`;
+    level.forEach(q => {
+      html += `<p style="border-left:3px solid var(--emerald); padding-left:10px; margin-top:10px;">
+        <strong>Q: ${q.q}</strong><br>
+        <span style="color:green;">Ans: ${q.a}</span><br>
+        <small style="color: #666;">${q.e || ""}</small>
+      </p>`;
+    });
+    html += `</details>`;
+  }
+  body.innerHTML = html;
+}
+function updateSidebarLinks() { if (isLevelCompleted(31)) document.getElementById('review-link').classList.remove('hidden'); }
 
-    /* ------------------ Review ------------------ */
-    function showReview() {
-      showScreen('content');
-      const body = document.getElementById('dynamic-body');
-      if (typeof window.RAMADAN_QUESTIONS === 'undefined') return showPopup("Error", "Data not loaded.", "❌");
-      let html = '<h2>Knowledge Review</h2><p>Correct answers from your journey:</p>';
-      for (let i = 1; i <= 30; i++) {
-        const level = window.RAMADAN_QUESTIONS[`level${i}`];
-        if (!level) continue;
-        html += `<details style="margin-bottom:10px; padding:10px; background:var(--soft-gold); border-radius:8px; color: #000;">
-                  <summary style="font-weight:600; cursor:pointer;">Day ${i} Questions</summary>`;
-        level.forEach(q => {
-          html += `<p style="border-left:3px solid var(--emerald); padding-left:10px; margin-top:10px;">
-                    <strong>Q: ${q.q}</strong><br>
-                    <span style="color:green;">Ans: ${q.a}</span><br>
-                    <small style="color: #666;">${q.e || ""}</small>
-                   </p>`;
-        });
-        html += `</details>`;
-      }
-      body.innerHTML = html;
-    }
-    function updateSidebarLinks() { if (isLevelCompleted(31)) document.getElementById('review-link').classList.remove('hidden'); }
-
-    /* ------------------ Overlay Hide (Robust) ------------------ */
-    (function ensureOverlayHides() {
-      function hide() {
-        const overlay = document.getElementById('bismillah-overlay');
-        const main = document.getElementById('main-container');
-        if (!overlay || !main) return; /* fixed guard */
-        overlay.style.opacity = '0';
-        overlay.style.pointerEvents = 'none';
-        setTimeout(() => {
-          overlay.classList.add('hidden');
-          main.classList.remove('hidden');
-          checkExistingLogin();
-        }, 800);
-      }
-      window.addEventListener('load', () => setTimeout(() => { hide(); checkMasterAccess(); }, 2500));
-      // Fallback after 5s anyway
-      setTimeout(() => {
-        const overlay = document.getElementById('bismillah-overlay');
-        if (overlay && !overlay.classList.contains('hidden')) { hide(); checkMasterAccess(); }
-      }, 5000);
-    })();
-  </script>
+/* ------------------ Overlay Hide (Robust) ------------------ */
+(function ensureOverlayHides() {
+  function hide() {
+    const overlay = document.getElementById('bismillah-overlay');
+    const main = document.getElementById('main-container');
+    if (!overlay || !main) return; /* fixed guard */
+    overlay.style.opacity = '0';
+    overlay.style.pointerEvents = 'none';
+    setTimeout(() => {
+      overlay.classList.add('hidden');
+      main.classList.remove('hidden');
+      checkExistingLogin();
+    }, 800);
+  }
+  window.addEventListener('load', () => setTimeout(() => { hide(); checkMasterAccess(); }, 2500));
+  // Fallback after 5s anyway
+  setTimeout(() => {
+    const overlay = document.getElementById('bismillah-overlay');
+    if (overlay && !overlay.classList.contains('hidden')) { hide(); checkMasterAccess(); }
+  }, 5000);
+})();
+ </script>
 </body>
 </html>
