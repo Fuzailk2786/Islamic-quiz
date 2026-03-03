@@ -1797,12 +1797,6 @@ window.LEARNING_QUESTIONS = {
       }
     ]
   };
-
-  // Append (do not overwrite)
-  Object.keys(add).forEach(cat => {
-    window.LEARNING_QUESTIONS[cat] = (window.LEARNING_QUESTIONS[cat] || []).concat(add[cat]);
-  });
-})();
 /* ======== DROP 3: APPEND FINAL 100 QUESTIONS (do not edit above) ======== */
 (function appendDrop3() {
   if (!window.LEARNING_QUESTIONS) window.LEARNING_QUESTIONS = {};
