@@ -107,7 +107,7 @@
     <div class="nav-item" onclick="showHadith(); toggleMenu();">📜 Daily Hadith</div>
     <div class="nav-item" onclick="loadLeaderboard(); toggleMenu();">🏆 Leaderboard</div>
     <div class="nav-item" onclick="showDuas(); toggleMenu();">🤲 Duas for Daily Living</div>
- class="nav-item" onclick="showFeedback(); toggleMenu();">💡 Feedback</div>
+<div class="nav-item" onclick="showFeedback(); toggleMenu();">💡 Feedback</div>
     <div class="nav-item" onclick="shareApp(); toggleMenu();">📤 Invite or Share</div>
     <div class="nav-item" onclick="toggleTheme(); toggleMenu();">🌓 Theme Mode</div>
     <div class="nav-item" onclick="toggleMenu()" style="color:gray; border-top: 1px solid var(--border);">Close</div>
@@ -190,8 +190,8 @@ async function openLearningQuiz() {
   try {
     const expectedVersion = 3;                      // <-- set to 3 for Drop 3
     const needsReload =
-      !window.LEARNING_QUESTIONS ||
-      Number(window.LEARNING_QUESTIONS_VERSION) !== expectedVersion;
+  !window.LEARNING_QUESTIONS ||
+  Number(window.LEARNING_QUESTIONS_VERSION) !== expectedVersion;
 
     // Always request with a cache-buster when we expect a new version
     const url = `questions_learning.js?v=${expectedVersion}`;
