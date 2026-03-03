@@ -2636,7 +2636,12 @@ window.LEARNING_QUESTIONS = {
     ]
   };
 
-  // Append (do not overwrite)
-  Object.keys(add).forEach(function (cat) {
-    window.LEARNING_QUESTIONS[cat] = (window.LEARNING_QUESTIONS[cat] || []).concat(add[cat]);
-  });
+  
+// Append (do not overwrite)
+Object.keys(add).forEach(function (cat) {
+    window.LEARNING_QUESTIONS[cat] =
+        (window.LEARNING_QUESTIONS[cat] || []).concat(add[cat]);
+});
+
+})();
+
