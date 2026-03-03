@@ -317,9 +317,9 @@ function showScreen(id) {
     renderRamadanGrid();
     document.getElementById('screen-content').classList.remove('hidden');
   } else if (id === 'regular-grid') {
+    renderLearningCategories(); // Call the new category menu
     document.getElementById('screen-content').classList.remove('hidden');
-    document.getElementById('dynamic-body').innerHTML = "<h2>Learning Pathways</h2><p>Coming Soon!</p>";
-  } else {
+} else {
     document.getElementById('screen-' + id).classList.remove('hidden');
   }
   const s = document.getElementById('sidebar');
@@ -393,6 +393,48 @@ function confirmRestartLevel(levelNum) {
     renderRamadanGrid();
     startRamadanLevel(levelNum);
   });
+}
+   function startLearningLevel(category) {
+    const questions = window.LEARNING_QUESTIONS[category];
+    const body = document.getElementById('dynamic-body');
+    body.innerHTML = `<h3>${category.replace('_', ' ').toUpperCase()}</h3><div id="quiz-area"></div>`;
+    
+    // We need a custom loader for Learning to avoid overwriting Ramadan progress
+    loadLearningQuestion(category, 0);
+}
+
+function loadLearningQuestion(category, index) {
+    const qData = window.LEARNING_QUESTIONS[category][index];
+    const area = document.getElementById('quiz-area');
+    if (!qData) return;
+
+    area.innerHTML = `
+        <p>Question ${index + 1} of ${window.LEARNING_QUESTIONS[category].length}</p>
+        <h4>${qData.q}</h4>
+        <p><em>${qData.qh || ""}</em></p>
+        <div id="options-box"></div>
+    `;
+
+    qData.o.forEach((opt, i) => {
+        const b = document.createElement('button');
+        b.className = 'main-btn';
+        b.style.width = "100%";
+        b.onclick = () => {
+            if (opt === qData.a) {
+                showPopup("Correct!", qData.e, "✨", () => {
+                    if (index + 1 < window.LEARNING_QUESTIONS[category].length) {
+                        loadLearningQuestion(category, index + 1);
+                    } else {
+                        showPopup("Topic Completed!", "Great job!", "🎓", () => renderLearningCategories());
+                    }
+                });
+            } else {
+                showPopup("Try Again", "Incorrect answer.", "❌");
+            }
+        };
+        b.innerText = opt;
+        document.getElementById('options-box').appendChild(b);
+    });
 }
 function loadQuestion(level, index) {
   const qData = window.RAMADAN_QUESTIONS[`level${level}`][index];
@@ -514,6 +556,26 @@ function renderLearningGrid() {
     btn.onclick = () => startLearningCategory(cat);
     document.getElementById('learn-grid').appendChild(btn);
   });
+}
+   function renderLearningCategories() {
+    const container = document.getElementById('dynamic-body');
+    if (typeof window.LEARNING_QUESTIONS === 'undefined') {
+        container.innerHTML = "<h2>Error</h2><p>Learning data not found.</p>";
+        return;
+    }
+
+    let html = '<h2>📖 Learning Pathways</h2><div class="mode-grid">';
+    
+    // Create a button for each category in your JS file
+    Object.keys(window.LEARNING_QUESTIONS).forEach(cat => {
+        const title = cat.replace('_', ' ').toUpperCase();
+        html += `<div class="main-btn" onclick="startLearningLevel('${cat}')">
+                    ${title}
+                 </div>`;
+    });
+    
+    html += '</div>';
+    container.innerHTML = html;
 }
 function startLearningCategory(cat) {
   const qs = window.LEARNING_QUESTIONS[cat] || [];
