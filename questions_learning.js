@@ -1,5 +1,3 @@
-// version of the Learning dataset
-window.LEARNING_QUESTIONS_VERSION = 3;
 window.LEARNING_QUESTIONS = {
   /* =======================================================
      1) QUR'AN ESSENTIALS (15)
