@@ -1797,6 +1797,5 @@ window.LEARNING_QUESTIONS = {
         eh: "Ibn Mas‘ud (RA) mashhoor qariyon me se thay."
       }
     ]
-  });
 })();
 
