@@ -1,4 +1,3 @@
-// Learning dataset version (Drop 3)
 window.LEARNING_QUESTIONS_VERSION = 3;
 window.LEARNING_QUESTIONS = {
   /* =======================================================
