@@ -1,6 +1,3 @@
-// questions_learning.js
-// Learning questions are separate from Ramadan; no overlap with suhoor/iftar/taraweeh/Laylat‑al‑Qadr/Zakat‑al‑Fitr/Ar‑Rayyan, etc.
-
 window.LEARNING_QUESTIONS = {
   /* =======================================================
      1) QUR'AN ESSENTIALS (15)
