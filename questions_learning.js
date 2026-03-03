@@ -950,3 +950,856 @@ window.LEARNING_QUESTIONS = {
     }
   ]
 };
+/* ======== DROP 2: APPEND NEXT 100 QUESTIONS (do not edit above) ======== */
+(function appendDrop2() {
+  if (!window.LEARNING_QUESTIONS) window.LEARNING_QUESTIONS = {};
+
+  const add = {
+    /* =========================
+       QUR'AN ESSENTIALS (+15)
+       ========================= */
+    quran_essentials: [
+      {
+        q: "Which Surah contains the longest verse in the Qur’an (Ayat ad-Dayn)?",
+        qh: "Quran ki sab se lambi ayat (Ayat ad‑Dayn) kis Surah mein hai?",
+        o: ["Surah Al-Baqarah", "Surah An-Nisa", "Surah Al-Imran", "Surah At-Tawbah"],
+        a: "Surah Al-Baqarah",
+        e: "The longest verse is 2:282 of Surah Al‑Baqarah, addressing debt contracts.",
+        eh: "Surah Al‑Baqarah ki ayat 2:282 qarz (dayn) ke aadaab bayan karti hai."
+      },
+      {
+        q: "Which Surah begins with the disjointed letters 'Alif Lam Mim'?",
+        qh: "Kaunsi Surah 'Alif Laam Meem' se shuru hoti hai?",
+        o: ["Al-Baqarah", "Maryam", "Yasin", "Al-Kahf"],
+        a: "Al-Baqarah",
+        e: "Several Surahs start with huruf‑e‑muqatta’at; Al‑Baqarah is one of them.",
+        eh: "Kai Suratein muqatta’at se shuru hoti hain; Al‑Baqarah un mein se hai."
+      },
+      {
+        q: "Which Surah has two Basmalahs within it (one at the start and one in 27:30)?",
+        qh: "Kis Surah mein do martaba 'Bismillah' aata hai (shuru mein aur 27:30)?",
+        o: ["An-Naml", "An-Nur", "Al-An'am", "Yunus"],
+        a: "An-Naml",
+        e: "Surah An‑Naml includes Basmalah again in the letter of Sulayman (27:30).",
+        eh: "Surah An‑Naml mein Sulayman (AS) ke khat mein Bismillah dubara aaya (27:30)."
+      },
+      {
+        q: "Which Surah discusses comprehensive social etiquette, including lowering the gaze and modesty?",
+        qh: "Kaunsi Surah muashrati adaab par mazboot zor deti hai (nigah neeche rakhna, haya)?",
+        o: ["An-Nur", "Al-Hujurat", "Al-Ahzab", "Al-Ma’idah"],
+        a: "An-Nur",
+        e: "Surah An‑Nur gives detailed guidance on modesty and home privacy.",
+        eh: "Surah An‑Nur haya, ijazat aur gharo ki hifazat par tafseeli rehnumai deti hai."
+      },
+      {
+        q: "Which Surah is often recited to seek protection along with Al-Falaq and An-Nas?",
+        qh: "Al‑Falaq aur An‑Nas ke sath hifazat ke liye kaunsi Surah parhi jati hai?",
+        o: ["Al-Ikhlas", "Al-Masad", "Al-Kafirun", "Al-Qadr"],
+        a: "Al-Ikhlas",
+        e: "The three Qul (Ikhlas, Falaq, Nas) are commonly recited for protection.",
+        eh: "Teen Qul (Ikhlas, Falaq, Nas) rozmarra hifazat ke liye padhe jate hain."
+      },
+      {
+        q: "Which chapter is named after ‘The Table Spread’?",
+        qh: "‘Dastarkhwan’ ke naam par kaunsi Surah hai?",
+        o: ["Al-Ma’idah", "Al-An’am", "Al-Anfal", "Al-Jathiyah"],
+        a: "Al-Ma’idah",
+        e: "Al‑Ma’idah (The Table Spread) covers dietary laws and covenants.",
+        eh: "Surah Al‑Ma’idah mein khane aur ahd‑o‑paiman se muta’aliq ahkam hain."
+      },
+      {
+        q: "Which Surah advises reconciling between believers and avoiding mockery and suspicion?",
+        qh: "Kaunsi Surah momineen ke darmiyan sulah aur mazah‑tana aur badgumani se rokti hai?",
+        o: ["Al-Hujurat", "Al-Jumu’ah", "At-Tahrim", "Al-Hashr"],
+        a: "Al-Hujurat",
+        e: "Surah Al‑Hujurat emphasizes unity, respect, and social harmony.",
+        eh: "Al‑Hujurat muashray ki islahi adaab sikhati hai."
+      },
+      {
+        q: "Which Surah is titled ‘The Cave’ and includes stories of steadfast youth?",
+        qh: "Kaunsi Surah ka naam ‘Ghaar’ hai jisme mazboot iman walay nojawano ki kahani hai?",
+        o: ["Al-Kahf", "Al-Qasas", "Maryam", "Yusuf"],
+        a: "Al-Kahf",
+        e: "Surah Al‑Kahf narrates the People of the Cave and other admonitions.",
+        eh: "Surah Al‑Kahf Ashab‑e‑Kahf ki qissa aur dusri nasihatein deti hai."
+      },
+      {
+        q: "Which Surah is also called 'Umm al-Qur’an' besides Al-Fatihah by many scholars?",
+        qh: "Al‑Fatihah ke ilawa kis Surah ko kai ulamah ‘Umm al‑Qur’an’ kehte hain?",
+        o: ["Al-Baqarah", "Yasin", "Ar-Rahman", "Al-Waqi’ah"],
+        a: "Yasin",
+        e: "Surah Yasin is often revered for summarizing powerful themes.",
+        eh: "Surah Yasin ko mazboot mauzuaat ki wajah se bohot maqam hasil hai."
+      },
+      {
+        q: "Which Surah begins with the oath by Time and highlights the loss of mankind except those with faith and good deeds?",
+        qh: "Kaunsi Surah 'Waqt' ki qasam se shuru hoti aur insani nuqsan ka zikr karti hai siwae iman walon ke?",
+        o: ["Al-Asr", "Ad-Duha", "Al-Lail", "Ash-Shams"],
+        a: "Al-Asr",
+        e: "Surah Al‑Asr summarizes salvation: faith, good deeds, truth, patience.",
+        eh: "Al‑Asr nejaat ka nuskha batati hai: iman, amal, haqq, sabr."
+      },
+      {
+        q: "Which Surah mentions Maryam (Mary) by name and narrates her story?",
+        qh: "Kis Surah mein Maryam ka naam lekar unki kahani bayan ki gayi hai?",
+        o: ["Maryam", "Al-Imran", "Yusuf", "Al-Qasas"],
+        a: "Maryam",
+        e: "Surah Maryam uniquely focuses on Mary and miraculous births.",
+        eh: "Surah Maryam Maryam (AS) ki kahani par markaziyat deti hai."
+      },
+      {
+        q: "Which Surah is titled 'The Criterion' (between truth and falsehood)?",
+        qh: "Kaunsi Surah ka naam 'Furqan' (haq aur batil mein farq) hai?",
+        o: ["Al-Furqan", "Al-Haqqah", "Al-Qalam", "Al-Humazah"],
+        a: "Al-Furqan",
+        e: "Surah Al‑Furqan delineates truth vs falsehood and the qualities of servants of the Most Merciful.",
+        eh: "Al‑Furqan haq‑batil ki tafreeq aur Ibad‑ur‑Rahman ki sifat bayan karti hai."
+      },
+      {
+        q: "Which Surah contains the narrative of Dhul-Qarnayn?",
+        qh: "Dhul‑Qarnayn ki kahani kis Surah mein aati hai?",
+        o: ["Al-Kahf", "Al-Anbiya", "Al-A’raf", "Al-Qamar"],
+        a: "Al-Kahf",
+        e: "Dhul‑Qarnayn’s story appears toward the end of Surah Al‑Kahf.",
+        eh: "Dhul‑Qarnayn ka qissa Surah Al‑Kahf ke aakhir mein aata hai."
+      },
+      {
+        q: "Which Surah opens with 'Qaf' from the disjointed letters and emphasizes resurrection?",
+        qh: "Kaunsi Surah muqatta’at harf 'Qaf' se shuru hoti aur ba’ath (dobara zinda hona) par zor deti hai?",
+        o: ["Qaf", "Sad", "Nun", "Ta-Ha"],
+        a: "Qaf",
+        e: "Surah Qaf strongly reminds of the resurrection and accountability.",
+        eh: "Surah Qaf dobara uthaye jane aur hisab ki yaad dahani karti hai."
+      },
+      {
+        q: "Which Surah is widely recited for protection of property and home (a common practice) though virtue lies in all of Qur’an?",
+        qh: "Kaunsi Surah ko kai log ghar ki hifazat ke liye parhte hain (riwayati amal), jab ke fazilat tamam Quran ki hai?",
+        o: ["Al-Baqarah", "At-Tawbah", "Al-An’am", "Al-Hadid"],
+        a: "Al-Baqarah",
+        e: "Many recite Al‑Baqarah in homes; overall, guidance and protection are in the entire Qur’an.",
+        eh: "Bohat se log Al‑Baqarah parhte hain; asl me hidayat aur hifazat poore Quran me hai."
+      }
+    ],
+
+    /* ===============================
+       HADITH & HADITH SCIENCES (+15)
+       =============================== */
+    hadith_science: [
+      {
+        q: "What does 'Mashhur' Hadith indicate in terms of transmission?",
+        qh: "'Mashhur' Hadith rawayat ki kis haisiyat ko dikhati hai?",
+        o: ["Known by very few", "Known by many after initial level", "Only fabricated", "Only in poetry"],
+        a: "Known by many after initial level",
+        e: "Mashhur becomes widely known in later levels of transmission.",
+        eh: "Mashhur baad ke tabaqat me zyada mashhoor ho jati hai."
+      },
+      {
+        q: "What is 'Aziz' Hadith?",
+        qh: "'Aziz' Hadith kya hoti hai?",
+        o: ["Narrated by two or more at some level", "Only one narrator", "Fabricated", "Mutawatir"],
+        a: "Narrated by two or more at some level",
+        e: "Aziz has at least two chains at a given level.",
+        eh: "Aziz me kisi marhala par kam az kam do rawi hotay hain."
+      },
+      {
+        q: "What is 'Musalsal' Hadith?",
+        qh: "'Musalsal' Hadith kisay kehte hain?",
+        o: ["Continuous chain with common pattern", "Broken chain", "Unknown text", "Abrogated report"],
+        a: "Continuous chain with common pattern",
+        e: "Musalsal maintains a recurring attribute in each link (e.g., same wording/act).",
+        eh: "Musalsal me har rawi me mushtarik andaaz/fi’l paaya jata hai."
+      },
+      {
+        q: "What is 'Mudallas' narration?",
+        qh: "'Mudallas' riwayat ka kya matlab hai?",
+        o: ["Fully explicit chain", "Ambiguity introduced in chain", "Fabrication", "Mutawatir strength"],
+        a: "Ambiguity introduced in chain",
+        e: "Tadlees hides a weakness or changes the apparent link.",
+        eh: "Tadlees sanad ke nuqs ko chhupa deti ya kirdar ko dhundhla karti hai."
+      },
+      {
+        q: "What is 'Maqlub' Hadith?",
+        qh: "'Maqlub' Hadith kya hoti hai?",
+        o: ["Text reversed or narrator swapped", "Continuous strong chain", "Narration by children only", "Legal verdict only"],
+        a: "Text reversed or narrator swapped",
+        e: "Maqlub refers to reversal in text or switching narrators’ names.",
+        eh: "Maqlub me matn ulat sakta ya rawi ke naam badal jate hain."
+      },
+      {
+        q: "What is 'Mu’dal' Hadith?",
+        qh: "'Mu’dal' Hadith kisay kehte hain?",
+        o: ["Two or more consecutive missing narrators", "Only Companion missing", "Only one missing link", "All links present"],
+        a: "Two or more consecutive missing narrators",
+        e: "Mu’dal denotes multiple adjacent drops in the chain.",
+        eh: "Mu’dal me musalsal do ya zyada rawi chhoot jate hain."
+      },
+      {
+        q: "What is 'Munqati’' Hadith?",
+        qh: "'Munqati’' Hadith kya hoti hai?",
+        o: ["Fully connected chain", "Chain with a gap (not consecutive)", "Fabricated", "Mutawatir"],
+        a: "Chain with a gap (not consecutive)",
+        e: "Munqati’ has a break in the chain at some point.",
+        eh: "Munqati’ me sanad me kahin na kahin rabt toot jata hai."
+      },
+      {
+        q: "What is a 'Shadh' narration?",
+        qh: "'Shadh' riwayat se kya murad hai?",
+        o: ["Widely supported", "Opposes more reliable narrators", "Fabricated", "Anonymous"],
+        a: "Opposes more reliable narrators",
+        e: "Shadh conflicts with stronger narrators/chains.",
+        eh: "Shadh mazboot rawiyon ke muqable me mukhalifat karti hai."
+      },
+      {
+        q: "What is 'Illah' (hidden defect) in Hadith?",
+        qh: "Hadith me 'Illah' (khufia aib) se kya murad hai?",
+        o: ["A clear weakness", "A subtle flaw discovered by experts", "Fabrication", "Excessive length"],
+        a: "A subtle flaw discovered by experts",
+        e: "Illah is a concealed defect in chain/text understood by hadith masters.",
+        eh: "Illah me sanad/matn ka pinhawa nuqs hota hai jo mahir pehchante hain."
+      },
+      {
+        q: "Which of the following is a canonical Hadith collection?",
+        qh: "In me se kaunsi maruf Hadith ki majmooa hai?",
+        o: ["Sahih Muslim", "Tabaqat Ibn Sa’d", "Al-Bidaya wan-Nihaya", "Tarikh at-Tabari"],
+        a: "Sahih Muslim",
+        e: "Sahih Muslim is among the canonical, highly authentic collections.",
+        eh: "Sahih Muslim maruf sihah sitta me se hai."
+      },
+      {
+        q: "What is the purpose of 'Al-Jarh wa at-Ta’dil'?",
+        qh: "'Al‑Jarh wa at‑Ta’dil' ka maqsad kya hai?",
+        o: ["Grading narrators", "Explaining verses", "Comparing madhhabs", "Recording battles"],
+        a: "Grading narrators",
+        e: "It assesses narrator reliability and precision.",
+        eh: "Yeh rawiyon ki adalat aur zabt ka andaza lagata hai."
+      },
+      {
+        q: "Which term denotes 'continuous chain without any gap'?",
+        qh: "Kaunsi istilah 'baghair kisi faaslay ke muttasil sanad' ko dikhati hai?",
+        o: ["Muttasil", "Munqati’", "Mu’dal", "Mu’allaq"],
+        a: "Muttasil",
+        e: "Muttasil indicates an unbroken chain of transmission.",
+        eh: "Muttasil se muraad hai sanad me rapt muttasil ho."
+      },
+      {
+        q: "Which book by Imam al-Bukhari focuses on manners and character?",
+        qh: "Imam Bukhari ki kaunsi kitab akhlaq aur adab par markaz hai?",
+        o: ["Adab al-Mufrad", "Ar-Risalah", "Al-Muwatta", "Al-Mustadrak"],
+        a: "Adab al-Mufrad",
+        e: "Adab al‑Mufrad collects narrations on manners and conduct.",
+        eh: "Adab al‑Mufrad adab wa akhlaq par riwayat jama karti hai."
+      },
+      {
+        q: "Which set is commonly referred to as 'Sihah Sittah' (Six Books)?",
+        qh: "Sihah Sittah (chhe maruf majame’ Hadith) me se kaunsi misal durust hai?",
+        o: ["Bukhari, Muslim, Abu Dawud, Tirmidhi, Nasa’i, Ibn Majah", "Bukhari, Muslim, Muwatta, Ahmad, Bayhaqi, Darimi", "Muslim, Tirmidhi, Tabarani, Bayhaqi, Nisai, Ibn Hibban", "Bukhari, Muslim, Razi, Baydawi, Qurtubi, Tabari"],
+        a: "Bukhari, Muslim, Abu Dawud, Tirmidhi, Nasa’i, Ibn Majah",
+        e: "The classic six are: Bukhari, Muslim, Abu Dawud, Tirmidhi, Nasa’i, and Ibn Majah.",
+        eh: "Mashhur chhe: Bukhari, Muslim, Abu Dawud, Tirmidhi, Nasa’i, Ibn Majah."
+      },
+      {
+        q: "What is the primary aim of 'Mustalah al-Hadith'?",
+        qh: "'Mustalah al‑Hadith' ka asal maqsad kya hai?",
+        o: ["Narrator biographies", "Terminology & rules to evaluate hadith", "Grammar of Arabic", "Fiqh verdicts"],
+        a: "Terminology & rules to evaluate hadith",
+        e: "Mustalah explains the technical terms and evaluation rules.",
+        eh: "Mustalah hadith ke qawaid aur istilahat ki wazahat karta hai."
+      }
+    ],
+
+    /* ==========================
+       SEERAH (LIFE) (+15)
+       ========================== */
+    seerah: [
+      {
+        q: "Which pact before Prophethood aimed to uphold justice among Makkans?",
+        qh: "Nabuwwat se pehle Makkah me insaf kay liye kaunsa moahida hua?",
+        o: ["Hilf al-Fudul", "Hudaybiyyah", "Aqabah", "Fath pact"],
+        a: "Hilf al-Fudul",
+        e: "Hilf al‑Fudul was a pre‑Islamic alliance supporting justice.",
+        eh: "Hilf al‑Fudul zulm ke khilaf insaf ki tehreek thi."
+      },
+      {
+        q: "Who was the first male from the Prophet’s household to accept Islam?",
+        qh: "Nabi ﷺ ke gharane se pehle mard kis ne Islam qubool kiya?",
+        o: ["Abu Bakr (RA)", "Ali (RA)", "Zayd ibn Harithah (RA)", "Uthman (RA)"],
+        a: "Ali (RA)",
+        e: "Ali (RA), from the Prophet’s household, accepted Islam early.",
+        eh: "Ali (RA) ne bohat awwal daur me Islam qabool kiya."
+      },
+      {
+        q: "Which Companion is known as the 'sincere friend' who believed instantly?",
+        qh: "Kaun se Sahabi turant tasdiq karne ki wajah se mashhoor 'Siddiq' kehlaye?",
+        o: ["Umar (RA)", "Abu Bakr (RA)", "Uthman (RA)", "Talha (RA)"],
+        a: "Abu Bakr (RA)",
+        e: "Abu Bakr (RA) is titled As‑Siddiq for instant belief and support.",
+        eh: "Abu Bakr (RA) ko As‑Siddiq ka laqab hasil hai."
+      },
+      {
+        q: "Which journey did the Prophet ﷺ undertake to call people in a nearby town but faced rejection?",
+        qh: "Nabi ﷺ ne kis qareebi shehar me da’wat di jahan sakht rade ka samna hua?",
+        o: ["Ta’if", "Yemen", "Najd", "Tabuk"],
+        a: "Ta’if",
+        e: "The Da’wah visit to Ta’if met severe rejection and hurt.",
+        eh: "Ta’if me da’wat ke dauran shadeed rade ka samna hua."
+      },
+      {
+        q: "Which pledge solidified support from Yathrib (Madinah)?",
+        qh: "Yathrib (Madinah) se sari madad kis bai’at me paki hui?",
+        o: ["First Pledge of Aqabah", "Second Pledge of Aqabah", "Hudaybiyyah", "Najran Treaty"],
+        a: "Second Pledge of Aqabah",
+        e: "The second pledge committed protection and acceptance.",
+        eh: "Doosri Bai’at‑e‑Aqabah me himayat ka wa’ada hua."
+      },
+      {
+        q: "Which was the first mosque built after Hijrah to Madinah?",
+        qh: "Hijrat ke baad sab se pehli masjid kaunsi banayi gayi?",
+        o: ["Masjid Quba", "Masjid Nabawi", "Masjid Qiblatain", "Masjid al-Aqsa"],
+        a: "Masjid Quba",
+        e: "Masjid Quba is the first mosque established post‑Hijrah.",
+        eh: "Masjid Quba Hijrat ke baad sab se pehli masjid hai."
+      },
+      {
+        q: "What was the brotherhood formed between Muhajirun and Ansar called?",
+        qh: "Muhajireen aur Ansar ke darmiyan ka bhai chara kis naam se mashhoor hai?",
+        o: ["Hilf", "Mu’akhah", "Shura", "Hudna"],
+        a: "Mu’akhah",
+        e: "Mu’akhah created bonds of support in Madinah society.",
+        eh: "Mu’akhah ne Madinah me madad aur ukhuwwat ko mustahkam kiya."
+      },
+      {
+        q: "Which battle involved digging a defensive trench around Madinah?",
+        qh: "Kis jung me Madinah ke gird khandaq khodi gayi?",
+        o: ["Badr", "Uhud", "Khandaq (Ahzab)", "Khaybar"],
+        a: "Khandaq (Ahzab)",
+        e: "The Battle of the Trench thwarted a coalition attack.",
+        eh: "Jang‑e‑Khandaq me ittehadi lashkar ka rukh mod diya gaya."
+      },
+      {
+        q: "Which year is called ‘Year of Delegations’ due to many tribes embracing Islam?",
+        qh: "Kaunsa saal 'Aam al‑Wufud' (Wufud ka saal) kehlata hai?",
+        o: ["7 AH", "8 AH", "9 AH", "11 AH"],
+        a: "9 AH",
+        e: "In 9 AH many delegations came to Madinah to accept Islam.",
+        eh: "9 Hijri me qabeelon ke wafd Madinah aaye."
+      },
+      {
+        q: "In which year did the Prophet ﷺ pass away?",
+        qh: "Nabi ﷺ ka inteqal kis saal hua?",
+        o: ["8 AH", "9 AH", "10 AH", "11 AH"],
+        a: "11 AH",
+        e: "He passed away in Rabi’ al‑Awwal 11 AH.",
+        eh: "Rabi’ al‑Awwal 11 Hijri me aap ﷺ ka inteqal hua."
+      },
+      {
+        q: "Where is the Prophet ﷺ buried?",
+        qh: "Nabi ﷺ ki qabr mubarak kahan hai?",
+        o: ["Jannat al-Baqi", "In Aishah’s chamber (Raudah area)", "Uhud", "Quba"],
+        a: "In Aishah’s chamber (Raudah area)",
+        e: "He is buried in Aishah’s (RA) chamber, near the Rawdah.",
+        eh: "Aap ﷺ Ummul‑Moomineen Aishah (RA) ke hujre me madfoon hain."
+      },
+      {
+        q: "How many years did the Prophethood last?",
+        qh: "Nabuwwat kitne saal jaari rahi?",
+        o: ["10", "13", "23", "33"],
+        a: "23",
+        e: "Revelation lasted about 13 years in Makkah and 10 in Madinah.",
+        eh: "Makkah me taqreeban 13, aur Madinah me 10 saal."
+      },
+      {
+        q: "What is the significance of the Conquest of Makkah?",
+        qh: "Fath‑e‑Makkah ki ahmiyat kya hai?",
+        o: ["It abolished all idols in Ka’bah", "It stopped trade", "It ended Hijrah", "It started revelation"],
+        a: "It abolished all idols in Ka’bah",
+        e: "Idols were removed and Makkah embraced Islam.",
+        eh: "But‑shikani hui aur Makkah ne Islam qabool kiya."
+      },
+      {
+        q: "Which Companion’s house hosted early gatherings to learn Islam in Makkah?",
+        qh: "Makkah me Islam ki taleem ke lihaz se kaun se Sahabi ke ghar awwal majalis hoti thin?",
+        o: ["Arqam ibn Abi Arqam (RA)", "Abu Hurayrah (RA)", "Talha (RA)", "Zubayr (RA)"],
+        a: "Arqam ibn Abi Arqam (RA)",
+        e: "Dar‑ul‑Arqam became an early learning hub.",
+        eh: "Dar‑ul‑Arqam ibtida’i markaz‑e‑ta’lim tha."
+      },
+      {
+        q: "Which Companion was appointed as the first muezzin?",
+        qh: "Sab se pehle Mu’azzin kis ko banaya gaya?",
+        o: ["Zayd (RA)", "Bilal (RA)", "Ibn Umm Maktum (RA)", "Anas (RA)"],
+        a: "Bilal (RA)",
+        e: "Bilal (RA) was known for his beautiful call to prayer.",
+        eh: "Bilal (RA) ki Azaan mashhoor thi."
+      }
+    ],
+
+    /* ===========================================
+       AQEEDAH – CREATION TO HEREAFTER (+20)
+       =========================================== */
+    aqeedah_creation_to_end: [
+      {
+        q: "Which Angel brings revelation to the Prophets by Allah’s permission?",
+        qh: "Allah ke izn se wahi kaun se Farishta laate hain?",
+        o: ["Israfil", "Jibril", "Mikail", "Malik"],
+        a: "Jibril",
+        e: "Jibril (AS) is entrusted with revelation.",
+        eh: "Jibril (AS) wahi lाते hain."
+      },
+      {
+        q: "Which Angel is associated with provision (rain, sustenance) by Allah’s command?",
+        qh: "Rizq (baarish waghera) ke amoor kis Farishte ke zimme hain (Allah ke hukm se)?",
+        o: ["Mikail", "Israfil", "Ridwan", "Munkar"],
+        a: "Mikail",
+        e: "Mikail (AS) is associated with provision and rain by Allah’s command.",
+        eh: "Mikail (AS) ko rizq/baarish ke amoor se marbut kiya jata hai."
+      },
+      {
+        q: "Which two angels question the deceased in the grave?",
+        qh: "Qabr me mayyit se sawal karne wale do Farishte kaun hain?",
+        o: ["Ridwan & Malik", "Munkar & Nakir", "Israfil & Jibril", "Kiraman Katibin"],
+        a: "Munkar & Nakir",
+        e: "They ask about Lord, religion, and Prophet—by Allah’s will.",
+        eh: "Qabr me Rabb, deen, Nabi ﷺ ke bare me sawal hotay hain."
+      },
+      {
+        q: "Which record contains the fate of the righteous per Qur’anic mention?",
+        qh: "Quran ke zikar ke mutabiq nek logon ke a’maal ki kitabat kahan hai?",
+        o: ["Sijjin", "‘Illiyyin", "Hawdh", "A’raf"],
+        a: "‘Illiyyin",
+        e: "‘Illiyyin denotes the high record of the righteous (Qur’anic expression).",
+        eh: "‘Illiyyin nekon ki buland darja ki kitabat ka zikar hai."
+      },
+      {
+        q: "Which record denotes the register of the wicked (Qur’anic mention)?",
+        qh: "Quran me badkaar logon ki kitabat kis naam se ayi hai?",
+        o: ["‘Illiyyin", "Sijjin", "Mizan", "Sirat"],
+        a: "Sijjin",
+        e: "Sijjin refers to the register of the wicked, as in the Qur’an.",
+        eh: "Sijjin badkaar logon ki kitabat ke liye zikar hota hai."
+      },
+      {
+        q: "Which of the following is from the components of belief in Qadr?",
+        qh: "Taqdeer par iman ke arkan me se ek kya hai?",
+        o: ["Knowledge of Allah", "Randomness", "Denial of decree", "Luck only"],
+        a: "Knowledge of Allah",
+        e: "Qadr includes Allah’s knowledge, writing, will, and creation.",
+        eh: "Qadr me Allah ka ilm, likhna, mashiyyat aur khalq shamil hain."
+      },
+      {
+        q: "Which statement best reflects sincerity (Ikhlas)?",
+        qh: "Ikhlas (khalis niyyat) ko kaunsi baat behtar dikhati hai?",
+        o: ["Show off to inspire", "Seek only Allah’s pleasure", "Seek people’s praise", "Compete for fame"],
+        a: "Seek only Allah’s pleasure",
+        e: "Ikhlas means doing deeds solely for Allah.",
+        eh: "Ikhlas me amal sirf Allah ke liye hota hai."
+      },
+      {
+        q: "Which is NOT part of the six pillars of faith (Iman)?",
+        qh: "Iman ke chhe bunyadi arkan me se kaunsa nahin?",
+        o: ["Belief in Allah", "Belief in Angels", "Belief in Saints unconditionally", "Belief in the Last Day"],
+        a: "Belief in Saints unconditionally",
+        e: "The pillars are Allah, Angels, Books, Prophets, Last Day, Qadr.",
+        eh: "Auliya par aqidah arkan me nahin; arkan makhsoos hain."
+      },
+      {
+        q: "What is the Qur’anic term for the Scale used to weigh deeds?",
+        qh: "A’maal tulne ke liye Quran me kis lafz ka zikar aata hai?",
+        o: ["Mizan", "Sirat", "Hawdh", "Raf’"],
+        a: "Mizan",
+        e: "Mizan denotes the scale of deeds on the Last Day.",
+        eh: "Mizan Qayamat me a’maal ke tol ka mizaan hai."
+      },
+      {
+        q: "Which term denotes the barrier/realm between death and Resurrection?",
+        qh: "Maut aur Hashr ke darmiyan ke darmiyani alam ko kya kehte hain?",
+        o: ["Arsh", "Kursi", "Barzakh", "A’raf"],
+        a: "Barzakh",
+        e: "Barzakh is the inter‑world period after death.",
+        eh: "Barzakh maut ke baad ka darmiyani marhala hai."
+      },
+      {
+        q: "Which deed is emphasized repeatedly as a sign of God‑consciousness (Taqwa)?",
+        qh: "Kis amal ko baar‑baar Taqwa ki alamat ke taur par bayaan kiya jata hai?",
+        o: ["Lying", "Justice and fulfilling trusts", "Backbiting", "Arrogance"],
+        a: "Justice and fulfilling trusts",
+        e: "Upholding justice and trust reflects Taqwa.",
+        eh: "Amanat aur insaf Taqwa ki pehchan hai."
+      },
+      {
+        q: "What is meant by 'Husn adh‑Dhan' with Allah?",
+        qh: "Allah ke sath 'Husn adh‑Dhan' ka kya matlab hai?",
+        o: ["Bad opinion", "Good expectation and hope", "Despair", "Argument"],
+        a: "Good expectation and hope",
+        e: "Having good hope in Allah’s mercy with obedience.",
+        eh: "Allah ki Rehmat par behtareen umeed rakhna."
+      },
+      {
+        q: "Which trait is warned against as 'Shirk al‑Asghar' by many scholars?",
+        qh: "Kai ulamah ke nazdeek kaun sa amal 'Shirk al‑Asghar' warn kiya gaya?",
+        o: ["Sincerity", "Riya (showing off)", "Humility", "Thankfulness"],
+        a: "Riya (showing off)",
+        e: "Riya corrupts intention; deeds are for Allah alone.",
+        eh: "Riya niyyat kharab karti; amal sirf Allah ke liye hon."
+      },
+      {
+        q: "Which of the following best describes 'Ihsan'?",
+        qh: "'Ihsan' ki behtareen wazahat kya hai?",
+        o: ["Doing minimum", "Worshipping Allah as if you see Him", "No effort", "Only theory"],
+        a: "Worshipping Allah as if you see Him",
+        e: "Ihsan is excellence in worship with awareness of Allah.",
+        eh: "Ihsan me ibadat me kamal aur Allah ki nigrani ka shu’oor hota hai."
+      },
+      {
+        q: "What does the Qur’an emphasize about Allah’s knowledge?",
+        qh: "Quran Allah ke ilm ke bare me kya batata hai?",
+        o: ["Limited", "Encompasses all things", "Only future", "Only past"],
+        a: "Encompasses all things",
+        e: "Allah’s knowledge is complete—past, present, future.",
+        eh: "Allah ka ilm har cheez ko gheray huay hai."
+      },
+      {
+        q: "Which concept balances hope and fear in the believer’s heart?",
+        qh: "Momin ke dil me umeed aur khauf ka tawazun kis mafhoom se hai?",
+        o: ["Husn adh-Dhan and Taqwa", "Despair", "Recklessness", "Pride"],
+        a: "Husn adh-Dhan and Taqwa",
+        e: "Good hope in Allah with Taqwa balances the heart.",
+        eh: "Rehmat ki umeed aur Taqwa ka milap dil ko mutawazin rakhta."
+      },
+      {
+        q: "Which title among Prophets denotes might and resolve (Ulul‑Azm)?",
+        qh: "Anbiya me 'Ulul‑Azm' ka laqab kin ki azmat dikhata?",
+        o: ["A group of resolute Prophets", "All mankind", "Angels", "Only one Prophet"],
+        a: "A group of resolute Prophets",
+        e: "Ulul‑Azm refers to resolute Prophets such as Nuh, Ibrahim, Musa, Isa, Muhammad ﷺ.",
+        eh: "Ulul‑Azm se murad kuch azeem Paighambar hain."
+      },
+      {
+        q: "What is the Prophet’s ﷺ special basin promised on the Last Day?",
+        qh: "Qayamat ke din Nabi ﷺ ko diya gaya khaas howz kya kehlata?",
+        o: ["Kauthar", "Tasnim", "Salsabil", "Barzakh"],
+        a: "Kauthar",
+        e: "Hawdh al‑Kawthar is the blessed basin granted to the Prophet ﷺ.",
+        eh: "Hawdh al‑Kawthar Nabi ﷺ ka khas howz hai."
+      },
+      {
+        q: "Which statement is correct regarding intercession (Shafa’ah)?",
+        qh: "Shafa’ah ke bare me kaunsi baat theek hai?",
+        o: ["Happens without Allah’s permission", "Only by Allah’s permission", "No intercession at all", "By idols"],
+        a: "Only by Allah’s permission",
+        e: "Intercession occurs only with Allah’s permission and pleasure.",
+        eh: "Shafa’ah sirf Allah ke izn aur raza se hoti hai."
+      },
+      {
+        q: "What attitude should accompany good deeds for acceptance?",
+        qh: "A’maal‑e‑saleh ki qubooliyat ke liye kaun si soch zaroori hai?",
+        o: ["Arrogance", "Sincerity and humility", "Showing off", "Despair"],
+        a: "Sincerity and humility",
+        e: "Ikhlas with humility fosters acceptance by Allah.",
+        eh: "Ikhlas aur inkisari qubooliyat me madadgar hoti hain."
+      }
+    ],
+
+    /* =======================================
+       FIQH OF WORSHIP (NON-RAMADAN) (+15)
+       ======================================= */
+    fiqh_worship: [
+      {
+        q: "Which daily prayer has three fard rak‘ahs?",
+        qh: "Rozana kis namaz ki farz rakatain teen hoti hain?",
+        o: ["Fajr", "Dhuhr", "Maghrib", "Isha"],
+        a: "Maghrib",
+        e: "Maghrib has 3 fard; Fajr 2; Dhuhr/Asr/Isha 4.",
+        eh: "Maghrib 3 farz; Fajr 2; Zuhr/Asr/Isha 4."
+      },
+      {
+        q: "Which two prayers are shortened for a traveler in many fiqh views?",
+        qh: "Musafir ke liye kaun si do namazen aam tor par qasr ki jati hain (kai fiqhi ra’ay)?",
+        o: ["Dhuhr & Asr", "Fajr & Maghrib", "Maghrib & Isha", "Only Fajr"],
+        a: "Dhuhr & Asr",
+        e: "Commonly Dhuhr/Asr (and also Isha) may be shortened by travelers per fiqh.",
+        eh: "Aksar Zuhr/Asr (aur Isha) musafir ke liye qasr hoti hain—fiqhi tafseelat ke sath."
+      },
+      {
+        q: "What is wajib (obligatory) for the validity of Salah?",
+        qh: "Namaz ke durust hone ke liye kaun si cheez lazmi (wajib/fard) hai?",
+        o: ["Facing Qiblah if able", "Choosing any direction", "Skipping intention", "Skipping takbir"],
+        a: "Facing Qiblah if able",
+        e: "Facing the Qiblah is required unless genuinely unable.",
+        eh: "Qiblah ki simt lazmi hai siwae uzr ke."
+      },
+      {
+        q: "Which actions are fard elements in Wudu by consensus?",
+        qh: "Wuzu ke kaun se a’mal ijma‘an farz hain?",
+        o: ["Face, arms, wiping head, washing feet", "Only face", "Only arms", "Only feet"],
+        a: "Face, arms, wiping head, washing feet",
+        e: "These are the pillars of Wudu agreed upon by jurists.",
+        eh: "Chehra, baazu, masah, paon dhona—ijma‘an farz a’mal."
+      },
+      {
+        q: "Which condition allows Tayammum instead of Wudu/Ghusl?",
+        qh: "Kis surat me Wuzu/Ghusl ki jagah Tayammum jaiz hota?",
+        o: ["No water or harmful to use", "Busy schedule", "Cold weather only", "None"],
+        a: "No water or harmful to use",
+        e: "Absence of water or harm permits Tayammum.",
+        eh: "Pani na milay ya zarar ho to Tayammum jaiz."
+      },
+      {
+        q: "Which is the number of fard rak‘ahs for Friday (Jumu’ah) congregational prayer?",
+        qh: "Jumu’ah ki farz rakatain kitni hoti hain?",
+        o: ["2", "3", "4", "6"],
+        a: "2",
+        e: "The Friday congregational prayer is 2 fard rak‘ahs.",
+        eh: "Jumu’ah ki farz 2 rakat hoti hai."
+      },
+      {
+        q: "Which of the following invalidates Wudu in most fiqh views?",
+        qh: "Aksar fiqhi ra’yon me in me se kya Wuzu ko tor deta?",
+        o: ["Deep sleep lying down", "Smiling", "Sneezing", "Stretching"],
+        a: "Deep sleep lying down",
+        e: "Deep sleep while lying typically nullifies Wudu.",
+        eh: "Mazboot neend (let kar) Wuzu ko khatam karti hai."
+      },
+      {
+        q: "Which is a Sunnah practice related to oral hygiene?",
+        qh: "Mooh ki safai se muta’alliq kaunsa amal Sunnat hai?",
+        o: ["Siwak (Miswak)", "Skipping brushing", "Chewing gum always", "No cleaning"],
+        a: "Siwak (Miswak)",
+        e: "Siwak is a highly recommended Sunnah.",
+        eh: "Miswak bohot pasandeeda Sunnat hai."
+      },
+      {
+        q: "Which statement about Witr is broadly accurate across schools?",
+        qh: "Witr ke bare me kaunsi baat ‘aam tor par’ theek hai (madhahib me ikhtilaf ke bawajood)?",
+        o: ["It is prayed at night in odd units", "It must be at noon", "It has ruku but no sujud", "It is 2 rak‘ah only"],
+        a: "It is prayed at night in odd units",
+        e: "Witr is an odd‑numbered night prayer; details vary by madhhab.",
+        eh: "Witr raat ki taaq (odd) rakaton ki namaz hai—tafseelat farq hoti."
+      },
+      {
+        q: "Which is a common pillar within Salah across schools?",
+        qh: "Namaz me kaunsa rukn ‘aam tor par’ mushtarak mana jata?",
+        o: ["Takbirat al-Ihram", "Optional tasbih", "Sitting anytime", "Skipping recitation"],
+        a: "Takbirat al-Ihram",
+        e: "Opening Takbir is a fundamental pillar of Salah.",
+        eh: "Takbirat al‑Ihram namaz ka bunyadi rukn hai."
+      },
+      {
+        q: "Which action is recommended before Salah if one smells bad?",
+        qh: "Agar boosada boo ho to Salah se pehle kaunsa amal sifarish shuda?",
+        o: ["Use pleasant scent (non‑alcoholic) & clean mouth", "Avoid cleaning", "Eat raw onion now", "Delay Salah indefinitely"],
+        a: "Use pleasant scent (non‑alcoholic) & clean mouth",
+        e: "Cleanliness and good smell suit the sanctity of Salah.",
+        eh: "Paakizgi aur khooshboo Salah ki hurmat ke liye behtar hai."
+      },
+      {
+        q: "Which of these may excuse facing exact Qiblah?",
+        qh: "Kis surat me Qiblah ki bilkul sahi simt na hona ma’af ho sakta?",
+        o: ["Legitimate fear or inability", "Laziness", "Preference", "None"],
+        a: "Legitimate fear or inability",
+        e: "Fear, danger or genuine inability can excuse precise Qiblah.",
+        eh: "Khauf/majboori me bilkul sahi rukh na ho to uzr hai."
+      },
+      {
+        q: "Which two prayers may commonly be combined in travel (per fiqh allowances)?",
+        qh: "Safar me kaunsi do namazen jorna aam tor par jaiz hota (fiqhi ijazat)?",
+        o: ["Dhuhr & Asr", "Fajr & Dhuhr", "Asr & Maghrib", "Fajr & Isha"],
+        a: "Dhuhr & Asr",
+        e: "Dhuhr‑Asr (and Maghrib‑Isha) are often allowed to combine in travel.",
+        eh: "Zuhr‑Asr (aur Maghrib‑Isha) ka jam‘ safar me aksar jaiz hota."
+      },
+      {
+        q: "Which is a widely‑taught etiquette when entering the masjid?",
+        qh: "Masjid me dakhil hote waqt kaunsa adaab aam tor par sikhaya jata?",
+        o: ["Enter with right foot & say the masjid dua", "Run loudly", "Talk loudly", "Eat inside casually"],
+        a: "Enter with right foot & say the masjid dua",
+        e: "Etiquettes include right foot first and the entry supplication.",
+        eh: "Dain paon se dakhil aur dua padhna adaab me shamil."
+      },
+      {
+        q: "Which prayer is best delayed slightly within its time when heat is intense (many fiqh views)?",
+        qh: "Sخت garmi me kaunsi namaz thori der karna behtar mana gaya (kai fiqhi ra’ay)?",
+        o: ["Dhuhr", "Fajr", "Maghrib", "Isha"],
+        a: "Dhuhr",
+        e: "Some jurists prefer delaying Dhuhr slightly in severe heat.",
+        eh: "Sخت garmi me baaz fuqaha Zuhr me thori der ko behtar samajhte."
+      }
+    ],
+
+    /* =========================
+       MANNERS & AKHLAQ (+10)
+       ========================= */
+    manners_akhlaq: [
+      {
+        q: "Which deed is described as charity in many narrations?",
+        qh: "Kai riwayaton me kis amal ko sadaqah bataya gaya?",
+        o: ["Smiling to your brother", "Mockery", "Backbiting", "Boasting"],
+        a: "Smiling to your brother",
+        e: "A pleasant smile fosters brotherhood and is rewarded.",
+        eh: "Muskurahat ukhuwwat badhati aur ajar milta."
+      },
+      {
+        q: "Which behavior should be avoided in gatherings?",
+        qh: "Majalis me kaun sa rawaiya tarak karna chahiye?",
+        o: ["Giving way & sitting where available", "Pushing and forcing others", "Greeting everyone", "Listening well"],
+        a: "Pushing and forcing others",
+        e: "Islamic manners encourage respect and avoiding harm.",
+        eh: "Islami adaab me izzat aur be-aziat muamila shamil."
+      },
+      {
+        q: "Which is from rights of parents in Akhlaq?",
+        qh: "Akhlaq me walidain ke huqooq me kya shamil?",
+        o: ["Speaking harshly", "Obedience in good & respect", "Ignoring them", "Mocking advice"],
+        a: "Obedience in good & respect",
+        e: "Birr al‑walidayn (dutifulness to parents) is emphasized.",
+        eh: "Walidain ki khidmat aur izzat par zor diya gaya."
+      },
+      {
+        q: "Which trait should a believer avoid regarding others' faults?",
+        qh: "Momin ko dusron ki khamiyon ke hawale se kaunsa rawaiya tarak karna chahiye?",
+        o: ["Concealing and advising kindly", "Public shaming", "Backbiting", "Spreading rumors"],
+        a: "Concealing and advising kindly",
+        e: "Correct with wisdom; avoid scandalizing.",
+        eh: "Hikmat se bhalai ka mashwara; ruswayi se parhez."
+      },
+      {
+        q: "Which behavior is praised in buying and selling?",
+        qh: "Khareed‑o‑farokht me kaunsa rawaiya pasandida?",
+        o: ["Cheating", "Honesty & clarity", "Hiding defects", "Foul language"],
+        a: "Honesty & clarity",
+        e: "Truthfulness brings barakah in transactions.",
+        eh: "Sachai aur wazahat se barakat hoti."
+      },
+      {
+        q: "Which approach is best when you make a mistake?",
+        qh: "Ghalti ho jaye to behtareen rawaiya kya hai?",
+        o: ["Deny always", "Admit & seek forgiveness", "Blame others", "Hide it forever"],
+        a: "Admit & seek forgiveness",
+        e: "Acknowledgment with correction is praiseworthy.",
+        eh: "E’tiraf aur islah karnay wala rawaiya pasandeeda."
+      },
+      {
+        q: "Which is encouraged about promises?",
+        qh: "Wadon ke bare me kya talqeen hai?",
+        o: ["Break them", "Fulfill them", "Delay indefinitely", "Forget them"],
+        a: "Fulfill them",
+        e: "Keeping promises is a mark of integrity.",
+        eh: "Wada nibhana amanatdari ki alamat hai."
+      },
+      {
+        q: "Which attitude is valued during disagreements?",
+        qh: "Ikhtilaf me kaun sa rawaiya qeemati samjha jata?",
+        o: ["Insulting", "Listening & fairness", "Shouting", "Mockery"],
+        a: "Listening & fairness",
+        e: "Adab demands listening, justice and kind speech.",
+        eh: "Adab yehi ke tawajju, insaf aur narm kalam ikhtiyar ho."
+      },
+      {
+        q: "Which habit cleanses the heart in daily life?",
+        qh: "Rozmarra me kaunsi aadat dil ko saaf karti?",
+        o: ["Gratitude and remembrance of Allah", "Persistent envy", "Arrogance", "Suspicion"],
+        a: "Gratitude and remembrance of Allah",
+        e: "Shukr and dhikr enlighten the heart.",
+        eh: "Shukr aur zikr se dil roshan hota."
+      },
+      {
+        q: "Which social duty is highly rewarded?",
+        qh: "Kaunsa samaji farz bohat ajar lay kar aata?",
+        o: ["Caring for orphans and the needy", "Ignoring the weak", "Mocking the poor", "Withholding charity"],
+        a: "Caring for orphans and the needy",
+        e: "Supporting the vulnerable is greatly rewarded.",
+        eh: "Yateemon/gareebon ki madad par bada ajar hai."
+      }
+    ],
+
+    /* ========================================
+       GENERAL KNOWLEDGE (ISLAMIC THEMES) (+10)
+       ======================================== */
+    general_knowledge: [
+      {
+        q: "Which was the first House of worship built on earth according to many reports?",
+        qh: "Bohat si riwayaton ke mutabiq zameen par sab se pehla ghar‑e‑ibadat kaunsa?",
+        o: ["Masjid al-Haram", "Masjid al-Aqsa", "Masjid Quba", "Masjid Nabawi"],
+        a: "Masjid al-Haram",
+        e: "Masjid al‑Haram is considered the first House of worship.",
+        eh: "Masjid al‑Haram ko pehla ghar‑e‑ibadat mana jata."
+      },
+      {
+        q: "Which was built 40 years after the first House of worship (many narrations)?",
+        qh: "Pehle ghar‑e‑ibadat ke 40 saal baad kaunsa banaya gaya (kai riwayat)?",
+        o: ["Masjid al-Aqsa", "Masjid Quba", "Masjid Nabawi", "Masjid Qiblatain"],
+        a: "Masjid al-Aqsa",
+        e: "Masjid al‑Aqsa is reported to have been established later.",
+        eh: "Masjid al‑Aqsa baad me qayam hui batayi jati."
+      },
+      {
+        q: "Which month is one of the four sacred months in Islam?",
+        qh: "Islami taqweem ke chaar ash’hur‑e‑hurum me se kaunsa mahina?",
+        o: ["Rajab", "Rabi' al-Awwal", "Safar", "Rabi' al-Thani"],
+        a: "Rajab",
+        e: "The sacred months are Dhul‑Qa’dah, Dhul‑Hijjah, Muharram, and Rajab.",
+        eh: "Hurmat wale mahine: Dhu’l‑Qa’dah, Dhu’l‑Hijjah, Muharram, Rajab."
+      },
+      {
+        q: "Which direction did the Qiblah change towards after initially facing Al-Aqsa?",
+        qh: "Ibtida me Al‑Aqsa ki taraf se Qiblah kis simt badla?",
+        o: ["Towards the Ka’bah in Makkah", "Towards east", "Towards west", "No change ever"],
+        a: "Towards the Ka’bah in Makkah",
+        e: "The Qiblah was changed to the Ka’bah in Makkah.",
+        eh: "Qiblah Ka’bah ki taraf mod diya gaya."
+      },
+      {
+        q: "Who built the Ka’bah according to Islamic tradition?",
+        qh: "Islami riwayat ke mutabiq Ka’bah kis ne tayar kiya?",
+        o: ["Musa & Harun", "Ibrahim & Ismail", "Dawud & Sulaiman", "Nuh & Idris"],
+        a: "Ibrahim & Ismail",
+        e: "Prophets Ibrahim and Ismail (AS) raised the foundations.",
+        eh: "Ibrahim aur Ismail (AS) ne bunyad uthai."
+      },
+      {
+        q: "Which well is famously associated with the story of Hajar and Ismail (AS)?",
+        qh: "Hajar aur Ismail (AS) ke qisse se kaun sa kuan mashhoor hai?",
+        o: ["Zamzam", "Kauthar", "Salsabil", "Tasnim"],
+        a: "Zamzam",
+        e: "The Zamzam well miraculously sprang in Makkah.",
+        eh: "Zamzam ka kuan Makkah me maujiza ke taur par nikla."
+      },
+      {
+        q: "How many Ulu’l‑Azm Prophets are commonly cited by scholars?",
+        qh: "Ulema aam tor par Ulul‑Azm Anbiya ki tadaad kitni batate?",
+        o: ["3", "4", "5", "7"],
+        a: "5",
+        e: "Commonly cited: Nuh, Ibrahim, Musa, Isa, Muhammad ﷺ.",
+        eh: "Mashhoor: Nuh, Ibrahim, Musa, Isa, Muhammad ﷺ."
+      },
+      {
+        q: "Which city is known as 'The City of the Prophet'?",
+        qh: "Kis shehar ko 'Madinah an‑Nabi' kehte hain?",
+        o: ["Makkah", "Madinah", "Ta’if", "Jerusalem"],
+        a: "Madinah",
+        e: "Madinah al‑Munawwarah is the Prophet’s city.",
+        eh: "Madinah al‑Munawwarah ko Nabi ﷺ ka shehar kaha jata."
+      },
+      {
+        q: "Which two months conclude the Hajj season?",
+        qh: "Hajj ka mausam aksar kin do mahino ke dauran ikhtitam pazir hota?",
+        o: ["Dhul‑Qa’dah & Dhul‑Hijjah", "Muharram & Safar", "Sha’ban & Ramadan", "Rabi’ I & II"],
+        a: "Dhul‑Qa’dah & Dhul‑Hijjah",
+        e: "Hajj rites are in Dhul‑Hijjah; travel/prep spans Dhul‑Qa’dah.",
+        eh: "Hajj ki adaigi Dhu’l‑Hijjah me; tayyari Dhu’l‑Qa’dah me hoti."
+      },
+      {
+        q: "Which Companion compiled a personal mushaf and was a leading reciter?",
+        qh: "Kaun se Sahabi zabardast qari aur apna mushaf rakhne ki wajah se mashhoor hue?",
+        o: ["Ibn Mas‘ud (RA)", "Abu Hurayrah (RA)", "Zubayr (RA)", "Talha (RA)"],
+        a: "Ibn Mas‘ud (RA)",
+        e: "Ibn Mas‘ud (RA) is renowned among Qur’an reciters.",
+        eh: "Ibn Mas‘ud (RA) mashhoor qariyon me se thay."
+      }
+    ]
+  };
+
+  // Append (do not overwrite)
+  Object.keys(add).forEach(cat => {
+    window.LEARNING_QUESTIONS[cat] = (window.LEARNING_QUESTIONS[cat] || []).concat(add[cat]);
+  });
+})();
