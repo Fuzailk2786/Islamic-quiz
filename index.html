@@ -1,0 +1,110 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+  <meta charset="UTF-8" />
+  <title>Islamic Questz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/components.css">
+
+  <!-- JS -->
+  <script src="js/app.js" defer></script>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="header-title">Islamic Questz</div>
+      <div style="font-size:22px; cursor:pointer;" onclick="toggleMenu()">☰</div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div id="sidebar" class="sidebar">
+    <div class="sidebar-header">Islamic Questz</div>
+
+    <a href="index.html">🏠 Home</a>
+    <a href="quran.html">📖 Qur’an</a>
+    <a href="quiz.html">❓ Quiz</a>
+    <a href="quests.html">🎯 Quests</a>
+    <a href="profile.html">👤 Profile</a>
+    <a href="qibla.html">🧭 Qibla</a>
+    <a href="mosque.html">🕌 Nearby Mosques</a>
+    <a href="referral.html">🔗 Referral</a>
+    <a href="store.html">🛒 Store</a>
+    <a href="paywall.html">💰 Premium</a>
+    <a href="settings.html">⚙️ Settings</a>
+  </div>
+
+  <!-- OVERLAY -->
+  <div id="overlay" class="overlay" onclick="closeMenu()"></div>
+
+  <!-- PROGRESS -->
+  <div class="progress-header">
+    <div class="progress-header-top">
+      <div class="level-text">Level 3 • Scholar</div>
+      <div style="display:flex; gap:12px;">
+        <div class="streak-glow">🔥 <span id="streakCount">0</span></div>
+        <div class="level-badge">💰 <span id="coinCount">0</span></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="xp-bar-container">
+        <div class="xp-bar-fill"></div>
+      </div>
+      <div class="xp-number">
+        <span id="xpCount">0</span> XP
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK ACTIONS -->
+  <div class="icon-grid">
+    <a href="quran.html" class="icon-box">📖<div>Qur’an</div></a>
+    <a href="quiz.html" class="icon-box">❓<div>Quiz</div></a>
+    <a href="qibla.html" class="icon-box">🧭<div>Qibla</div></a>
+    <a href="mosque.html" class="icon-box">🕌 <div>Nearby Mosques</div></a>
+    <div class="icon-box chest-glow" onclick="claimDailyChest()">🎁<div>Chest</div></div>
+  </div>
+
+  <!-- STACK -->
+  <div class="stack-title">Continue your journey</div>
+
+  <a href="quests.html" class="quest-row">
+    <div class="quest-circle">DAY<br>3/30</div>
+    <div>
+      <div class="card-title">30-Day Qur’an</div>
+      <div class="card-sub">Learn step-by-step</div>
+      <div class="xp-number">+400 Coins</div>
+    </div>
+  </a>
+
+  <!-- CARDS -->
+  <div class="card-stack">
+    <a href="quests.html" class="card">⭐ Quests</a>
+    <a href="leaderboard.html" class="card">🏆 Leaderboard</a>
+    <a href="store.html" class="card">🛒 Store</a>
+    <a href="profile.html" class="card">👤 Profile</a>
+    <a href="mosque.html" class="card">🕌 Nearby Mosques</a>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <a href="index.html" class="nav-item active">🏠</a>
+    <a href="quran.html" class="nav-item">📖</a>
+    <a href="quiz.html" class="nav-item">❓</a>
+    <a href="quests.html" class="nav-item">🎯</a>
+    <a href="profile.html" class="nav-item">👤</a>
+  </div>
+
+</body>
+</html>

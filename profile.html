@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Profile – Islamic Questz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/components.css">
+
+  <!-- JS -->
+  <script src="js/app.js" defer></script>
+</head>
+
+<body>
+<!-- BACK BUTTON -->
+  <div style="padding:12px;">
+    <a href="index.html" style="text-decoration:none;">⬅️ Back</a>
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-title">Your Profile</div>
+    <div class="text-sub">Track your learning journey</div>
+  </div>
+
+  <div class="card-stack">
+
+    <!-- USER -->
+    <div class="card-large">
+      <div class="card-title">👤 Learner</div>
+      <div class="card-sub" id="profileLevel">Level 1 • Beginner</div>
+    </div>
+
+    <!-- STREAK -->
+    <div class="card-large">
+      <div class="card-title">🔥 Streak</div>
+      <div class="card-sub">
+        <span id="profileStreak">0</span> days
+      </div>
+    </div>
+
+    <!-- XP -->
+    <div class="card-large">
+      <div class="card-title">⭐ XP</div>
+      <div class="card-sub">
+        <span id="profileXP">0</span> XP earned
+      </div>
+    </div>
+
+    <!-- COINS -->
+    <div class="card-large">
+      <div class="card-title">💰 Coins</div>
+      <div class="card-sub">
+        <span id="profileCoins">0</span> available
+      </div>
+    </div>
+
+  </div>
+
+ <!-- BOTTOM NAVIGATION -->
+<div class="bottom-nav">
+
+  <div class="bottom-nav-item">
+    <span class="icon">🏠</span>
+    Home
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">📖</span>
+    Qur’an
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">❓</span>
+    Quiz
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">⭐</span>
+    Quests
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">👤</span>
+    Profile
+  </div>
+
+  <!-- DATA SYNC -->
+  <script>
+    function getLevel(xp) {
+      if (xp < 50) return "Level 1 • Beginner";
+      if (xp < 150) return "Level 2 • Learner";
+      if (xp < 300) return "Level 3 • Scholar";
+      if (xp < 600) return "Level 4 • Advanced";
+      return "Level 5 • Master";
+    }
+
+    window.addEventListener("load", function () {
+      if (typeof getXP === "function") {
+        const xp = getXP();
+        document.getElementById("profileXP").innerText = xp;
+        document.getElementById("profileStreak").innerText = getStreak();
+        document.getElementById("profileCoins").innerText = getCoins();
+        document.getElementById("profileLevel").innerText = getLevel(xp);
+      }
+    });
+  </script>
+
+</body>
+</html>

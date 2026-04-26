@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Qibla Direction</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/components.css">
+
+  <!-- JS -->
+  <script src="js/app.js" defer></script>
+</head>
+
+<body>
+
+<!-- BACK BUTTON -->
+  <div style="padding:12px;">
+    <a href="index.html" style="text-decoration:none;">⬅️ Back</a>
+
+
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-title">Qibla Direction</div>
+    <div class="text-sub">Facing the Kaaba</div>
+  </div>
+
+  <div class="card-stack">
+
+    <div class="card-large">
+      <div class="card-title">🧭 Direction</div>
+      <div class="card-sub" id="qiblaText">Calculating…</div>
+    </div>
+
+  </div>
+
+<!-- BOTTOM NAVIGATION -->
+<div class="bottom-nav">
+
+  <div class="bottom-nav-item">
+    <span class="icon">🏠</span>
+    Home
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">📖</span>
+    Qur’an
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">❓</span>
+    Quiz
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">⭐</span>
+    Quests
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">👤</span>
+    Profile
+  </div>
+
+  <script>
+    function calculateQibla(lat, lon) {
+      const kaabaLat = 21.4225 * Math.PI / 180;
+      const kaabaLon = 39.8262 * Math.PI / 180;
+
+      const phiK = kaabaLat;
+      const lambdaK = kaabaLon;
+      const phi = lat * Math.PI / 180;
+      const lambda = lon * Math.PI / 180;
+
+      const direction = Math.atan2(
+        Math.sin(lambdaK - lambda),
+        Math.cos(phi) * Math.tan(phiK) -
+        Math.sin(phi) * Math.cos(lambdaK - lambda)
+      );
+
+      return (direction * 180 / Math.PI + 360) % 360;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        const dir = calculateQibla(pos.coords.latitude, pos.coords.longitude);
+        document.getElementById("qiblaText").innerText =
+          `Face ${dir.toFixed(1)}° from North`;
+      },
+      () => {
+        document.getElementById("qiblaText").innerText =
+          "Location access required.";
+      }
+    );
+  </script>
+
+</body>
+</html>

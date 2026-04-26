@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Store – Islamic Questz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/components.css">
+
+  <!-- JS -->
+  <script src="js/app.js" defer></script>
+</head>
+
+<body>
+<!-- BACK BUTTON -->
+  <div style="padding:12px;">
+    <a href="index.html" style="text-decoration:none;">⬅️ Back</a>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div>
+        <div class="header-title">Store</div>
+        <div class="text-sub">Spend coins to unlock items</div>
+      </div>
+      <div class="level-badge">💰 <span id="storeCoins">0</span></div>
+    </div>
+  </div>
+
+  <div class="card-stack">
+
+    <!-- ITEM 1 -->
+    <div class="card-large">
+      <div class="card-title">🎨 Neon Theme</div>
+      <div class="card-sub">Unlock futuristic theme</div>
+      <div class="xp-number">Cost: 300 Coins</div>
+      <button class="btn-outline" onclick="buyItem('neon',300)">
+        Unlock
+      </button>
+    </div>
+
+    <!-- ITEM 2 -->
+    <div class="card-large">
+      <div class="card-title">❓ Extra Quiz Pack</div>
+      <div class="card-sub">100+ more questions</div>
+      <div class="xp-number">Cost: 200 Coins</div>
+      <button class="btn-outline" onclick="buyItem('quizpack',200)">
+        Unlock
+      </button>
+    </div>
+
+  </div>
+
+ <!-- BOTTOM NAVIGATION -->
+<div class="bottom-nav">
+
+  <div class="bottom-nav-item">
+    <span class="icon">🏠</span>
+    Home
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">📖</span>
+    Qur’an
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">❓</span>
+    Quiz
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">⭐</span>
+    Quests
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">👤</span>
+    Profile
+  </div>
+
+  <!-- STORE LOGIC -->
+  <script>
+    function getOwnedItems() {
+      return JSON.parse(localStorage.getItem("ownedItems")) || [];
+    }
+
+    function saveOwnedItems(items) {
+      localStorage.setItem("ownedItems", JSON.stringify(items));
+    }
+
+    function buyItem(itemId, cost) {
+      if (typeof getCoins !== "function") return;
+
+      const coins = getCoins();
+      const owned = getOwnedItems();
+
+      if (owned.includes(itemId)) {
+        alert("✅ Already unlocked!");
+        return;
+      }
+
+      if (coins < cost) {
+        alert("❌ Not enough coins");
+        return;
+      }
+
+      setCoins(coins - cost);
+      owned.push(itemId);
+      saveOwnedItems(owned);
+
+      alert("🎉 Item unlocked!");
+      updateCoinsUI();
+    }
+
+    function updateCoinsUI() {
+      if (typeof getCoins === "function") {
+        document.getElementById("storeCoins").innerText = getCoins();
+      }
+    }
+
+    window.addEventListener("load", updateCoinsUI);
+  </script>
+
+</body>
+</html>

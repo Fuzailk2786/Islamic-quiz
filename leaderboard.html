@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Leaderboard – Islamic Questz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/components.css">
+
+  <!-- JS -->
+  <script src="js/app.js" defer></script>
+</head>
+
+<body>
+
+  <!-- BACK -->
+  index.html
+    ← Back to Home
+  </a>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-title">Leaderboard</div>
+    <div class="text-sub">Top learners</div>
+  </div>
+
+  <div class="card-stack">
+
+    <div class="card">🥇 You — <strong><span id="lbXP">0</span> XP</strong></div>
+    <div class="card">🥈 User A — 520 XP</div>
+    <div class="card">🥉 User B — 470 XP</div>
+
+  </div>
+
+  <!-- BOTTOM NAVIGATION -->
+<div class="bottom-nav">
+
+  <div class="bottom-nav-item">
+    <span class="icon">🏠</span>
+    Home
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">📖</span>
+    Qur’an
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">❓</span>
+    Quiz
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">⭐</span>
+    Quests
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">👤</span>
+    Profile
+  </div>
+
+  <script>
+    document.getElementById("lbXP").innerText = getXP();
+  </script>
+
+</body>
+</html>

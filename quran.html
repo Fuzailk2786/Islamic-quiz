@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Daily Qur’an – Islamic Questz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+   <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/components.css">
+
+  <!-- JS -->
+  <script src="js/app.js" defer></script>
+</head>
+
+<body>
+
+  <!-- BACK BUTTON -->
+  <div style="padding:12px;">
+    <a href="index.html" style="text-decoration:none;">⬅️ Back</a>
+  </div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-title">Daily Qur’an</div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="card-stack">
+
+    <div class="card-large">
+      <div class="card-title">Page 1 • Surah Al-Fātiḥah</div>
+      <div class="card-sub">Today’s reading</div>
+    </div>
+
+    <!-- Arabic -->
+    <div class="card-large" style="text-align:right; font-size:24px; line-height:2; font-family:'Amiri', serif;">
+      بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+      <div class="text-sub" style="margin-top:10px; text-align:left;">
+        Arabic
+      </div>
+    </div>
+
+    <!-- English -->
+    <div class="card-large">
+      <div class="card-title">English Meaning</div>
+      <div class="card-sub">
+        In the name of Allah, the Most Gracious, the Most Merciful.
+      </div>
+    </div>
+
+    <!-- Urdu -->
+    <div class="card-large">
+      <div class="card-title">Urdu Meaning</div>
+      <div class="card-sub">
+        اللہ کے نام سے جو نہایت مہربان، بار بار رحم فرمانے والا ہے۔
+      </div>
+    </div>
+
+  </div>
+
+ <!-- BOTTOM NAVIGATION -->
+<div class="bottom-nav">
+
+  <div class="bottom-nav-item">
+    <span class="icon">🏠</span>
+    Home
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">📖</span>
+    Qur’an
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">❓</span>
+    Quiz
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">⭐</span>
+    Quests
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">👤</span>
+    Profile
+  </div>
+
+  <!-- QURAN XP -->
+  <script>
+    window.addEventListener("load", function () {
+      if (typeof giveQuranXP === "function") {
+        giveQuranXP();
+      }
+    });
+  </script>
+
+</body>
+</html>

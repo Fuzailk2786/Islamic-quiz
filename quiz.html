@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Daily Quiz – Islamic Questz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/components.css">
+
+  <!-- JS -->
+  <script src="js/app.js" defer></script>
+</head>
+
+<body>
+
+<!-- BACK BUTTON -->
+  <div style="padding:12px;">
+    <a href="index.html" style="text-decoration:none;">⬅️ Back</a>
+  </div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-title">Daily Quiz</div>
+    <div class="text-sub">Question 1 of 5</div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="card-stack">
+
+    <div class="card-large">
+      <div class="card-title">
+        Which Surah is known as the opening chapter of the Qur’an?
+      </div>
+    </div>
+
+    <div class="card option" data-answer="A">A. Surah Al-Baqarah</div>
+    <div class="card option" data-answer="B">B. Surah Al-Fātiḥah</div>
+    <div class="card option" data-answer="C">C. Surah Al-Ikhlas</div>
+    <div class="card option" data-answer="D">D. Surah An-Nas</div>
+
+    <div class="card-large">
+      <button id="submitBtn" class="btn-primary" onclick="handleSubmit()">Submit Answer</button>
+    </div>
+
+  </div>
+
+ <!-- BOTTOM NAVIGATION -->
+<div class="bottom-nav">
+
+  <div class="bottom-nav-item">
+    <span class="icon">🏠</span>
+    Home
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">📖</span>
+    Qur’an
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">❓</span>
+    Quiz
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">⭐</span>
+    Quests
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">👤</span>
+    Profile
+  </div>
+
+  <!-- QUIZ LOGIC -->
+  <script>
+    let selectedAnswer = null;
+    const correctAnswer = "B";
+    let submitted = false;
+
+    document.querySelectorAll(".option").forEach(option => {
+      option.addEventListener("click", () => {
+        if (submitted) return;
+
+        document.querySelectorAll(".option").forEach(o => o.classList.remove("active"));
+        option.classList.add("active");
+        selectedAnswer = option.dataset.answer;
+      });
+    });
+
+    function handleSubmit() {
+      if (submitted) return;
+
+      if (!selectedAnswer) {
+        alert("Please select an answer");
+        return;
+      }
+
+      submitted = true;
+
+      // Highlight correct & wrong
+      document.querySelectorAll(".option").forEach(option => {
+        if (option.dataset.answer === correctAnswer) {
+          option.style.backgroundColor = "#4CAF50"; // correct (green)
+        } else if (option.dataset.answer === selectedAnswer) {
+          option.style.backgroundColor = "#f44336"; // wrong (red)
+        }
+      });
+
+      document.getElementById("submitBtn").disabled = true;
+
+      // Delay before submitting
+      setTimeout(() => {
+        if (typeof submitQuiz === "function") {
+          submitQuiz(selectedAnswer === correctAnswer);
+        }
+      }, 1200);
+    }
+  </script>
+
+</body>
+</html>

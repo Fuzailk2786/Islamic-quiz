@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Settings – Islamic Questz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/components.css">
+
+  <!-- JS -->
+  <script src="js/app.js" defer></script>
+</head>
+
+<body>
+
+<!-- BACK BUTTON -->
+  <div style="padding:12px;">
+    <a href="index.html" style="text-decoration:none;">⬅️ Back</a>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-title">Settings</div>
+    <div class="text-sub">App preferences</div>
+  </div>
+
+  <div class="card-stack">
+
+    <div class="card-large">
+      <div class="card-title">🔔 Notifications</div>
+      <div class="card-sub">Coming soon</div>
+    </div>
+
+    <div class="card-large">
+      <div class="card-title">🌙 Theme</div>
+      <div class="card-sub">Dark (default)</div>
+    </div>
+
+    <div class="card-large">
+      <div class="card-title">♻ Reset Progress</div>
+      <button class="btn-outline" onclick="resetApp()">Reset App Data</button>
+    </div>
+
+  </div>
+
+ <!-- BOTTOM NAVIGATION -->
+<div class="bottom-nav">
+
+  <div class="bottom-nav-item">
+    <span class="icon">🏠</span>
+    Home
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">📖</span>
+    Qur’an
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">❓</span>
+    Quiz
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">⭐</span>
+    Quests
+  </div>
+
+  <div class="bottom-nav-item">
+    <span class="icon">👤</span>
+    Profile
+  </div>
+
+  <script>
+    function resetApp() {
+      if (confirm("Are you sure you want to reset all progress?")) {
+        localStorage.clear();
+        alert("✅ App data reset");
+        window.location.href = "index.html";
+      }
+    }
+  </script>
+
+</body>
+</html>
