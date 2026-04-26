@@ -1,1 +1,330 @@
+/* ----------------------------------------------
+   ISLAMIC QUESTZ — COMPONENT LIBRARY
+   Futuristic Glassmorphism + Pure Cyan Neon
+   (Works with design-system.css)
+-----------------------------------------------*/
 
+/* -------------------------
+   1. HEADERS
+--------------------------*/
+
+.header {
+  margin-top: 20px;
+  padding: 20px;
+  text-align: center;
+}
+
+.header-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--white);
+  text-shadow: 0 0 18px var(--neon-blue);
+}
+
+/* XP + Streak Header Bar (Home Screen) */
+.progress-header {
+  margin: 20px auto;
+  width: 88%;
+  background: var(--panel);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--neon-blue-soft);
+  box-shadow: 0 0 18px rgba(0, 234, 255, 0.25);
+}
+
+.progress-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.level-text {
+  font-size: 18px;
+  color: var(--white);
+  text-shadow: 0 0 12px var(--neon-blue);
+}
+
+.streak-glow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--neon-gold);
+  text-shadow: 0 0 12px var(--neon-gold);
+  font-size: 18px;
+}
+
+/* -------------------------
+   2. ICON BOXES (Qur'an Daily, Quiz, Chest)
+--------------------------*/
+
+.icon-grid {
+  margin: 20px auto;
+  width: 88%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.icon-box {
+  width: 30%;
+  padding: 18px 10px;
+  text-align: center;
+  border-radius: var(--radius-lg);
+  background: var(--panel);
+  border: 1px solid var(--neon-blue-soft);
+  backdrop-filter: blur(20px);
+  cursor: pointer;
+  box-shadow: inset 0 0 15px var(--neon-blue-soft);
+  transition: 0.25s ease;
+}
+
+.icon-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 26px var(--neon-blue);
+}
+
+.icon-box .icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+  color: var(--neon-blue);
+  text-shadow: 0 0 16px var(--neon-blue);
+}
+
+.icon-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+
+/* -------------------------
+   3. CARD STACK (Layout A)
+--------------------------*/
+
+.stack-title {
+  margin: 15px auto 10px;
+  width: 88%;
+  font-size: 18px;
+  color: var(--text-primary);
+}
+
+.card-large {
+  width: 88%;
+  margin: 0 auto;
+  padding: 20px;
+  background: var(--panel-strong);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--neon-blue-soft);
+  backdrop-filter: blur(22px);
+  box-shadow: inset 0 0 25px var(--neon-blue-soft), 0 0 18px var(--neon-blue-soft);
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.card-large:hover {
+  transform: translateY(-4px);
+  box-shadow: inset 0 0 25px var(--neon-blue), 0 0 26px var(--neon-blue);
+}
+
+.card-title {
+  font-size: 20px;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+
+.card-sub {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* -------------------------
+   4. QUEST CARD (30-Day Challenge)
+--------------------------*/
+
+.quest-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 100px;
+  border: 2px solid var(--neon-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--white);
+  text-shadow: 0 0 12px var(--neon-blue);
+  box-shadow: 0 0 16px var(--neon-blue);
+  margin-right: 15px;
+}
+
+.quest-row {
+  display: flex;
+  align-items: center;
+}
+
+/* -------------------------
+   5. BUTTONS
+--------------------------*/
+
+.btn-primary {
+  background: var(--neon-blue-soft);
+  border: 1px solid var(--neon-blue);
+  color: #012b33;
+  padding: 14px;
+  width: 100%;
+  text-align: center;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  box-shadow: 0 0 20px var(--neon-blue);
+  transition: 0.25s ease;
+}
+
+.btn-primary:hover {
+  background: var(--neon-blue);
+  box-shadow: 0 0 30px var(--neon-blue);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--neon-blue);
+  color: var(--neon-blue);
+  padding: 14px;
+  width: 100%;
+  text-align: center;
+  border-radius: var(--radius-md);
+  transition: 0.25s;
+}
+
+.btn-outline:hover {
+  background: var(--neon-blue-soft);
+}
+
+/* -------------------------
+   6. MODALS
+--------------------------*/
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(20px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-box {
+  width: 90%;
+  max-width: 420px;
+  background: var(--panel);
+  border: 1px solid var(--neon-blue-soft);
+  border-radius: var(--radius-lg);
+  padding: 25px;
+  box-shadow: 0 0 25px var(--neon-blue);
+}
+
+/* -------------------------
+   7. NEON XP / LEVEL EFFECTS
+--------------------------*/
+
+.level-badge {
+  padding: 6px 14px;
+  background: rgba(0, 234, 255, 0.12);
+  color: var(--neon-blue);
+  border-radius: 12px;
+  font-size: 14px;
+  border: 1px solid var(--neon-blue-soft);
+  box-shadow: 0 0 12px var(--neon-blue-soft);
+}
+
+.xp-number {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* -------------------------
+   8. ANIMATIONS
+--------------------------*/
+
+@keyframes chestPulse {
+  0% { transform: scale(1); box-shadow: 0 0 12px var(--neon-blue); }
+  50% { transform: scale(1.05); box-shadow: 0 0 22px var(--neon-blue); }
+  100% { transform: scale(1); box-shadow: 0 0 12px var(--neon-blue); }
+}
+
+.chest-glow {
+  animation: chestPulse 2s infinite;
+}
+/* -------------------------
+  /* SIDEBAR */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -260px;
+  width: 260px;
+  height: 100%;
+  background: #111;
+  color: white;
+  padding: 20px;
+  transition: right 0.3s ease;
+  z-index: 1000;
+}
+
+.sidebar.active {
+  right: 0;
+}
+
+.sidebar a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 12px 0;
+  border-bottom: 1px solid #222;
+}
+
+.sidebar-header {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+/* OVERLAY */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  z-index: 999;
+}
+
+.overlay.active {
+  display: block;
+}
+
+/* BOTTOM NAV FIX */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  background: #111;
+  padding: 12px 0;
+  border-top: 1px solid #333;
+}
+
+.nav-item {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.nav-item.active {
+  color: #4CAF50;
+}
